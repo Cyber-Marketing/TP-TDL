@@ -1,0 +1,11 @@
+services:
+  cyber-marketing:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tp-dart
+    container_name: tp-dart
+    volumes:
+      - .:/tp
+    stdin_open: true
+    tty: true
