@@ -1,0 +1,27 @@
+{
+  "name": "Flutter",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "cyber-marketing",
+  "workspaceFolder": "/tp",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "dev.containers.gitCredentialHelperConfigLocation": "global",
+        "dev.containers.copyGitConfig": true,
+        "git.enabled": true,
+        "git.path": "/usr/bin/git",
+        "terminal.integrated.shell.linux": "/bin/bash"
+      },
+      "extensions": [
+        "dart-code.dart-code",
+        "dart-code.flutter"
+      ]
+    }
+  },
+  // This command create an example project after the container is created.
+  "postCreateCommand": "/bin/bash",
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": ["localhost:8000"]
+  // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+  // "remoteUser": "vscode"
+}

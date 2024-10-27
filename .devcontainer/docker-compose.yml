@@ -3,9 +3,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: tp-dart
-    container_name: tp-dart
+    image: tp_dart
+    container_name: tp_dart
+    ports:
+      - 8000:8000
     volumes:
-      - .:/tp
+      - ../:/tp
     stdin_open: true
     tty: true
