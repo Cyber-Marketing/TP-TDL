@@ -1,116 +1,46 @@
+import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(const Aplicaccion());
+void main() {
+  runApp(MyApp());
+}
 
-class Aplicaccion extends StatelessWidget {
-  const Aplicaccion({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: "Servicio de Turnos",
-      debugShowCheckedModeBanner: false,
-      home: HomePage(titulo: "Home"),
+    return ChangeNotifierProvider(
+      create: (context) => MyAppState(),
+      child: MaterialApp(
+        title: 'Namer App',
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+        ),
+        home: MyHomePage(),
+      ),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? llave, this.titulo}) : super(key: llave);
-
-  final String? titulo;
-
-  @override
-  StateHomePage createState() => StateHomePage();
+class MyAppState extends ChangeNotifier {
+  var current = WordPair.random();
 }
 
-class StateHomePage extends State<HomePage> {
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+
     return Scaffold(
-      appBar: appBarHomePage(context),
-      drawer: menu(),
-      body: Center(
-        child: formatText('Todos los Turnos'),
+      body: Column(
+        children: [
+          Text('A random idea:'),
+          Text(appState.current.asLowerCase),
+        ],
       ),
-      backgroundColor: const Color.fromARGB(255, 113, 192, 120),
     );
   }
-}
-
-Text formatText(String text) => Text(text,
-    style: const TextStyle(
-        color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold));
-
-void myTurns(BuildContext context) {
-  Navigator.push(context, MaterialPageRoute<void>(
-    builder: (BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-          title: formatText('Mis Turnos'),
-          backgroundColor: const Color.fromARGB(255, 93, 135, 212),
-        ),
-        body: const Center(
-          child: Text('Todos mis turnos'),
-        ),
-        backgroundColor: const Color.fromARGB(255, 113, 192, 120),
-      );
-    },
-  ));
-}
-
-AppBar appBarHomePage(BuildContext context) {
-  return AppBar(
-    title: formatText('Turnos'),
-    backgroundColor: const Color.fromARGB(255, 93, 135, 212),
-    actions: [
-      IconButton(
-        icon: const Icon(
-          Icons.folder_copy,
-          color: Colors.black,
-        ),
-        tooltip: 'Mis turnos',
-        onPressed: () {
-          myTurns(context);
-        },
-      ),
-    ],
-  );
-}
-
-Drawer menu() {
-  return Drawer(
-    backgroundColor: const Color.fromARGB(255, 82, 202, 206),
-    child: Column(
-      children: [
-        formatText("Menú"),
-        Row(
-          children: [
-            formatText("Mi Cuenta"),
-            const IconButton(
-              onPressed: null,
-              icon: Icon(
-                Icons.account_circle_rounded,
-                color: Colors.black,
-              ),
-              tooltip: "Cuenta",
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            formatText("Cerrar Sesión"),
-            const IconButton(
-              onPressed: null,
-              icon: Icon(
-                Icons.exit_to_app,
-                color: Colors.black,
-              ),
-              tooltip: "Salir",
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
 }
