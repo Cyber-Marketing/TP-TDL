@@ -1,23 +1,29 @@
-import 'dart:math';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:web_app/domain/appointment.dart';
+import 'package:web_app/home_page.dart';
+import 'firebase_options.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:random_name_generator/random_name_generator.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
-        title: 'Namer App',
+        title: 'App Turnos',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           useMaterial3: true,
@@ -28,28 +34,6 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-}
-
-class Appointment {
-  Appointment();
-
-  var businessName = RandomNames(Zone.spain).name();
-  var serviceDescription = RandomNames(Zone.spain).surname();
-  DateTimeRange timeRange = DateTimeRange(
-    start: DateTime(
-      2024,
-      1,
-      30,
-      10,
-    ),
-    end: DateTime(
-      2024,
-      1,
-      30,
-      10,
-    ),
-  );
-  double servicePrice = Random().nextDouble() * 100;
 }
 
 class MyAppState extends ChangeNotifier {
@@ -79,65 +63,6 @@ class MyAppState extends ChangeNotifier {
       favorites.add(current);
     }
     notifyListeners();
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  var selectedIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget page;
-    switch (selectedIndex) {
-      case 0:
-        page = MainPage();
-      case 1:
-        page = MyAppointmentsPage();
-      default:
-        throw UnimplementedError('no widget for $selectedIndex');
-    }
-
-    return LayoutBuilder(builder: (context, constraints) {
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.onSecondary,
-          toolbarHeight: 80,
-          title: Row(
-            children: [
-              SizedBox(width: 25),
-              IconButton(
-                  tooltip: "Inicio",
-                  onPressed: () {
-                    setState(() {
-                      selectedIndex = 0;
-                    });
-                  },
-                  icon: const Icon(Icons.home)),
-              SizedBox(width: 25),
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      selectedIndex = 1;
-                    });
-                  },
-                  tooltip: "Mis turnos",
-                  icon: const Icon(Icons.event)),
-            ],
-          ),
-        ),
-        body: Expanded(
-          child: Container(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            child: page,
-          ),
-        ),
-      );
-    });
   }
 }
 
