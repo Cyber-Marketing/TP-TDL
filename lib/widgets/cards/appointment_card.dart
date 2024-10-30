@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:web_app/domain/appointment.dart';
-import 'package:web_app/main.dart';
+import '../../domain/appointment.dart';
+import '../../main.dart';
 
 class AppointmentCard extends StatelessWidget {
   const AppointmentCard({

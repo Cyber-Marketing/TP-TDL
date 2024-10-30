@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:web_app/domain/appointment.dart';
-import 'package:web_app/widgets/home_page.dart';
-import 'settings/firebase_options.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'domain/appointment.dart';
+import 'widgets/pages/home_page.dart';
+import 'settings/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

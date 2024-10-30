@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:web_app/widgets/appointment_card.dart';
-import 'package:web_app/domain/appointment.dart';
+import '../cards/appointment_card.dart';
+import '../../domain/appointment.dart';
 
 class MainPage extends StatelessWidget {
   @override

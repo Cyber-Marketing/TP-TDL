@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:web_app/main.dart';
+import '../../main.dart';
 
 class MyAppointmentsPage extends StatelessWidget {
   @override
