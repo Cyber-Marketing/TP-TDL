@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:web_app/main.dart';
+import 'package:web_app/widgets/main_page.dart';
+import 'package:web_app/widgets/my_appointments_page.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
