@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_app/app_state.dart';
 import '../../domain/appointment.dart';
-import '../../main.dart';
 
 class AppointmentCard extends StatelessWidget {
   const AppointmentCard({
@@ -13,7 +13,7 @@ class AppointmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    var appState = context.watch<AppState>();
     return Container(
       color: Theme.of(context).colorScheme.inversePrimary,
       child: Center(

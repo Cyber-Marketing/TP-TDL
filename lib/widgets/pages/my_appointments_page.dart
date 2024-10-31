@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../main.dart';
+import 'package:web_app/app_state.dart';
 
 class MyAppointmentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    var appState = context.watch<AppState>();
 
     if (appState.appointments.isEmpty) {
       return ListView(children: [
