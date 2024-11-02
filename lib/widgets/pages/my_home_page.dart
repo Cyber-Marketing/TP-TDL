@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:web_app/app_state.dart';
+import 'package:web_app/widgets/authentication.dart';
 import 'package:web_app/widgets/buttons/app_bar_button.dart';
 import 'main_page.dart';
 import 'my_appointments_page.dart';
@@ -33,13 +37,38 @@ class _MyHomePageState extends State<MyHomePage> {
               AppBarButton(
                 tooltip: "Inicio",
                 icon: Icons.home,
+                onPressed: () {
+                  setState(() {
+                    selectedIndex = 0;
+                  });
+                },
               ),
-              AppBarButton(
-                tooltip: "Mis turnos",
-                icon: Icons.event,
+              Consumer<AppState>(
+                builder: (_, appState, __) => Visibility(
+                  visible: appState.isSignedIn,
+                  child: AppBarButton(
+                    tooltip: "Mis turnos",
+                    icon: Icons.event,
+                    onPressed: () {
+                      setState(() {
+                        selectedIndex = 1;
+                      });
+                    },
+                  ),
+                ),
               ),
             ],
           ),
+          actions: [
+            Consumer<AppState>(
+              builder: (context, appState, _) => AuthButtons(
+                  isSignedIn: appState.isSignedIn,
+                  signOut: () {
+                    FirebaseAuth.instance.signOut();
+                  }),
+            ),
+            SizedBox(width: 25),
+          ],
         ),
         body: Expanded(
           child: Container(

@@ -1,14 +1,14 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:web_app/widgets/pages/home_page.dart';
+import 'package:web_app/widgets/pages/my_home_page.dart';
 
 final router = GoRouter(
   routes: [
     GoRoute(
       name: 'home',
       path: '/',
-      builder: (context, state) => HomePage(),
+      builder: (context, state) => MyHomePage(),
       routes: [
         GoRoute(
           name: 'sign-in',
