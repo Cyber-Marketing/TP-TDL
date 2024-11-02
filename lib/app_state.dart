@@ -13,6 +13,7 @@ class AppState extends ChangeNotifier {
 
   bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
+  List<Appointment> appointments = [];
 
   Future<void> init() async {
     await Firebase.initializeApp(
@@ -27,8 +28,6 @@ class AppState extends ChangeNotifier {
       notifyListeners();
     });
   }
-
-  var appointments = <Appointment>[];
 
   void bookAppointment(Appointment appointment) {
     if (!appointments.contains(appointment)) {

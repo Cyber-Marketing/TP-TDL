@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
-import 'package:web_app/widgets/authentication.dart';
+import 'package:web_app/widgets/buttons/auth_buttons.dart';
 import 'package:web_app/widgets/buttons/app_bar_button.dart';
 import 'main_page.dart';
 import 'my_appointments_page.dart';
