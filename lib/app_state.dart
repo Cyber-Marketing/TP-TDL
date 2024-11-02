@@ -12,8 +12,8 @@ class AppState extends ChangeNotifier {
     init();
   }
 
-  bool _loggedIn = false;
-  bool get loggedIn => _loggedIn;
+  bool _isSignedIn = false;
+  bool get isSignedIn => _isSignedIn;
 
   Future<void> init() async {
     await Firebase.initializeApp(
@@ -24,13 +24,12 @@ class AppState extends ChangeNotifier {
     ]);
 
     FirebaseAuth.instance.userChanges().listen((user) {
-      _loggedIn = user != null;
+      _isSignedIn = user != null;
       notifyListeners();
     });
   }
 
   var appointments = <Appointment>[];
-  bool isLoggedIn = false;
 
   void bookAppointment(Appointment appointment) {
     if (!appointments.contains(appointment)) {

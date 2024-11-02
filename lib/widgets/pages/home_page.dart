@@ -1,62 +1,63 @@
+import 'package:firebase_auth/firebase_auth.dart'
+    hide EmailAuthProvider, PhoneAuthProvider;
 import 'package:flutter/material.dart';
-import 'main_page.dart';
-import 'my_appointments_page.dart';
+import 'package:provider/provider.dart';
 
-class MyHomePage extends StatefulWidget {
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+import '../../app_state.dart';
+import '../authentication.dart';
 
-class _MyHomePageState extends State<MyHomePage> {
-  var selectedIndex = 0;
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Widget page;
-    switch (selectedIndex) {
-      case 0:
-        page = MainPage();
-      case 1:
-        page = MyAppointmentsPage();
-      default:
-        throw UnimplementedError('no widget for $selectedIndex');
-    }
-
-    return LayoutBuilder(builder: (context, constraints) {
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.onSecondary,
-          toolbarHeight: 80,
-          title: Row(
-            children: [
-              SizedBox(width: 25),
-              IconButton(
-                  tooltip: "Inicio",
-                  onPressed: () {
-                    setState(() {
-                      selectedIndex = 0;
-                    });
-                  },
-                  icon: const Icon(Icons.home)),
-              SizedBox(width: 25),
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      selectedIndex = 1;
-                    });
-                  },
-                  tooltip: "Mis turnos",
-                  icon: const Icon(Icons.event)),
-            ],
-          ),
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.onSecondary,
+        toolbarHeight: 80,
+        title: Row(
+          children: [
+            SizedBox(width: 25),
+            IconButton(
+                tooltip: "Inicio",
+                onPressed: () {},
+                icon: const Icon(Icons.home)),
+            SizedBox(width: 25),
+            Consumer<AppState>(
+              builder: (context, appState, _) => Visibility(
+                visible: appState.isSignedIn,
+                child: IconButton(
+                    onPressed: () {},
+                    tooltip: "Mis turnos",
+                    icon: const Icon(Icons.event)),
+              ),
+            ),
+          ],
         ),
-        body: Expanded(
-          child: Container(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            child: page,
+        actions: [
+          Consumer<AppState>(
+            builder: (context, appState, _) => AuthButtons(
+                isSignedIn: appState.isSignedIn,
+                signOut: () {
+                  FirebaseAuth.instance.signOut();
+                }),
           ),
-        ),
-      );
-    });
+          SizedBox(width: 25),
+        ],
+      ),
+      body: ListView(
+        children: <Widget>[
+          const SizedBox(height: 8),
+          // Consumer<AppState>(
+          //   builder: (context, appState, _) => AuthFunc(
+          //       loggedIn: appState.loggedIn,
+          //       signOut: () {
+          //         FirebaseAuth.instance.signOut();
+          //       }),
+          // ),
+        ],
+      ),
+    );
   }
 }
