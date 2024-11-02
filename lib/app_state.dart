@@ -1,4 +1,3 @@
-import 'package:english_words/english_words.dart';
 import 'package:firebase_auth/firebase_auth.dart'
     hide EmailAuthProvider, PhoneAuthProvider;
 import 'package:firebase_core/firebase_core.dart';
@@ -34,24 +33,6 @@ class AppState extends ChangeNotifier {
   void bookAppointment(Appointment appointment) {
     if (!appointments.contains(appointment)) {
       appointments.add(appointment);
-    }
-    notifyListeners();
-  }
-
-  var current = WordPair.random();
-
-  void getNext() {
-    current = WordPair.random();
-    notifyListeners();
-  }
-
-  var favorites = <WordPair>[];
-
-  void toggleFavorite() {
-    if (favorites.contains(current)) {
-      favorites.remove(current);
-    } else {
-      favorites.add(current);
     }
     notifyListeners();
   }

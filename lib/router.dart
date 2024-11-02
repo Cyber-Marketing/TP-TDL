@@ -17,12 +17,6 @@ final router = GoRouter(
             return SignInScreen(
               actions: [
                 ForgotPasswordAction(((context, email) {
-                  // final uri = Uri(
-                  //   path: '/sign-in/forgot-password',
-                  //   queryParameters: <String, String?>{
-                  //     'email': email,
-                  //   },
-                  // );
                   context.goNamed('forgot-password',
                       queryParameters: {'email': email});
                 })),

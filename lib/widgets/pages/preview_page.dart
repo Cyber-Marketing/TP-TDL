@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:web_app/widgets/tutorial.dart';
+import 'package:web_app/widgets/tutorial_widgets.dart';
 
 class PreviewPage extends StatelessWidget {
   const PreviewPage({super.key});

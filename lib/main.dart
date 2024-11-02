@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
-// import 'widgets/pages/home_page.dart';
 import 'package:web_app/router.dart';
 
 main() {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:web_app/widgets/buttons/app_bar_button.dart';
-import 'tutorial.dart';
+import 'tutorial_widgets.dart';
 
 class AuthButtons extends StatelessWidget {
   const AuthButtons({
