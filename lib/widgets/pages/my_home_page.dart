@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.onSecondary,
+          backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
           toolbarHeight: 80,
           title: Row(
             children: [

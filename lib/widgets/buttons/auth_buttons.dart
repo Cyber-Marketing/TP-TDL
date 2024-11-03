@@ -21,9 +21,7 @@ class AuthButtons extends StatelessWidget {
             onPressed: () {
               !isSignedIn ? context.goNamed('sign-in') : signOut();
             },
-            child: !isSignedIn
-                ? const Text('Iniciar sesión')
-                : const Text('Cerrar sesión')),
+            text: !isSignedIn ? 'Iniciar sesión' : 'Cerrar sesión'),
         Visibility(
           visible: isSignedIn,
           child: AppBarButton(

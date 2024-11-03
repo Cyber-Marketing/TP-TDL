@@ -13,7 +13,12 @@ class AppBarButton extends StatelessWidget {
     return Row(
       children: [
         SizedBox(width: 25),
-        IconButton(tooltip: tooltip, onPressed: onPressed, icon: Icon(icon)),
+        IconButton(
+          tooltip: tooltip,
+          onPressed: onPressed,
+          icon: Icon(icon),
+          color: Theme.of(context).colorScheme.surfaceBright,
+        ),
       ],
     );
   }
