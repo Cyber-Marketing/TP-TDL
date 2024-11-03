@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
 import 'package:web_app/widgets/buttons/auth_buttons.dart';
 import 'package:web_app/widgets/buttons/app_bar_button.dart';
+import 'package:web_app/widgets/buttons/new_appointment_button.dart';
 import 'main_page.dart';
 import 'my_appointments_page.dart';
 
@@ -75,6 +76,10 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Theme.of(context).colorScheme.primaryContainer,
             child: page,
           ),
+        ),
+        floatingActionButton: Consumer<AppState>(
+          builder: (_, appState, __) => Visibility(
+              visible: appState.isSignedIn, child: NewAppointmentButton()),
         ),
       );
     });
