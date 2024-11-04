@@ -1,28 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart'
-    hide EmailAuthProvider, PhoneAuthProvider;
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
 import 'package:web_app/domain/appointment.dart';
-import 'package:web_app/settings/firebase_options.dart';
 
 class AppState extends ChangeNotifier {
   AppState() {
-    setUpFirebase();
+    init();
   }
 
   bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
   List<Appointment> appointments = [];
 
-  Future<void> setUpFirebase() async {
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
-
-    FirebaseUIAuth.configureProviders([
-      EmailAuthProvider(),
-    ]);
-
+  Future<void> init() async {
     FirebaseAuth.instance.userChanges().listen((User? user) {
       _isSignedIn = user != null;
       notifyListeners();
