@@ -2,6 +2,20 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:web_app/widgets/pages/my_home_page.dart';
+import 'package:web_app/widgets/pages/profile_page.dart';
+import 'package:web_app/widgets/pages/sign_in_page.dart';
+
+CustomTransitionPage buildPageWithoutAnimation({
+  required BuildContext context,
+  required GoRouterState state,
+  required Widget child,
+}) {
+  return CustomTransitionPage(
+      key: state.pageKey,
+      child: child,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+          child);
+}
 
 final router = GoRouter(
   routes: [
@@ -13,64 +27,27 @@ final router = GoRouter(
         GoRoute(
           name: 'sign-in',
           path: 'sign-in',
-          builder: (context, state) {
-            return SignInScreen(
-              actions: [
-                ForgotPasswordAction(((context, email) {
-                  context.goNamed('forgot-password',
-                      queryParameters: {'email': email});
-                })),
-                AuthStateChangeAction(((context, state) {
-                  final user = switch (state) {
-                    SignedIn state => state.user,
-                    UserCreated state => state.credential.user,
-                    _ => null
-                  };
-                  if (user == null) {
-                    return;
-                  }
-                  if (state is UserCreated) {
-                    user.updateDisplayName(user.email!.split('@')[0]);
-                  }
-                  if (!user.emailVerified) {
-                    user.sendEmailVerification();
-                    const snackBar = SnackBar(
-                        content: Text(
-                            'Please check your email to verify your email address'));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  }
-                  context.goNamed('home');
-                })),
-              ],
-            );
-          },
+          pageBuilder: (context, state) => buildPageWithoutAnimation(
+              context: context, state: state, child: SignInPage()),
           routes: [
             GoRoute(
               name: 'forgot-password',
               path: 'forgot-password',
-              builder: (context, state) {
-                final arguments = state.uri.queryParameters;
-                return ForgotPasswordScreen(
-                  email: arguments['email'],
-                  headerMaxExtent: 200,
-                );
-              },
+              pageBuilder: (context, state) => buildPageWithoutAnimation(
+                  context: context,
+                  state: state,
+                  child: ForgotPasswordScreen(
+                    email: state.uri.queryParameters['email'],
+                    headerMaxExtent: 200,
+                  )),
             ),
           ],
         ),
         GoRoute(
           name: 'profile',
           path: 'profile',
-          builder: (context, state) {
-            return ProfileScreen(
-              providers: const [],
-              actions: [
-                SignedOutAction((context) {
-                  context.goNamed('home');
-                }),
-              ],
-            );
-          },
+          pageBuilder: (context, state) => buildPageWithoutAnimation(
+              context: context, state: state, child: ProfilePage()),
         ),
       ],
     ),
