@@ -1,9 +1,8 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:web_app/widgets/pages/my_home_page.dart';
+import 'package:web_app/widgets/pages/auth_gate.dart';
 import 'package:web_app/widgets/pages/profile_page.dart';
-import 'package:web_app/widgets/pages/sign_in_page.dart';
 
 CustomTransitionPage buildPageWithoutAnimation({
   required BuildContext context,
@@ -22,26 +21,18 @@ final router = GoRouter(
     GoRoute(
       name: 'home',
       path: '/',
-      builder: (context, state) => MyHomePage(),
+      builder: (context, state) => AuthGate(),
       routes: [
         GoRoute(
-          name: 'sign-in',
-          path: 'sign-in',
+          name: 'forgot-password',
+          path: 'forgot-password',
           pageBuilder: (context, state) => buildPageWithoutAnimation(
-              context: context, state: state, child: SignInPage()),
-          routes: [
-            GoRoute(
-              name: 'forgot-password',
-              path: 'forgot-password',
-              pageBuilder: (context, state) => buildPageWithoutAnimation(
-                  context: context,
-                  state: state,
-                  child: ForgotPasswordScreen(
-                    email: state.uri.queryParameters['email'],
-                    headerMaxExtent: 200,
-                  )),
-            ),
-          ],
+              context: context,
+              state: state,
+              child: ForgotPasswordScreen(
+                email: state.uri.queryParameters['email'],
+                headerMaxExtent: 200,
+              )),
         ),
         GoRoute(
           name: 'profile',

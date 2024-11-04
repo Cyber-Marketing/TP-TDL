@@ -8,14 +8,14 @@ import 'package:web_app/settings/firebase_options.dart';
 
 class AppState extends ChangeNotifier {
   AppState() {
-    init();
+    setUpFirebase();
   }
 
   bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
   List<Appointment> appointments = [];
 
-  Future<void> init() async {
+  Future<void> setUpFirebase() async {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
 
@@ -23,7 +23,7 @@ class AppState extends ChangeNotifier {
       EmailAuthProvider(),
     ]);
 
-    FirebaseAuth.instance.userChanges().listen((user) {
+    FirebaseAuth.instance.userChanges().listen((User? user) {
       _isSignedIn = user != null;
       notifyListeners();
     });
