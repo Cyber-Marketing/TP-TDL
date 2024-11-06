@@ -23,4 +23,22 @@ class Appointment {
   );
   double servicePrice = Random().nextDouble() * 100;
   Duration serviceDuration = Duration(hours: 1, minutes: 30);
+  Map<String, bool> schedules = {};
+
+  void setSchedules() {
+    DateTime lastTurn = timeRange.start;
+    TimeOfDay timeLastTurn =
+        TimeOfDay(hour: lastTurn.hour, minute: lastTurn.minute);
+    TimeOfDay close =
+        TimeOfDay(hour: timeRange.end.hour, minute: timeRange.end.minute);
+    while (timeLastTurn.isBefore(close)) {
+      String schedule = "${lastTurn.hour}:${lastTurn.minute}hs - ";
+      lastTurn = lastTurn.add(serviceDuration);
+      timeLastTurn = TimeOfDay(hour: lastTurn.hour, minute: lastTurn.minute);
+      if (timeLastTurn.isBefore(close) || timeLastTurn == close) {
+        schedule = "$schedule${timeLastTurn.hour}:${timeLastTurn.minute}hs";
+        schedules[schedule] = true;
+      }
+    }
+  }
 }

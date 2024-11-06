@@ -17,28 +17,15 @@ class TakeTurnPage extends StatefulWidget {
 }
 
 class _TakeTurnPageState extends State<TakeTurnPage> {
-  var turn = DateTime.now();
-
-  void callDatePicker() async {
-    var selectedDate = await getDatePickerWidget();
-    setState(() {
-      turn = selectedDate!;
-    });
-  }
-
-  Future<DateTime?> getDatePickerWidget() {
-    return showDatePicker(
-        context: context,
-        initialDate: turn,
-        firstDate: widget.appointment.timeRange.start,
-        lastDate: widget.appointment.timeRange.end,
-        builder: (context, child) =>
-            Theme(data: ThemeData.dark(), child: child!));
-  }
+  DateTime dayTurn = DateTime.now();
+  String timeTurn = "";
 
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<AppState>();
+    widget.appointment.setSchedules();
+    var newSchedules = widget.appointment.schedules.keys.toList();
+    newSchedules.add("");
 
     return Scaffold(
       appBar: AppBar(
@@ -54,7 +41,6 @@ class _TakeTurnPageState extends State<TakeTurnPage> {
           tooltip: "Atrás",
           icon: Icons.west,
           onPressed: () {
-            appState.bookAppointment(widget.appointment);
             Navigator.pop(context);
           },
         ),
@@ -96,13 +82,57 @@ class _TakeTurnPageState extends State<TakeTurnPage> {
             ),
             Row(
               children: [
-                _formatText("Seleccione el dia:  ", FontWeight.bold),
+                _formatText("Seleccione el día:  ", FontWeight.bold),
                 IconButton(
-                    onPressed: callDatePicker,
-                    icon: const Icon(Icons.calendar_month))
+                  onPressed: () async {
+                    DateTime? newTimeTurn = await showDatePicker(
+                        context: context,
+                        initialDate: dayTurn,
+                        firstDate: widget.appointment.timeRange.start,
+                        lastDate: widget.appointment.timeRange.end,
+                        helpText: "Seleccione el día");
+                    if (newTimeTurn != null) {
+                      setState(() {
+                        dayTurn = newTimeTurn;
+                      });
+                    }
+                  },
+                  icon: const Icon(Icons.calendar_month),
+                ),
+                Text("${dayTurn.day} - ${dayTurn.month} - ${dayTurn.year}"),
               ],
             ),
-            Text("$turn"),
+            Row(
+              children: [
+                _formatText("Seleccione el horario:  ", FontWeight.bold),
+                DropdownButton<String>(
+                  value: timeTurn,
+                  icon: const Icon(Icons.timer),
+                  style: TextStyle(color: Colors.black),
+                  items: newSchedules
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                        value: value, child: Text(value));
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      timeTurn = newValue!;
+                    });
+                  },
+                ),
+              ],
+            ),
+            IconButton(
+              onPressed: () {
+                appState.bookAppointment(widget.appointment);
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.done_outline_sharp),
+              tooltip: "Confirmar",
+              alignment: Alignment.centerLeft,
+              color: Colors.black,
+              iconSize: 100,
+            ),
           ],
         ),
       ),
