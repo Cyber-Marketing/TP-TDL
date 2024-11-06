@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:web_app/app_state.dart';
+import 'package:web_app/widgets/pages/take_turn_page.dart';
 import '../../domain/appointment.dart';
 
 class AppointmentCard extends StatelessWidget {
@@ -13,7 +12,6 @@ class AppointmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<AppState>();
     return Container(
       color: Theme.of(context).colorScheme.inversePrimary,
       child: Center(
@@ -27,7 +25,11 @@ class AppointmentCard extends StatelessWidget {
           IconButton(
               iconSize: 30,
               onPressed: () {
-                appState.bookAppointment(appointment);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            TakeTurnPage(appointment: appointment)));
               },
               icon: const Icon(Icons.book))
         ],

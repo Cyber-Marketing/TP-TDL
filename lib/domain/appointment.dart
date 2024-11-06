@@ -9,17 +9,18 @@ class Appointment {
   var serviceDescription = RandomNames(Zone.spain).surname();
   DateTimeRange timeRange = DateTimeRange(
     start: DateTime(
-      2024,
-      1,
-      30,
-      10,
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+      8,
     ),
     end: DateTime(
-      2024,
-      1,
-      30,
-      10,
+      DateTime.now().year,
+      DateTime.now().month + 1,
+      DateTime.now().day,
+      20,
     ),
   );
   double servicePrice = Random().nextDouble() * 100;
+  Duration serviceDuration = Duration(hours: 1, minutes: 30);
 }
