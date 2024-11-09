@@ -17,14 +17,14 @@ class TakeTurnPage extends StatefulWidget {
 }
 
 class _TakeTurnPageState extends State<TakeTurnPage> {
-  DateTime dayTurn = DateTime.now();
-  String timeTurn = "";
+  DateTime serviceDay = DateTime.now();
+  String serviceTime = "";
 
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<AppState>();
-    widget.appointment.setSchedules();
-    var newSchedules = widget.appointment.schedules.keys.toList();
+    var completeSchedules = widget.appointment.createSchedules();
+    var newSchedules = completeSchedules.keys.toList();
     newSchedules.add("");
 
     return Scaffold(
@@ -85,28 +85,29 @@ class _TakeTurnPageState extends State<TakeTurnPage> {
                 _formatText("Seleccione el día:  ", FontWeight.bold),
                 IconButton(
                   onPressed: () async {
-                    DateTime? newTimeTurn = await showDatePicker(
+                    DateTime? newserviceTime = await showDatePicker(
                         context: context,
-                        initialDate: dayTurn,
+                        initialDate: serviceDay,
                         firstDate: widget.appointment.timeRange.start,
                         lastDate: widget.appointment.timeRange.end,
                         helpText: "Seleccione el día");
-                    if (newTimeTurn != null) {
+                    if (newserviceTime != null) {
                       setState(() {
-                        dayTurn = newTimeTurn;
+                        serviceDay = newserviceTime;
                       });
                     }
                   },
                   icon: const Icon(Icons.calendar_month),
                 ),
-                Text("${dayTurn.day} - ${dayTurn.month} - ${dayTurn.year}"),
+                Text(
+                    "${serviceDay.day} - ${serviceDay.month} - ${serviceDay.year}"),
               ],
             ),
             Row(
               children: [
                 _formatText("Seleccione el horario:  ", FontWeight.bold),
                 DropdownButton<String>(
-                  value: timeTurn,
+                  value: serviceTime,
                   icon: const Icon(Icons.timer),
                   style: TextStyle(color: Colors.black),
                   items: newSchedules
@@ -116,7 +117,7 @@ class _TakeTurnPageState extends State<TakeTurnPage> {
                   }).toList(),
                   onChanged: (String? newValue) {
                     setState(() {
-                      timeTurn = newValue!;
+                      serviceTime = newValue!;
                     });
                   },
                 ),
@@ -124,8 +125,23 @@ class _TakeTurnPageState extends State<TakeTurnPage> {
             ),
             IconButton(
               onPressed: () {
-                appState.bookAppointment(widget.appointment);
-                Navigator.pop(context);
+                late String menssage;
+                if (serviceTime != "") {
+                  if (_authorization(
+                      appState.appointments, completeSchedules[serviceTime]!)) {
+                    widget.appointment
+                        .setServiceTime(completeSchedules[serviceTime]!);
+                    appState.bookAppointment(widget.appointment);
+                    menssage = 'Turno reservado';
+                    Navigator.pop(context);
+                  } else {
+                    menssage = 'Se superponen horarios';
+                  }
+                } else {
+                  menssage = 'Lo siento, faltan realizar selecciones';
+                }
+                var snackBar = SnackBar(content: Text(menssage));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
               icon: Icon(Icons.done_outline_sharp),
               tooltip: "Confirmar",
@@ -142,4 +158,22 @@ class _TakeTurnPageState extends State<TakeTurnPage> {
 
   Text _formatText(String text, FontWeight format) => Text(text,
       style: TextStyle(color: Colors.black, fontSize: 25, fontWeight: format));
+
+  bool _authorization(
+      List<Appointment> appointments, (TimeOfDay, TimeOfDay) serviceTime) {
+    var (startServiceTime, endServiceTime) = serviceTime;
+    for (var appointment in appointments) {
+      var (startAppointment, endAppointment) = appointment.serviceTime;
+      if (startServiceTime.isAtSameTimeAs(endAppointment) ||
+          startServiceTime.isAfter(endAppointment)) {
+        continue;
+      } else if (endServiceTime.isAtSameTimeAs(startAppointment) ||
+          endServiceTime.isBefore(startAppointment)) {
+        continue;
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
 }

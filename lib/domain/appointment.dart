@@ -23,22 +23,30 @@ class Appointment {
   );
   double servicePrice = Random().nextDouble() * 100;
   Duration serviceDuration = Duration(hours: 1, minutes: 30);
-  Map<String, bool> schedules = {};
+  late (TimeOfDay, TimeOfDay) serviceTime;
 
-  void setSchedules() {
-    DateTime lastTurn = timeRange.start;
-    TimeOfDay timeLastTurn =
-        TimeOfDay(hour: lastTurn.hour, minute: lastTurn.minute);
+  Map<String, (TimeOfDay, TimeOfDay)> createSchedules() {
+    Map<String, (TimeOfDay, TimeOfDay)> schedules = {};
+    DateTime service = timeRange.start;
+    TimeOfDay serviceTime =
+        TimeOfDay(hour: timeRange.start.hour, minute: timeRange.start.minute);
     TimeOfDay close =
         TimeOfDay(hour: timeRange.end.hour, minute: timeRange.end.minute);
-    while (timeLastTurn.isBefore(close)) {
-      String schedule = "${lastTurn.hour}:${lastTurn.minute}hs - ";
-      lastTurn = lastTurn.add(serviceDuration);
-      timeLastTurn = TimeOfDay(hour: lastTurn.hour, minute: lastTurn.minute);
-      if (timeLastTurn.isBefore(close) || timeLastTurn == close) {
-        schedule = "$schedule${timeLastTurn.hour}:${timeLastTurn.minute}hs";
-        schedules[schedule] = true;
+    while (serviceTime.isBefore(close)) {
+      String schedule = "${service.hour}:${service.minute}hs - ";
+      service = service.add(serviceDuration);
+      TimeOfDay start =
+          TimeOfDay(hour: serviceTime.hour, minute: serviceTime.minute);
+      serviceTime = TimeOfDay(hour: service.hour, minute: service.minute);
+      if (serviceTime.isBefore(close) || serviceTime == close) {
+        schedule = "$schedule${serviceTime.hour}:${serviceTime.minute}hs";
+        schedules[schedule] = (start, serviceTime);
       }
     }
+    return schedules;
+  }
+
+  void setServiceTime((TimeOfDay, TimeOfDay) service) {
+    serviceTime = service;
   }
 }
