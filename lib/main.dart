@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User? user = context.watch<AppState>().currentUser;
+
     return MaterialApp(
       title: 'App Turnos',
       debugShowCheckedModeBanner: false,
@@ -37,7 +40,9 @@ class App extends StatelessWidget {
         'welcome_screen': (context) => WelcomeScreen(),
         'registration_screen': (context) => RegistrationScreen(),
         'login_screen': (context) => LoginScreen(),
-        'profile_screen': (context) => ProfileScreen(),
+        'profile_screen': (context) => ProfileScreen(
+              user: user,
+            ),
         'home_screen': (context) => MyHomePage()
       },
       // routerConfig: router,
