@@ -19,7 +19,9 @@ class AuthButtons extends StatelessWidget {
       children: [
         StyledButton(
             onPressed: () {
-              !isSignedIn ? context.goNamed('sign-in') : signOut();
+              !isSignedIn
+                  ? Navigator.pushNamed(context, 'login_screen')
+                  : signOut();
             },
             text: !isSignedIn ? 'Iniciar sesión' : 'Cerrar sesión'),
         Visibility(
