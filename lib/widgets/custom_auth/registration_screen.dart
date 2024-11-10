@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:web_app/widgets/buttons/styled_button.dart';
 
-//code for designing the UI of our text field where the user writes his email id or password
-
-const kTextFieldDecoration = InputDecoration(
+const customFieldDecoration = InputDecoration(
   hintText: 'Enter a value',
   hintStyle: TextStyle(color: Colors.grey),
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -28,7 +25,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final _auth = FirebaseAuth.instance;
+  final formKey = GlobalKey<FormState>();
   late String email;
   late String password;
 
@@ -39,58 +36,81 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return LoaderOverlay(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
+        body: Form(
+          key: formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    email = value;
-                    //Do something with the user input.
-                  },
-                  decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Enter your email')),
+              TextFormField(
+                textAlign: TextAlign.center,
+                decoration: customFieldDecoration.copyWith(
+                    hintText: 'Ingresá tu email'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Email no puede ser vacío";
+                  }
+                  if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                      .hasMatch(value)) {
+                    return ("Please enter a valid email");
+                  } else {
+                    return null;
+                  }
+                },
+                onChanged: (value) => email = value,
+                keyboardType: TextInputType.emailAddress,
+              ),
               SizedBox(
                 height: 8.0,
               ),
-              TextField(
-                  obscureText: true,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    password = value;
-                    //Do something with the user input.
-                  },
-                  decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Enter your Password')),
+              TextFormField(
+                obscureText: true,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  password = value;
+                },
+                decoration: customFieldDecoration.copyWith(
+                    hintText: 'Ingresá tu contraseña'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Contraseña no puede ser vacía";
+                  }
+                  return null;
+                },
+              ),
               SizedBox(
                 height: 24.0,
               ),
-              StyledButton(
-                text: 'Register',
+              ElevatedButton(
                 onPressed: () async {
+                  if (!formKey.currentState!.validate()) return;
                   loaderOverlay.show();
                   try {
-                    await _auth.createUserWithEmailAndPassword(
+                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
                       email: email,
                       password: password,
                     );
                   } on FirebaseAuthException catch (e) {
+                    String errorMessage = 'Default error';
                     if (e.code == 'weak-password') {
-                      print('The password provided is too weak.');
+                      errorMessage = 'The password provided is too weak.';
                     } else if (e.code == 'email-already-in-use') {
-                      print('The account already exists for that email.');
+                      errorMessage =
+                          'The account already exists for that email.';
                     }
+                    loaderOverlay.hide();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(errorMessage)),
+                    );
+                    return;
                   } catch (e) {
                     print(e);
                   }
                   loaderOverlay.hide();
                   Navigator.pushNamed(context, 'home_screen');
                 },
-              )
+                child: const Text('Registrarse'),
+              ),
             ],
           ),
         ),
