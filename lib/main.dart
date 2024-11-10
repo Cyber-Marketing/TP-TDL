@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
 import 'package:web_app/settings/firebase_options.dart';
 import 'package:web_app/widgets/custom_auth/login_screen.dart';
+import 'package:web_app/widgets/custom_auth/profile_screen.dart';
 import 'package:web_app/widgets/custom_auth/registration_screen.dart';
 import 'package:web_app/widgets/custom_auth/welcome_screen.dart';
 import 'package:web_app/widgets/pages/my_home_page.dart';
@@ -12,7 +12,6 @@ import 'package:web_app/widgets/pages/my_home_page.dart';
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
 
   runApp(ChangeNotifierProvider(
     create: (context) => AppState(),
@@ -38,6 +37,7 @@ class App extends StatelessWidget {
         'welcome_screen': (context) => WelcomeScreen(),
         'registration_screen': (context) => RegistrationScreen(),
         'login_screen': (context) => LoginScreen(),
+        'profile_screen': (context) => ProfileScreen(),
         'home_screen': (context) => MyHomePage()
       },
       // routerConfig: router,

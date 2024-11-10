@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
-import 'package:web_app/widgets/pages/custom_sign_in_screen.dart';
+import 'package:web_app/widgets/custom_auth/login_screen.dart';
 import 'package:web_app/widgets/pages/my_home_page.dart';
 
 class AuthGate extends StatelessWidget {
@@ -11,7 +11,7 @@ class AuthGate extends StatelessWidget {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        return snapshot.hasData ? MyHomePage() : CustomSignInScreen();
+        return snapshot.hasData ? MyHomePage() : LoginScreen();
       },
     );
   }

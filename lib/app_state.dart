@@ -7,12 +7,14 @@ class AppState extends ChangeNotifier {
     init();
   }
 
+  User? currentUser;
   bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
   List<Appointment> appointments = [];
 
   Future<void> init() async {
     FirebaseAuth.instance.userChanges().listen((User? user) {
+      currentUser = user;
       _isSignedIn = user != null;
       notifyListeners();
     });

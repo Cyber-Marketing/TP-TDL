@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:web_app/widgets/buttons/app_bar_button.dart';
 import 'styled_button.dart';
 
@@ -29,7 +28,7 @@ class AuthButtons extends StatelessWidget {
           child: AppBarButton(
               tooltip: "Perfil",
               icon: Icons.account_circle,
-              onPressed: () => context.goNamed('profile')),
+              onPressed: () => Navigator.pushNamed(context, 'profile_screen')),
         )
       ],
     );
