@@ -1,9 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:web_app/widgets/buttons/styled_button.dart';
-
-//code for designing the UI of our text field where the user writes his email id or password
 
 const kTextFieldDecoration = InputDecoration(
   hintText: 'Enter a value',
@@ -22,12 +20,12 @@ const kTextFieldDecoration = InputDecoration(
   ),
 );
 
-class RegistrationScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   @override
-  State<RegistrationScreen> createState() => _RegistrationScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuth.instance;
   late String email;
   late String password;
@@ -39,8 +37,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return LoaderOverlay(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
+        body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,7 +50,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     //Do something with the user input.
                   },
                   decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Enter your email')),
+                      hintText: 'Ingresá tu email')),
               SizedBox(
                 height: 8.0,
               ),
@@ -65,24 +62,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     //Do something with the user input.
                   },
                   decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Enter your Password')),
+                      hintText: 'Ingresá tu contraseña')),
               SizedBox(
                 height: 24.0,
               ),
               StyledButton(
-                text: 'Register',
+                text: 'Iniciar sesión',
                 onPressed: () async {
                   loaderOverlay.show();
                   try {
-                    await _auth.createUserWithEmailAndPassword(
-                      email: email,
-                      password: password,
-                    );
+                    await _auth.signInWithEmailAndPassword(
+                        email: email, password: password);
                   } on FirebaseAuthException catch (e) {
-                    if (e.code == 'weak-password') {
-                      print('The password provided is too weak.');
-                    } else if (e.code == 'email-already-in-use') {
-                      print('The account already exists for that email.');
+                    if (e.code == 'user-not-found') {
+                      print('No user found for that email.');
+                    } else if (e.code == 'wrong-password') {
+                      print('Wrong password provided for that user.');
                     }
                   } catch (e) {
                     print(e);

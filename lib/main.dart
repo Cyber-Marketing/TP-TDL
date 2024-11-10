@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
 import 'package:web_app/settings/firebase_options.dart';
+import 'package:web_app/widgets/custom_auth/login_screen.dart';
 import 'package:web_app/widgets/custom_auth/registration_screen.dart';
 import 'package:web_app/widgets/custom_auth/welcome_screen.dart';
 import 'package:web_app/widgets/pages/my_home_page.dart';
@@ -36,7 +37,7 @@ class App extends StatelessWidget {
       routes: {
         'welcome_screen': (context) => WelcomeScreen(),
         'registration_screen': (context) => RegistrationScreen(),
-        // 'login_screen': (context) => LoginScreen(),
+        'login_screen': (context) => LoginScreen(),
         'home_screen': (context) => MyHomePage()
       },
       // routerConfig: router,
