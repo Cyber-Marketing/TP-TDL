@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Consumer<AppState>(
                 builder: (_, appState, __) => Visibility(
-                  visible: appState.isSignedIn,
+                  visible: appState.isSignedIn && appState.userIsCustomer(),
                   child: AppBarButton(
                     tooltip: "Mis turnos",
                     icon: Icons.event,
@@ -79,7 +79,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         floatingActionButton: Consumer<AppState>(
           builder: (_, appState, __) => Visibility(
-              visible: appState.isSignedIn, child: NewAppointmentButton()),
+              visible: appState.isSignedIn && !appState.userIsCustomer(),
+              child: NewAppointmentButton()),
         ),
       );
     });

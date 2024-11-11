@@ -12,4 +12,6 @@ class AppUser {
       role: userMap['role'],
     );
   }
+
+  bool isCustomer() => role == 'Cliente';
 }

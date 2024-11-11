@@ -33,4 +33,7 @@ class AppState extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  bool userIsCustomer() =>
+      _currentUser != null ? _currentUser!.isCustomer() : false;
 }

@@ -116,7 +116,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       print(e);
                     }
                     loaderOverlay.hide();
-                    Navigator.pushNamed(context, 'home_screen');
+                    Navigator.pushNamed(context, '');
                   },
                 ),
               ],
