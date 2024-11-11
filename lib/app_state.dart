@@ -9,14 +9,15 @@ class AppState extends ChangeNotifier {
     init();
   }
 
-  AppUser? currentUser;
+  AppUser? _currentUser;
+  AppUser? get currentUser => _currentUser;
   bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
   List<MadeAppointment> appointments = [];
 
   Future<void> init() async {
     FirebaseAuth.instance.userChanges().listen((User? user) async {
-      currentUser = await FirebaseFirestore.instance
+      _currentUser = await FirebaseFirestore.instance
           .collection('users')
           .where('uid', isEqualTo: user?.uid)
           .get()

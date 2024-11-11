@@ -7,8 +7,7 @@ import 'package:web_app/settings/firebase_options.dart';
 import 'package:web_app/widgets/custom_auth/login_screen.dart';
 import 'package:web_app/widgets/custom_auth/profile_screen.dart';
 import 'package:web_app/widgets/custom_auth/registration_screen.dart';
-import 'package:web_app/widgets/custom_auth/welcome_screen.dart';
-import 'package:web_app/widgets/pages/my_home_page.dart';
+import 'package:web_app/widgets/pages/auth_gate.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,17 +34,15 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 34, 255, 181)),
       ),
-      initialRoute: 'welcome_screen',
+      initialRoute: '',
       routes: {
-        'welcome_screen': (context) => WelcomeScreen(),
+        '': (context) => AuthGate(),
         'registration_screen': (context) => RegistrationScreen(),
         'login_screen': (context) => LoginScreen(),
         'profile_screen': (context) => ProfileScreen(
               user: user!,
-            ),
-        'home_screen': (context) => MyHomePage()
+            )
       },
-      // routerConfig: router,
     );
   }
 }

@@ -47,7 +47,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     email = value;
-                    //Do something with the user input.
                   },
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Ingresá tu email')),
@@ -59,7 +58,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     password = value;
-                    //Do something with the user input.
                   },
                   decoration: kTextFieldDecoration.copyWith(
                       hintText: 'Ingresá tu contraseña')),
@@ -82,9 +80,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   } catch (e) {
                     print(e);
                   }
-
                   loaderOverlay.hide();
-                  Navigator.pushNamed(context, 'home_screen');
+                  Navigator.pushNamed(context, '');
                 },
               )
             ],
