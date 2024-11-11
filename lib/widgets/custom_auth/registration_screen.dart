@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:web_app/widgets/custom_auth/custom_email_field.dart';
+import 'package:web_app/widgets/custom_auth/custom_password_field.dart';
 
 const customFieldDecoration = InputDecoration(
   hintText: 'Enter a value',
@@ -45,41 +47,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TextFormField(
-                textAlign: TextAlign.center,
-                decoration: customFieldDecoration.copyWith(
-                    hintText: 'Ingresá tu email'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Email no puede ser vacío";
-                  }
-                  if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                      .hasMatch(value)) {
-                    return ("Please enter a valid email");
-                  } else {
-                    return null;
-                  }
-                },
+              CustomEmailField(
                 onChanged: (value) => email = value,
-                keyboardType: TextInputType.emailAddress,
               ),
               SizedBox(
                 height: 8.0,
               ),
-              TextFormField(
-                obscureText: true,
-                textAlign: TextAlign.center,
-                onChanged: (value) {
-                  password = value;
-                },
-                decoration: customFieldDecoration.copyWith(
-                    hintText: 'Ingresá tu contraseña'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Contraseña no puede ser vacía";
-                  }
-                  return null;
-                },
+              CustomPasswordField(
+                onChanged: (value) => password = value,
               ),
               SizedBox(
                 height: 8.0,
@@ -111,6 +86,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 height: 8.0,
               ),
               ElevatedButton(
+                child: Text('Registrarse'),
                 onPressed: () async {
                   if (!formKey.currentState!.validate()) return;
                   loaderOverlay.show();
@@ -141,7 +117,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   loaderOverlay.hide();
                   Navigator.pushNamed(context, 'home_screen');
                 },
-                child: const Text('Registrarse'),
               ),
             ],
           ),

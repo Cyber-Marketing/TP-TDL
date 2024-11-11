@@ -1,24 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:web_app/widgets/buttons/styled_button.dart';
-
-const kTextFieldDecoration = InputDecoration(
-  hintText: 'Enter a value',
-  hintStyle: TextStyle(color: Colors.grey),
-  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-  border: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-  ),
-  enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.lightBlueAccent, width: 1.0),
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-  ),
-  focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-  ),
-);
+import 'package:web_app/widgets/custom_auth/custom_email_field.dart';
+import 'package:web_app/widgets/custom_auth/custom_password_field.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -26,6 +10,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final formKey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
   late String email;
   late String password;
@@ -37,36 +22,30 @@ class _LoginScreenState extends State<LoginScreen> {
     return LoaderOverlay(
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        body: Center(
+        body: Form(
+          key: formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    email = value;
-                  },
-                  decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Ingresá tu email')),
+              CustomEmailField(onChanged: (value) {
+                email = value;
+              }),
               SizedBox(
                 height: 8.0,
               ),
-              TextField(
-                  obscureText: true,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    password = value;
-                  },
-                  decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Ingresá tu contraseña')),
+              CustomPasswordField(
+                onChanged: (value) {
+                  password = value;
+                },
+              ),
               SizedBox(
                 height: 24.0,
               ),
-              StyledButton(
-                text: 'Iniciar sesión',
+              ElevatedButton(
+                child: Text('Iniciar sesión'),
                 onPressed: () async {
+                  if (!formKey.currentState!.validate()) return;
                   loaderOverlay.show();
                   try {
                     await _auth.signInWithEmailAndPassword(
