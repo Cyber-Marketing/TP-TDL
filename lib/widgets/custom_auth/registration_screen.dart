@@ -43,82 +43,84 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         body: Form(
           key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CustomEmailField(
-                onChanged: (value) => email = value,
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              CustomPasswordField(
-                onChanged: (value) => password = value,
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Elegí el tipo de usuario:'),
-                  SizedBox(width: 15),
-                  DropdownButton(
-                    value: selectedUserRole,
-                    items: options.map((String dropDownStringItem) {
-                      return DropdownMenuItem(
-                        value: dropDownStringItem,
-                        child: Text(
-                          dropDownStringItem,
-                        ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CustomEmailField(
+                  onChanged: (value) => email = value,
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                CustomPasswordField(
+                  onChanged: (value) => password = value,
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Elegí el tipo de usuario:'),
+                    SizedBox(width: 15),
+                    DropdownButton(
+                      value: selectedUserRole,
+                      items: options.map((String dropDownStringItem) {
+                        return DropdownMenuItem(
+                          value: dropDownStringItem,
+                          child: Text(
+                            dropDownStringItem,
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (newSelectedRole) {
+                        setState(() {
+                          selectedUserRole = newSelectedRole!;
+                        });
+                      },
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                ElevatedButton(
+                  child: Text('Registrarse'),
+                  onPressed: () async {
+                    if (!formKey.currentState!.validate()) return;
+                    loaderOverlay.show();
+                    try {
+                      await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                            email: email,
+                            password: password,
+                          )
+                          .then((value) =>
+                              saveUserRole(value.user, selectedUserRole));
+                    } on FirebaseAuthException catch (e) {
+                      String errorMessage = 'Default error';
+                      if (e.code == 'weak-password') {
+                        errorMessage = 'The password provided is too weak.';
+                      } else if (e.code == 'email-already-in-use') {
+                        errorMessage =
+                            'The account already exists for that email.';
+                      }
+                      loaderOverlay.hide();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(errorMessage)),
                       );
-                    }).toList(),
-                    onChanged: (newSelectedRole) {
-                      setState(() {
-                        selectedUserRole = newSelectedRole!;
-                      });
-                    },
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              ElevatedButton(
-                child: Text('Registrarse'),
-                onPressed: () async {
-                  if (!formKey.currentState!.validate()) return;
-                  loaderOverlay.show();
-                  try {
-                    await FirebaseAuth.instance
-                        .createUserWithEmailAndPassword(
-                          email: email,
-                          password: password,
-                        )
-                        .then((value) =>
-                            saveUserRole(value.user, selectedUserRole));
-                  } on FirebaseAuthException catch (e) {
-                    String errorMessage = 'Default error';
-                    if (e.code == 'weak-password') {
-                      errorMessage = 'The password provided is too weak.';
-                    } else if (e.code == 'email-already-in-use') {
-                      errorMessage =
-                          'The account already exists for that email.';
+                      return;
+                    } catch (e) {
+                      print(e);
                     }
                     loaderOverlay.hide();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(errorMessage)),
-                    );
-                    return;
-                  } catch (e) {
-                    print(e);
-                  }
-                  loaderOverlay.hide();
-                  Navigator.pushNamed(context, 'home_screen');
-                },
-              ),
-            ],
+                    Navigator.pushNamed(context, 'home_screen');
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

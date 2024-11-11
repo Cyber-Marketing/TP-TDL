@@ -8,18 +8,22 @@ class CustomPasswordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-        validator: (value) {
-          if (value!.isEmpty) {
-            return "Contraseña no puede ser vacía";
-          }
-          return null;
-        },
-        obscureText: true,
-        textAlign: TextAlign.center,
-        onChanged: onChanged,
-        decoration: CustomInputDecoration(
-          hintText: 'Ingresá tu contraseña',
-        ));
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return SizedBox(
+      width: 0.25 * screenWidth,
+      child: TextFormField(
+          validator: (value) {
+            if (value!.isEmpty) {
+              return "Contraseña no puede ser vacía";
+            }
+            return null;
+          },
+          obscureText: true,
+          textAlign: TextAlign.left,
+          onChanged: onChanged,
+          decoration: CustomInputDecoration(
+              hintText: 'Ingresá tu contraseña', context: context)),
+    );
   }
 }

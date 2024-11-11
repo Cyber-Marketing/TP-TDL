@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:web_app/widgets/custom_auth/custom_input_decoration.dart';
 
 class CustomEmailField extends StatelessWidget {
@@ -9,7 +8,7 @@ class CustomEmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return SizedBox(
       width: 0.25 * screenWidth,
@@ -30,6 +29,7 @@ class CustomEmailField extends StatelessWidget {
           onChanged: onChanged,
           decoration: CustomInputDecoration(
             hintText: 'Ingresá tu email',
+            context: context,
           )),
     );
   }
