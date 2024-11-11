@@ -13,10 +13,10 @@ class TakeTurnPage extends StatefulWidget {
   final Appointment appointment;
 
   @override
-  State<TakeTurnPage> createState() => _TakeTurnPageState();
+  State<TakeTurnPage> createState() => TakeTurnPageState();
 }
 
-class _TakeTurnPageState extends State<TakeTurnPage> {
+class TakeTurnPageState extends State<TakeTurnPage> {
   DateTime serviceDay = DateTime.now();
   String serviceTime = "";
 
@@ -26,6 +26,101 @@ class _TakeTurnPageState extends State<TakeTurnPage> {
     var completeSchedules = widget.appointment.createSchedules();
     var newSchedules = completeSchedules.keys.toList();
     newSchedules.add("");
+
+    Row newServiceDayButton() {
+      return Row(
+        children: [
+          _formatText("Seleccione el día:  ", FontWeight.bold),
+          IconButton(
+            onPressed: () async {
+              DateTime? newserviceTime = await showDatePicker(
+                  context: context,
+                  initialDate: serviceDay,
+                  firstDate: widget.appointment.timeRange.start,
+                  lastDate: widget.appointment.timeRange.end,
+                  helpText: "Seleccione el día");
+              if (newserviceTime != null) {
+                setState(() {
+                  serviceDay = newserviceTime;
+                });
+              }
+            },
+            icon: const Icon(Icons.calendar_month),
+          ),
+          Text("${serviceDay.day} - ${serviceDay.month} - ${serviceDay.year}"),
+        ],
+      );
+    }
+
+    Row newServiceTimeButton() {
+      return Row(
+        children: [
+          _formatText("Seleccione el horario:  ", FontWeight.bold),
+          DropdownButton<String>(
+            value: serviceTime,
+            icon: const Icon(Icons.timer),
+            style: TextStyle(color: Colors.black),
+            items: newSchedules.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(value: value, child: Text(value));
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                serviceTime = newValue!;
+              });
+            },
+          ),
+        ],
+      );
+    }
+
+    IconButton madeAppointment() {
+      return IconButton(
+        onPressed: () {
+          late String menssage;
+          if (serviceTime != "") {
+            if (_authorization(
+                appState.appointments, completeSchedules[serviceTime]!)) {
+              widget.appointment
+                  .setServiceTime(completeSchedules[serviceTime]!);
+              appState.bookAppointment(widget.appointment);
+              menssage = 'Turno reservado';
+              Navigator.pop(context);
+            } else {
+              menssage = 'Se superponen horarios';
+            }
+          } else {
+            menssage = 'Lo siento, faltan realizar selecciones';
+          }
+          var snackBar = SnackBar(content: Text(menssage));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        },
+        icon: Icon(Icons.done_outline_sharp),
+        tooltip: "Confirmar",
+        alignment: Alignment.centerLeft,
+        color: Colors.black,
+        iconSize: 100,
+      );
+    }
+
+    Row description() {
+      return Row(
+        children: [
+          _formatText("Descripción:  ", FontWeight.bold),
+          _formatText(widget.appointment.serviceDescription, FontWeight.normal),
+          _formatText("Precio:  ", FontWeight.bold),
+          _formatText("\$${widget.appointment.servicePrice.toStringAsFixed(2)}",
+              FontWeight.normal),
+          _formatText("Horario comercial:  ", FontWeight.bold),
+          _formatText(
+              "${widget.appointment.timeRange.start.hour}:${widget.appointment.timeRange.start.minute}hs - ${widget.appointment.timeRange.end.hour}:${widget.appointment.timeRange.end.minute}hs",
+              FontWeight.normal),
+          _formatText("Duracion:  ", FontWeight.bold),
+          _formatText(
+              "${widget.appointment.serviceDuration.toString().substring(0, widget.appointment.serviceDuration.toString().indexOf("."))}hs",
+              FontWeight.normal)
+        ],
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -49,106 +144,10 @@ class _TakeTurnPageState extends State<TakeTurnPage> {
         alignment: Alignment.centerLeft,
         child: Column(
           children: [
-            Row(
-              children: [
-                _formatText("Descripción:  ", FontWeight.bold),
-                _formatText(
-                    widget.appointment.serviceDescription, FontWeight.normal),
-              ],
-            ),
-            Row(
-              children: [
-                _formatText("Precio:  ", FontWeight.bold),
-                _formatText(
-                    "\$${widget.appointment.servicePrice.toStringAsFixed(2)}",
-                    FontWeight.normal)
-              ],
-            ),
-            Row(
-              children: [
-                _formatText("Horario comercial:  ", FontWeight.bold),
-                _formatText(
-                    "${widget.appointment.timeRange.start.hour}:${widget.appointment.timeRange.start.minute}hs - ${widget.appointment.timeRange.end.hour}:${widget.appointment.timeRange.end.minute}hs",
-                    FontWeight.normal)
-              ],
-            ),
-            Row(
-              children: [
-                _formatText("Duracion:  ", FontWeight.bold),
-                _formatText(
-                    "${widget.appointment.serviceDuration.toString().substring(0, widget.appointment.serviceDuration.toString().indexOf("."))}hs",
-                    FontWeight.normal)
-              ],
-            ),
-            Row(
-              children: [
-                _formatText("Seleccione el día:  ", FontWeight.bold),
-                IconButton(
-                  onPressed: () async {
-                    DateTime? newserviceTime = await showDatePicker(
-                        context: context,
-                        initialDate: serviceDay,
-                        firstDate: widget.appointment.timeRange.start,
-                        lastDate: widget.appointment.timeRange.end,
-                        helpText: "Seleccione el día");
-                    if (newserviceTime != null) {
-                      setState(() {
-                        serviceDay = newserviceTime;
-                      });
-                    }
-                  },
-                  icon: const Icon(Icons.calendar_month),
-                ),
-                Text(
-                    "${serviceDay.day} - ${serviceDay.month} - ${serviceDay.year}"),
-              ],
-            ),
-            Row(
-              children: [
-                _formatText("Seleccione el horario:  ", FontWeight.bold),
-                DropdownButton<String>(
-                  value: serviceTime,
-                  icon: const Icon(Icons.timer),
-                  style: TextStyle(color: Colors.black),
-                  items: newSchedules
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                        value: value, child: Text(value));
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      serviceTime = newValue!;
-                    });
-                  },
-                ),
-              ],
-            ),
-            IconButton(
-              onPressed: () {
-                late String menssage;
-                if (serviceTime != "") {
-                  if (_authorization(
-                      appState.appointments, completeSchedules[serviceTime]!)) {
-                    widget.appointment
-                        .setServiceTime(completeSchedules[serviceTime]!);
-                    appState.bookAppointment(widget.appointment);
-                    menssage = 'Turno reservado';
-                    Navigator.pop(context);
-                  } else {
-                    menssage = 'Se superponen horarios';
-                  }
-                } else {
-                  menssage = 'Lo siento, faltan realizar selecciones';
-                }
-                var snackBar = SnackBar(content: Text(menssage));
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              },
-              icon: Icon(Icons.done_outline_sharp),
-              tooltip: "Confirmar",
-              alignment: Alignment.centerLeft,
-              color: Colors.black,
-              iconSize: 100,
-            ),
+            description(),
+            newServiceDayButton(),
+            newServiceTimeButton(),
+            madeAppointment(),
           ],
         ),
       ),
