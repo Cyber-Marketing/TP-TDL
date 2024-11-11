@@ -82,6 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   } catch (e) {
                     print(e);
                   }
+
                   loaderOverlay.hide();
                   Navigator.pushNamed(context, 'home_screen');
                 },

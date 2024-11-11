@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:web_app/domain/app_user.dart';
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({
@@ -7,7 +7,7 @@ class ProfileScreen extends StatelessWidget {
     required this.user,
   });
 
-  final User? user;
+  final AppUser user;
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,8 @@ class ProfileScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(user?.displayName ?? "NO HAY NOMBRE"),
-          Text(user?.email ?? "NO HAY EMAIL")
+          Text(user.email),
+          Text(user.role),
         ],
       )),
     );

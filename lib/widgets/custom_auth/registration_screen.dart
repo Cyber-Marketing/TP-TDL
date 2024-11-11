@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -28,6 +29,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final formKey = GlobalKey<FormState>();
   late String email;
   late String password;
+  List<String> options = ['Cliente', 'Proveedor'];
+  String selectedUserRole = 'Cliente';
 
   @override
   Widget build(BuildContext context) {
@@ -79,17 +82,46 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 },
               ),
               SizedBox(
-                height: 24.0,
+                height: 8.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Elegí el tipo de usuario:'),
+                  SizedBox(width: 15),
+                  DropdownButton(
+                    value: selectedUserRole,
+                    items: options.map((String dropDownStringItem) {
+                      return DropdownMenuItem(
+                        value: dropDownStringItem,
+                        child: Text(
+                          dropDownStringItem,
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (newSelectedRole) {
+                      setState(() {
+                        selectedUserRole = newSelectedRole!;
+                      });
+                    },
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 8.0,
               ),
               ElevatedButton(
                 onPressed: () async {
                   if (!formKey.currentState!.validate()) return;
                   loaderOverlay.show();
                   try {
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                      email: email,
-                      password: password,
-                    );
+                    await FirebaseAuth.instance
+                        .createUserWithEmailAndPassword(
+                          email: email,
+                          password: password,
+                        )
+                        .then((value) =>
+                            saveUserRole(value.user, selectedUserRole));
                   } on FirebaseAuthException catch (e) {
                     String errorMessage = 'Default error';
                     if (e.code == 'weak-password') {
@@ -117,4 +149,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
     );
   }
+}
+
+saveUserRole(User? user, String role) async {
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  users
+      .add({
+        'uid': user?.uid,
+        'email': user?.email,
+        'role': role,
+      })
+      .then((value) => print("User added successfully!"))
+      .catchError((error) => print("Failed to add user: $error"));
+  return;
 }
