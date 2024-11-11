@@ -23,7 +23,6 @@ class Appointment {
   );
   double servicePrice = Random().nextDouble() * 100;
   Duration serviceDuration = Duration(hours: 1, minutes: 30);
-  late (TimeOfDay, TimeOfDay) serviceTime;
 
   Map<String, (TimeOfDay, TimeOfDay)> createSchedules() {
     Map<String, (TimeOfDay, TimeOfDay)> schedules = {};
@@ -44,9 +43,5 @@ class Appointment {
       }
     }
     return schedules;
-  }
-
-  void setServiceTime((TimeOfDay, TimeOfDay) service) {
-    serviceTime = service;
   }
 }

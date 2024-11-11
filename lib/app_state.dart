@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
 import 'package:web_app/domain/app_user.dart';
-import 'package:web_app/domain/appointment.dart';
+import 'package:web_app/domain/made_appointment.dart';
 
 class AppState extends ChangeNotifier {
   AppState() {
@@ -12,7 +12,7 @@ class AppState extends ChangeNotifier {
   AppUser? currentUser;
   bool _isSignedIn = false;
   bool get isSignedIn => _isSignedIn;
-  List<Appointment> appointments = [];
+  List<MadeAppointment> appointments = [];
 
   Future<void> init() async {
     FirebaseAuth.instance.userChanges().listen((User? user) async {
@@ -26,7 +26,7 @@ class AppState extends ChangeNotifier {
     });
   }
 
-  void bookAppointment(Appointment appointment) {
+  void bookAppointment(MadeAppointment appointment) {
     if (!appointments.contains(appointment)) {
       appointments.add(appointment);
     }

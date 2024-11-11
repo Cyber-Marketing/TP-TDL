@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
 import 'package:web_app/domain/appointment.dart';
+import 'package:web_app/domain/made_appointment.dart';
 import 'package:web_app/widgets/buttons/app_bar_button.dart';
 
 class TakeTurnPage extends StatefulWidget {
@@ -26,6 +27,44 @@ class TakeTurnPageState extends State<TakeTurnPage> {
     var completeSchedules = widget.appointment.createSchedules();
     var newSchedules = completeSchedules.keys.toList();
     newSchedules.add("");
+
+    Column description() {
+      return Column(
+        children: [
+          Row(
+            children: [
+              _formatText("Descripción:  ", FontWeight.bold),
+              _formatText(
+                  widget.appointment.serviceDescription, FontWeight.normal),
+            ],
+          ),
+          Row(
+            children: [
+              _formatText("Precio:  ", FontWeight.bold),
+              _formatText(
+                  "\$${widget.appointment.servicePrice.toStringAsFixed(2)}",
+                  FontWeight.normal),
+            ],
+          ),
+          Row(
+            children: [
+              _formatText("Horario comercial:  ", FontWeight.bold),
+              _formatText(
+                  "${widget.appointment.timeRange.start.hour}:${widget.appointment.timeRange.start.minute}hs - ${widget.appointment.timeRange.end.hour}:${widget.appointment.timeRange.end.minute}hs",
+                  FontWeight.normal),
+            ],
+          ),
+          Row(
+            children: [
+              _formatText("Duracion:  ", FontWeight.bold),
+              _formatText(
+                  "${widget.appointment.serviceDuration.toString().substring(0, widget.appointment.serviceDuration.toString().indexOf("."))}hs",
+                  FontWeight.normal),
+            ],
+          ),
+        ],
+      );
+    }
 
     Row newServiceDayButton() {
       return Row(
@@ -80,9 +119,13 @@ class TakeTurnPageState extends State<TakeTurnPage> {
           if (serviceTime != "") {
             if (_authorization(
                 appState.appointments, completeSchedules[serviceTime]!)) {
-              widget.appointment
-                  .setServiceTime(completeSchedules[serviceTime]!);
-              appState.bookAppointment(widget.appointment);
+              appState.bookAppointment(MadeAppointment(
+                  widget.appointment.businessName,
+                  widget.appointment.serviceDescription,
+                  widget.appointment.servicePrice,
+                  serviceDay,
+                  completeSchedules[serviceTime]!,
+                  widget.appointment.serviceDuration));
               menssage = 'Turno reservado';
               Navigator.pop(context);
             } else {
@@ -99,26 +142,6 @@ class TakeTurnPageState extends State<TakeTurnPage> {
         alignment: Alignment.centerLeft,
         color: Colors.black,
         iconSize: 100,
-      );
-    }
-
-    Row description() {
-      return Row(
-        children: [
-          _formatText("Descripción:  ", FontWeight.bold),
-          _formatText(widget.appointment.serviceDescription, FontWeight.normal),
-          _formatText("Precio:  ", FontWeight.bold),
-          _formatText("\$${widget.appointment.servicePrice.toStringAsFixed(2)}",
-              FontWeight.normal),
-          _formatText("Horario comercial:  ", FontWeight.bold),
-          _formatText(
-              "${widget.appointment.timeRange.start.hour}:${widget.appointment.timeRange.start.minute}hs - ${widget.appointment.timeRange.end.hour}:${widget.appointment.timeRange.end.minute}hs",
-              FontWeight.normal),
-          _formatText("Duracion:  ", FontWeight.bold),
-          _formatText(
-              "${widget.appointment.serviceDuration.toString().substring(0, widget.appointment.serviceDuration.toString().indexOf("."))}hs",
-              FontWeight.normal)
-        ],
       );
     }
 
@@ -159,7 +182,7 @@ class TakeTurnPageState extends State<TakeTurnPage> {
       style: TextStyle(color: Colors.black, fontSize: 25, fontWeight: format));
 
   bool _authorization(
-      List<Appointment> appointments, (TimeOfDay, TimeOfDay) serviceTime) {
+      List<MadeAppointment> appointments, (TimeOfDay, TimeOfDay) serviceTime) {
     var (startServiceTime, endServiceTime) = serviceTime;
     for (var appointment in appointments) {
       var (startAppointment, endAppointment) = appointment.serviceTime;
