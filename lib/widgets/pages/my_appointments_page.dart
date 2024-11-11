@@ -34,7 +34,7 @@ class MyAppointmentsPage extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.favorite),
             title: Text(
-                "${appointment.businessName}\n${appointment.serviceDescription}"),
+                "${appointment.businessName}\n${appointment.serviceDescription}\n${appointment.getServiceDay()}\n${appointment.getServiceTime()}"),
           ),
       ],
     );

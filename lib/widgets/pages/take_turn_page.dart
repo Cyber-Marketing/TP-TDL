@@ -86,7 +86,7 @@ class TakeTurnPageState extends State<TakeTurnPage> {
             },
             icon: const Icon(Icons.calendar_month),
           ),
-          Text("${serviceDay.day} - ${serviceDay.month} - ${serviceDay.year}"),
+          Text("${serviceDay.day}/${serviceDay.month}/${serviceDay.year}"),
         ],
       );
     }
@@ -117,8 +117,8 @@ class TakeTurnPageState extends State<TakeTurnPage> {
         onPressed: () {
           late String menssage;
           if (serviceTime != "") {
-            if (_authorization(
-                appState.appointments, completeSchedules[serviceTime]!)) {
+            if (_authorization(appState.appointments,
+                completeSchedules[serviceTime]!, serviceDay)) {
               appState.bookAppointment(MadeAppointment(
                   widget.appointment.businessName,
                   widget.appointment.serviceDescription,
@@ -181,19 +181,23 @@ class TakeTurnPageState extends State<TakeTurnPage> {
   Text _formatText(String text, FontWeight format) => Text(text,
       style: TextStyle(color: Colors.black, fontSize: 25, fontWeight: format));
 
-  bool _authorization(
-      List<MadeAppointment> appointments, (TimeOfDay, TimeOfDay) serviceTime) {
+  bool _authorization(List<MadeAppointment> appointments,
+      (TimeOfDay, TimeOfDay) serviceTime, DateTime serviceDay) {
     var (startServiceTime, endServiceTime) = serviceTime;
     for (var appointment in appointments) {
-      var (startAppointment, endAppointment) = appointment.serviceTime;
-      if (startServiceTime.isAtSameTimeAs(endAppointment) ||
-          startServiceTime.isAfter(endAppointment)) {
-        continue;
-      } else if (endServiceTime.isAtSameTimeAs(startAppointment) ||
-          endServiceTime.isBefore(startAppointment)) {
-        continue;
-      } else {
-        return false;
+      if (appointment.serviceDay.year == serviceDay.year &&
+          appointment.serviceDay.month == serviceDay.month &&
+          appointment.serviceDay.day == serviceDay.day) {
+        var (startAppointment, endAppointment) = appointment.serviceTime;
+        if (startServiceTime.isAtSameTimeAs(endAppointment) ||
+            startServiceTime.isAfter(endAppointment)) {
+          continue;
+        } else if (endServiceTime.isAtSameTimeAs(startAppointment) ||
+            endServiceTime.isBefore(startAppointment)) {
+          continue;
+        } else {
+          return false;
+        }
       }
     }
     return true;
