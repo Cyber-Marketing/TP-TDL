@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
 import 'package:web_app/domain/appointment.dart';
+import 'package:web_app/domain/appointment_database.dart';
 import 'package:web_app/domain/made_appointment.dart';
 import 'package:web_app/widgets/buttons/app_bar_button.dart';
 
@@ -112,20 +113,19 @@ class TakeTurnPageState extends State<TakeTurnPage> {
       );
     }
 
-    IconButton madeAppointment() {
+    IconButton madeAppointment(List<MadeAppointment> appointments) {
       return IconButton(
         onPressed: () {
           late String menssage;
           if (serviceTime != "") {
-            if (_authorization(appState.appointments,
-                completeSchedules[serviceTime]!, serviceDay)) {
+            if (_authorization(
+                appointments, completeSchedules[serviceTime]!, serviceDay)) {
               appState.bookAppointment(MadeAppointment(
                   widget.appointment.businessName,
                   widget.appointment.serviceDescription,
                   widget.appointment.servicePrice,
                   serviceDay,
-                  completeSchedules[serviceTime]!,
-                  widget.appointment.serviceDuration));
+                  completeSchedules[serviceTime]!));
               menssage = 'Turno reservado';
               Navigator.pop(context);
             } else {
@@ -163,7 +163,31 @@ class TakeTurnPageState extends State<TakeTurnPage> {
           },
         ),
       ),
-      body: Align(
+      body: FutureBuilder(
+        future: getCustomerAppointment(appState.currentUser!.uid),
+        builder: ((context, snapshot) {
+          if (snapshot.hasData) {
+            var appointments =
+                snapshot.data!.docs.first.data()['appointments'] ?? [];
+            return Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                children: [
+                  description(),
+                  newServiceDayButton(),
+                  newServiceTimeButton(),
+                  madeAppointment(decodingMadeAppointment(appointments)),
+                ],
+              ),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        }),
+      ),
+      /*body: Align(
         alignment: Alignment.centerLeft,
         child: Column(
           children: [
@@ -173,7 +197,7 @@ class TakeTurnPageState extends State<TakeTurnPage> {
             madeAppointment(),
           ],
         ),
-      ),
+      ),*/
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
     );
   }
