@@ -115,27 +115,34 @@ class TakeTurnPageState extends State<TakeTurnPage> {
 
     IconButton madeAppointment(List<MadeAppointment> appointments) {
       return IconButton(
-        onPressed: () {
+        onPressed: () async {
           late String menssage;
           if (serviceTime != "") {
             if (_authorization(
                 appointments, completeSchedules[serviceTime]!, serviceDay)) {
-              appState.bookAppointment(MadeAppointment(
-                  widget.appointment.businessName,
-                  widget.appointment.serviceDescription,
-                  widget.appointment.servicePrice,
-                  serviceDay,
-                  completeSchedules[serviceTime]!));
+              await updateCustomerAppointment(
+                  appState.currentUser!.uid,
+                  encodingMadeAppointment(MadeAppointment(
+                      widget.appointment.businessName,
+                      widget.appointment.serviceDescription,
+                      widget.appointment.servicePrice,
+                      serviceDay,
+                      completeSchedules[serviceTime]!)),
+                  appointments.length + 1);
               menssage = 'Turno reservado';
-              Navigator.pop(context);
+              if (context.mounted) {
+                Navigator.pop(context);
+              }
             } else {
               menssage = 'Se superponen horarios';
             }
           } else {
             menssage = 'Lo siento, faltan realizar selecciones';
           }
-          var snackBar = SnackBar(content: Text(menssage));
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          if (context.mounted) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(menssage)));
+          }
         },
         icon: Icon(Icons.done_outline_sharp),
         tooltip: "Confirmar",
@@ -167,8 +174,6 @@ class TakeTurnPageState extends State<TakeTurnPage> {
         future: getCustomerAppointment(appState.currentUser!.uid),
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
-            var appointments =
-                snapshot.data!.docs.first.data()['appointments'] ?? [];
             return Align(
               alignment: Alignment.centerLeft,
               child: Column(
@@ -176,7 +181,7 @@ class TakeTurnPageState extends State<TakeTurnPage> {
                   description(),
                   newServiceDayButton(),
                   newServiceTimeButton(),
-                  madeAppointment(decodingMadeAppointment(appointments)),
+                  madeAppointment(decodingMadeAppointment(snapshot.data!)),
                 ],
               ),
             );
@@ -187,17 +192,6 @@ class TakeTurnPageState extends State<TakeTurnPage> {
           }
         }),
       ),
-      /*body: Align(
-        alignment: Alignment.centerLeft,
-        child: Column(
-          children: [
-            description(),
-            newServiceDayButton(),
-            newServiceTimeButton(),
-            madeAppointment(),
-          ],
-        ),
-      ),*/
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
     );
   }
@@ -207,17 +201,16 @@ class TakeTurnPageState extends State<TakeTurnPage> {
 
   bool _authorization(List<MadeAppointment> appointments,
       (TimeOfDay, TimeOfDay) serviceTime, DateTime serviceDay) {
-    var (startServiceTime, endServiceTime) = serviceTime;
     for (var appointment in appointments) {
       if (appointment.serviceDay.year == serviceDay.year &&
           appointment.serviceDay.month == serviceDay.month &&
           appointment.serviceDay.day == serviceDay.day) {
         var (startAppointment, endAppointment) = appointment.serviceTime;
-        if (startServiceTime.isAtSameTimeAs(endAppointment) ||
-            startServiceTime.isAfter(endAppointment)) {
+        if (serviceTime.$1.isAtSameTimeAs(endAppointment) ||
+            serviceTime.$1.isAfter(endAppointment)) {
           continue;
-        } else if (endServiceTime.isAtSameTimeAs(startAppointment) ||
-            endServiceTime.isBefore(startAppointment)) {
+        } else if (serviceTime.$2.isAtSameTimeAs(startAppointment) ||
+            serviceTime.$2.isBefore(startAppointment)) {
           continue;
         } else {
           return false;
