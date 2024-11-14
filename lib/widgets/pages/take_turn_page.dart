@@ -122,12 +122,13 @@ class TakeTurnPageState extends State<TakeTurnPage> {
                 appointments, completeSchedules[serviceTime]!, serviceDay)) {
               await updateCustomerAppointment(
                   appState.currentUser!.uid,
-                  encodingMadeAppointment(MadeAppointment(
-                      widget.appointment.businessName,
-                      widget.appointment.serviceDescription,
-                      widget.appointment.servicePrice,
-                      serviceDay,
-                      completeSchedules[serviceTime]!)),
+                  MadeAppointment(
+                          widget.appointment.businessName,
+                          widget.appointment.serviceDescription,
+                          widget.appointment.servicePrice,
+                          serviceDay,
+                          completeSchedules[serviceTime]!)
+                      .toMap(),
                   appointments.length + 1);
               menssage = 'Turno reservado';
               if (context.mounted) {

@@ -2,21 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:web_app/domain/made_appointment.dart';
 
-Map<String, dynamic> encodingMadeAppointment(MadeAppointment appointment) {
-  return {
-    'businessName': appointment.businessName,
-    'serviceDescription': appointment.serviceDescription,
-    'servicePrice': appointment.servicePrice,
-    'serviceDay.year': appointment.serviceDay.year,
-    'serviceDay.month': appointment.serviceDay.month,
-    'serviceDay.day': appointment.serviceDay.day,
-    'serviceTime.\$1.hour': appointment.serviceTime.$1.hour,
-    'serviceTime.\$1.minute': appointment.serviceTime.$1.minute,
-    'serviceTime.\$2.hour': appointment.serviceTime.$2.hour,
-    'serviceTime.\$2.minute': appointment.serviceTime.$2.minute,
-  };
-}
-
 List<MadeAppointment> decodingMadeAppointment(
     DocumentSnapshot<Map<String, dynamic>> appointments) {
   List<MadeAppointment> decodingList = [];

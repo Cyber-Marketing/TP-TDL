@@ -18,4 +18,19 @@ class MadeAppointment {
     var (startServiceTime, endServiceTime) = serviceTime;
     return "${startServiceTime.hour}:${startServiceTime.minute}hs - ${endServiceTime.hour}:${endServiceTime.minute}hs";
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'businessName': businessName,
+      'serviceDescription': serviceDescription,
+      'servicePrice': servicePrice,
+      'serviceDay.year': serviceDay.year,
+      'serviceDay.month': serviceDay.month,
+      'serviceDay.day': serviceDay.day,
+      'serviceTime.\$1.hour': serviceTime.$1.hour,
+      'serviceTime.\$1.minute': serviceTime.$1.minute,
+      'serviceTime.\$2.hour': serviceTime.$2.hour,
+      'serviceTime.\$2.minute': serviceTime.$2.minute,
+    };
+  }
 }
