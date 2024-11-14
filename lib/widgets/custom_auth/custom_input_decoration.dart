@@ -8,6 +8,7 @@ class CustomInputDecoration extends InputDecoration {
   @override
   final EdgeInsetsGeometry contentPadding =
       EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0);
+  @override
   final InputBorder border = OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(10.0)),
   );
