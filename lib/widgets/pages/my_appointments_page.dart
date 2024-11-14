@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
-import 'package:web_app/domain/appointment_database.dart';
+import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/domain/made_appointment.dart';
 
 class MyAppointmentsPage extends StatelessWidget {

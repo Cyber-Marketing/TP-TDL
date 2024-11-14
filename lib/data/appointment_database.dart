@@ -45,13 +45,9 @@ List<MadeAppointment> decodingMadeAppointment(
 
 FirebaseFirestore database = FirebaseFirestore.instance;
 
-Future<void> addCustomerAppointment(String user) async {
-  await database.collection('data').doc(user).set({'user': user});
-}
-
 Future<DocumentSnapshot<Map<String, dynamic>>> getCustomerAppointment(
-    String user) async {
-  return await database.collection('data').doc(user).get();
+    String userUid) async {
+  return await database.collection('data').doc(userUid).get();
 }
 
 Future<void> updateCustomerAppointment(
