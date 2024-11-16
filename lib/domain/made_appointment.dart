@@ -19,6 +19,25 @@ class MadeAppointment {
     return "${startServiceTime.hour}:${startServiceTime.minute}hs - ${endServiceTime.hour}:${endServiceTime.minute}hs";
   }
 
+  factory MadeAppointment.fromMap(madeAppointmentMap) {
+    return MadeAppointment(
+        madeAppointmentMap['businessName'],
+        madeAppointmentMap['serviceDescription'],
+        madeAppointmentMap['servicePrice'],
+        DateTime(
+            madeAppointmentMap['serviceDay.year'],
+            madeAppointmentMap['serviceDay.month'],
+            madeAppointmentMap['serviceDay.day']),
+        (
+          TimeOfDay(
+              hour: madeAppointmentMap['serviceTime.\$1.hour'],
+              minute: madeAppointmentMap['serviceTime.\$1.minute']),
+          TimeOfDay(
+              hour: madeAppointmentMap['serviceTime.\$2.hour'],
+              minute: madeAppointmentMap['serviceTime.\$2.minute'])
+        ));
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'businessName': businessName,

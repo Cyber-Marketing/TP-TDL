@@ -22,75 +22,75 @@ class TakeTurnPageState extends State<TakeTurnPage> {
   DateTime serviceDay = DateTime.now();
   String serviceTime = "";
 
+  Column description() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            _formatText("Descripción:  ", FontWeight.bold),
+            _formatText(
+                widget.appointment.serviceDescription, FontWeight.normal),
+          ],
+        ),
+        Row(
+          children: [
+            _formatText("Precio:  ", FontWeight.bold),
+            _formatText(
+                "\$${widget.appointment.servicePrice.toStringAsFixed(2)}",
+                FontWeight.normal),
+          ],
+        ),
+        Row(
+          children: [
+            _formatText("Horario comercial:  ", FontWeight.bold),
+            _formatText(
+                "${widget.appointment.timeRange.start.hour}:${widget.appointment.timeRange.start.minute}hs - ${widget.appointment.timeRange.end.hour}:${widget.appointment.timeRange.end.minute}hs",
+                FontWeight.normal),
+          ],
+        ),
+        Row(
+          children: [
+            _formatText("Duracion:  ", FontWeight.bold),
+            _formatText(
+                "${widget.appointment.serviceDuration.toString().substring(0, widget.appointment.serviceDuration.toString().indexOf("."))}hs",
+                FontWeight.normal),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Row newServiceDayButton() {
+    return Row(
+      children: [
+        _formatText("Seleccione el día:  ", FontWeight.bold),
+        IconButton(
+          onPressed: () async {
+            DateTime? newserviceTime = await showDatePicker(
+                context: context,
+                initialDate: serviceDay,
+                firstDate: widget.appointment.timeRange.start,
+                lastDate: widget.appointment.timeRange.end,
+                helpText: "Seleccione el día");
+            if (newserviceTime != null) {
+              setState(() {
+                serviceDay = newserviceTime;
+              });
+            }
+          },
+          icon: const Icon(Icons.calendar_month),
+        ),
+        Text("${serviceDay.day}/${serviceDay.month}/${serviceDay.year}"),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<AppState>();
     var completeSchedules = widget.appointment.createSchedules();
     var newSchedules = completeSchedules.keys.toList();
     newSchedules.add("");
-
-    Column description() {
-      return Column(
-        children: [
-          Row(
-            children: [
-              _formatText("Descripción:  ", FontWeight.bold),
-              _formatText(
-                  widget.appointment.serviceDescription, FontWeight.normal),
-            ],
-          ),
-          Row(
-            children: [
-              _formatText("Precio:  ", FontWeight.bold),
-              _formatText(
-                  "\$${widget.appointment.servicePrice.toStringAsFixed(2)}",
-                  FontWeight.normal),
-            ],
-          ),
-          Row(
-            children: [
-              _formatText("Horario comercial:  ", FontWeight.bold),
-              _formatText(
-                  "${widget.appointment.timeRange.start.hour}:${widget.appointment.timeRange.start.minute}hs - ${widget.appointment.timeRange.end.hour}:${widget.appointment.timeRange.end.minute}hs",
-                  FontWeight.normal),
-            ],
-          ),
-          Row(
-            children: [
-              _formatText("Duracion:  ", FontWeight.bold),
-              _formatText(
-                  "${widget.appointment.serviceDuration.toString().substring(0, widget.appointment.serviceDuration.toString().indexOf("."))}hs",
-                  FontWeight.normal),
-            ],
-          ),
-        ],
-      );
-    }
-
-    Row newServiceDayButton() {
-      return Row(
-        children: [
-          _formatText("Seleccione el día:  ", FontWeight.bold),
-          IconButton(
-            onPressed: () async {
-              DateTime? newserviceTime = await showDatePicker(
-                  context: context,
-                  initialDate: serviceDay,
-                  firstDate: widget.appointment.timeRange.start,
-                  lastDate: widget.appointment.timeRange.end,
-                  helpText: "Seleccione el día");
-              if (newserviceTime != null) {
-                setState(() {
-                  serviceDay = newserviceTime;
-                });
-              }
-            },
-            icon: const Icon(Icons.calendar_month),
-          ),
-          Text("${serviceDay.day}/${serviceDay.month}/${serviceDay.year}"),
-        ],
-      );
-    }
 
     Row newServiceTimeButton() {
       return Row(
@@ -175,6 +175,7 @@ class TakeTurnPageState extends State<TakeTurnPage> {
         future: getCustomerAppointment(appState.currentUser!.uid),
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
+            var appointment = MadeAppointment.fromMap(snapshot.data!);
             return Align(
               alignment: Alignment.centerLeft,
               child: Column(
@@ -182,7 +183,7 @@ class TakeTurnPageState extends State<TakeTurnPage> {
                   description(),
                   newServiceDayButton(),
                   newServiceTimeButton(),
-                  madeAppointment(decodingMadeAppointment(snapshot.data!)),
+                  madeAppointment([appointment]),
                 ],
               ),
             );
