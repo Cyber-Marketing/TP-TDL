@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:web_app/data/service_repository.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/cards/service_card.dart';
 
@@ -9,8 +9,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final Stream _servicesStream =
-      FirebaseFirestore.instance.collection('availableServices').snapshots();
+  final Stream _servicesStream = ServiceRepository().getServicesStream();
 
   @override
   Widget build(BuildContext context) {
