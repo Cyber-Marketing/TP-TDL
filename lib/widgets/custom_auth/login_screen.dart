@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:web_app/widgets/custom_auth/custom_email_field.dart';
-import 'package:web_app/widgets/custom_auth/custom_password_field.dart';
+import 'package:web_app/widgets/form_fields/custom_email_field.dart';
+import 'package:web_app/widgets/form_fields/custom_password_field.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

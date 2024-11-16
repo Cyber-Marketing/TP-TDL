@@ -3,8 +3,8 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:web_app/data/service_repository.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/buttons/app_bar_button.dart';
-import 'package:web_app/widgets/custom_number_field.dart';
-import 'package:web_app/widgets/custom_text_field.dart';
+import 'package:web_app/widgets/form_fields/custom_number_field.dart';
+import 'package:web_app/widgets/form_fields/custom_text_field.dart';
 
 class NewServicePage extends StatefulWidget {
   @override

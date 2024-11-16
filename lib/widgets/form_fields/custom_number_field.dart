@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:web_app/widgets/custom_auth/custom_input_decoration.dart';
+import 'package:web_app/widgets/form_fields/custom_input_decoration.dart';
 
 class CustomNumberField extends StatelessWidget {
   CustomNumberField({super.key, required this.onChanged});

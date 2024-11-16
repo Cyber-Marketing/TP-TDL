@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:web_app/widgets/custom_auth/custom_input_decoration.dart';
+import 'package:web_app/widgets/form_fields/custom_input_decoration.dart';
 
-class CustomPasswordField extends StatelessWidget {
-  CustomPasswordField({super.key, required this.onChanged});
+class CustomTextField extends StatelessWidget {
+  CustomTextField({super.key, required this.onChanged});
 
   final void Function(String)? onChanged;
 
@@ -15,15 +15,17 @@ class CustomPasswordField extends StatelessWidget {
       child: TextFormField(
           validator: (value) {
             if (value!.isEmpty) {
-              return "Contraseña no puede ser vacía";
+              return "Campo no puede ser vacío";
             }
             return null;
           },
-          obscureText: true,
-          textAlign: TextAlign.left,
           onChanged: onChanged,
+          keyboardType: TextInputType.name,
+          textAlign: TextAlign.left,
           decoration: CustomInputDecoration(
-              hintText: 'Ingresá tu contraseña', context: context)),
+            hintText: '...',
+            context: context,
+          )),
     );
   }
 }
