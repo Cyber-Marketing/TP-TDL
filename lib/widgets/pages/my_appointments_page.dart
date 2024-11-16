@@ -47,7 +47,15 @@ class MyAppointmentsPage extends StatelessWidget {
       future: getCustomerAppointment(appState.currentUser!.uid),
       builder: ((context, snapshot) {
         if (snapshot.hasData) {
-          return myAppointments([MadeAppointment.fromMap(snapshot.data!)]);
+          List<MadeAppointment> appointments = [];
+          int length = snapshot.data!.data()!.length;
+          if (length > 1) {
+            for (int i = 1; i < length; i++) {
+              appointments.add(
+                  MadeAppointment.fromMap(snapshot.data!['appointment$i']));
+            }
+          }
+          return myAppointments(appointments);
         } else {
           return const Center(
             child: CircularProgressIndicator(),

@@ -61,7 +61,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       print(e);
                     }
                     loaderOverlay.hide();
-                    Navigator.pushNamed(context, '');
+                    if (context.mounted) {
+                      Navigator.pushNamed(context, '');
+                    }
                   },
                 )
               ],

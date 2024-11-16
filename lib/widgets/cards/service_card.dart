@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/domain/service.dart';
+import 'package:web_app/widgets/pages/take_turn_page.dart';
 
 class ServiceCard extends StatelessWidget {
   ServiceCard({
@@ -24,11 +26,18 @@ class ServiceCard extends StatelessWidget {
           IconButton(
               iconSize: 30,
               onPressed: () {
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) =>
-                //             TakeTurnPage(appointment: appointment)));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TakeTurnPage(
+                            appointment: Appointment(
+                                businessName: service.businessName,
+                                serviceDescription: service.description,
+                                category: service.category,
+                                servicePrice: service.price,
+                                serviceDuration: Duration(
+                                    hours: service.duration ~/ 60,
+                                    minutes: service.duration.round() % 60)))));
               },
               icon: const Icon(Icons.book))
         ],

@@ -1,12 +1,16 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:random_name_generator/random_name_generator.dart';
 
 class Appointment {
-  Appointment();
+  Appointment(
+      {required this.businessName,
+      required this.serviceDescription,
+      required this.category,
+      required this.servicePrice,
+      required this.serviceDuration});
 
-  var businessName = RandomNames(Zone.spain).name();
-  var serviceDescription = RandomNames(Zone.spain).surname();
+  String businessName;
+  String serviceDescription;
+  String category;
   DateTimeRange timeRange = DateTimeRange(
     start: DateTime(
       DateTime.now().year,
@@ -21,8 +25,8 @@ class Appointment {
       20,
     ),
   );
-  double servicePrice = Random().nextDouble() * 100;
-  Duration serviceDuration = Duration(hours: 1, minutes: 30);
+  double servicePrice;
+  Duration serviceDuration;
 
   Map<String, (TimeOfDay, TimeOfDay)> createSchedules() {
     Map<String, (TimeOfDay, TimeOfDay)> schedules = {};
@@ -37,7 +41,7 @@ class Appointment {
       TimeOfDay start =
           TimeOfDay(hour: serviceTime.hour, minute: serviceTime.minute);
       serviceTime = TimeOfDay(hour: service.hour, minute: service.minute);
-      if (serviceTime.isBefore(close) || serviceTime == close) {
+      if (serviceTime.isBefore(close) || serviceTime.isAtSameTimeAs(close)) {
         schedule = "$schedule${serviceTime.hour}:${serviceTime.minute}hs";
         schedules[schedule] = (start, serviceTime);
       }

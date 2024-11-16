@@ -179,7 +179,14 @@ class TakeTurnPageState extends State<TakeTurnPage> {
               child: CircularProgressIndicator(),
             );
           }
-          var appointment = MadeAppointment.fromMap(snapshot.data!);
+          List<MadeAppointment> appointments = [];
+          int length = snapshot.data!.data()!.length;
+          if (length > 1) {
+            for (int i = 1; i < length; i++) {
+              appointments.add(
+                  MadeAppointment.fromMap(snapshot.data!['appointment$i']));
+            }
+          }
           return Align(
             alignment: Alignment.centerLeft,
             child: Column(
@@ -187,7 +194,7 @@ class TakeTurnPageState extends State<TakeTurnPage> {
                 description(),
                 newServiceDayButton(),
                 newServiceTimeButton(),
-                madeAppointment([appointment]),
+                madeAppointment(appointments),
               ],
             ),
           );
@@ -206,12 +213,11 @@ class TakeTurnPageState extends State<TakeTurnPage> {
       if (appointment.serviceDay.year == serviceDay.year &&
           appointment.serviceDay.month == serviceDay.month &&
           appointment.serviceDay.day == serviceDay.day) {
-        var (startAppointment, endAppointment) = appointment.serviceTime;
-        if (serviceTime.$1.isAtSameTimeAs(endAppointment) ||
-            serviceTime.$1.isAfter(endAppointment)) {
+        if (serviceTime.$1.isAtSameTimeAs(appointment.serviceTime.$2) ||
+            serviceTime.$1.isAfter(appointment.serviceTime.$2)) {
           continue;
-        } else if (serviceTime.$2.isAtSameTimeAs(startAppointment) ||
-            serviceTime.$2.isBefore(startAppointment)) {
+        } else if (serviceTime.$2.isAtSameTimeAs(appointment.serviceTime.$1) ||
+            serviceTime.$2.isBefore(appointment.serviceTime.$1)) {
           continue;
         } else {
           return false;
