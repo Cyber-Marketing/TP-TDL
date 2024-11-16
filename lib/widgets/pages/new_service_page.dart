@@ -83,7 +83,7 @@ class _NewServicePageState extends State<NewServicePage> {
                         ServiceRepository().save(service);
                         loaderOverlay.hide();
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Servicio creado con éxito!")));
+                            content: Text("Servicio creado con éxito ✅")));
                         Navigator.pop(context);
                       },
                     )

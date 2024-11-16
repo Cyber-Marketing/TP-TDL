@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
+import 'package:web_app/data/service_repository.dart';
 import 'package:web_app/domain/app_user.dart';
 
 class AppState extends ChangeNotifier {
@@ -8,6 +9,7 @@ class AppState extends ChangeNotifier {
     init();
   }
 
+  ServiceRepository serviceRepository = ServiceRepository();
   AppUser? _currentUser;
   AppUser? get currentUser => _currentUser;
   bool _isSignedIn = false;

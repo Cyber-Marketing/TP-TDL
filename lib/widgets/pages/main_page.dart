@@ -1,22 +1,64 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../cards/appointment_card.dart';
-import '../../domain/appointment.dart';
+import 'package:web_app/domain/service.dart';
+import 'package:web_app/widgets/cards/service_card.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  final Stream _servicesStream =
+      FirebaseFirestore.instance.collection('availableServices').snapshots();
+
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      padding: const EdgeInsets.all(50),
-      crossAxisCount: 3,
-      crossAxisSpacing: 30,
-      mainAxisSpacing: 50,
-      childAspectRatio: 2,
-      children: [
-        for (int i = 0; i < 10; i++)
-          AppointmentCard(
-            appointment: Appointment(),
-          )
-      ],
+    return StreamBuilder(
+      stream: _servicesStream,
+      builder: (BuildContext context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        }
+
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(
+            child: Text('No services available'),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        List<ServiceCard> availableServicesCards = snapshot.data?.docs
+            .map((serviceDoc) {
+              try {
+                return ServiceCard(
+                  service: Service.fromMap(
+                      serviceDoc.data()! as Map<String, dynamic>),
+                );
+              } catch (e) {
+                print('Error creating Service: $e');
+                return null;
+              }
+            })
+            .where((card) => card != null)
+            .cast<ServiceCard>()
+            .toList();
+        return GridView.count(
+          padding: const EdgeInsets.all(50),
+          crossAxisCount: 3,
+          crossAxisSpacing: 30,
+          mainAxisSpacing: 50,
+          childAspectRatio: 2,
+          children: availableServicesCards,
+        );
+      },
     );
   }
 }
