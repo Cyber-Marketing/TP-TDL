@@ -174,24 +174,23 @@ class TakeTurnPageState extends State<TakeTurnPage> {
       body: FutureBuilder(
         future: getCustomerAppointment(appState.currentUser!.uid),
         builder: ((context, snapshot) {
-          if (snapshot.hasData) {
-            var appointment = MadeAppointment.fromMap(snapshot.data!);
-            return Align(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                children: [
-                  description(),
-                  newServiceDayButton(),
-                  newServiceTimeButton(),
-                  madeAppointment([appointment]),
-                ],
-              ),
-            );
-          } else {
+          if (!snapshot.hasData) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
+          var appointment = MadeAppointment.fromMap(snapshot.data!);
+          return Align(
+            alignment: Alignment.centerLeft,
+            child: Column(
+              children: [
+                description(),
+                newServiceDayButton(),
+                newServiceTimeButton(),
+                madeAppointment([appointment]),
+              ],
+            ),
+          );
         }),
       ),
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,

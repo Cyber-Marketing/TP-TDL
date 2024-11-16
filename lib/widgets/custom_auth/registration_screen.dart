@@ -5,23 +5,6 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:web_app/widgets/custom_auth/custom_email_field.dart';
 import 'package:web_app/widgets/custom_auth/custom_password_field.dart';
 
-const customFieldDecoration = InputDecoration(
-  hintText: 'Enter a value',
-  hintStyle: TextStyle(color: Colors.grey),
-  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-  border: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-  ),
-  enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.lightBlueAccent, width: 1.0),
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-  ),
-  focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-  ),
-);
-
 class RegistrationScreen extends StatefulWidget {
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
