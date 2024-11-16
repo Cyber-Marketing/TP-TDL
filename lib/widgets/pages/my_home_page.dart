@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
         floatingActionButton: Consumer<AppState>(
           builder: (_, appState, __) => Visibility(
               visible: appState.isSignedIn && !appState.userIsCustomer(),
-              child: NewAppointmentButton()),
+              child: NewServiceButton()),
         ),
       );
     });
