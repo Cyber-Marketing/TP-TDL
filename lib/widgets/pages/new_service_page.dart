@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:web_app/data/service_repository.dart';
 import 'package:web_app/domain/service.dart';
-import 'package:web_app/widgets/buttons/app_bar_button.dart';
 import 'package:web_app/widgets/form_fields/custom_number_field.dart';
 import 'package:web_app/widgets/form_fields/custom_text_field.dart';
+import 'package:web_app/widgets/non_home_app_bar.dart';
 
 class NewServicePage extends StatefulWidget {
   @override
@@ -25,18 +25,7 @@ class _NewServicePageState extends State<NewServicePage> {
 
     return LoaderOverlay(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-          toolbarHeight: 80,
-          leadingWidth: 75,
-          leading: AppBarButton(
-            tooltip: "Atrás",
-            icon: Icons.west,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
+        appBar: NonHomeAppBar(context, text: "Crear nuevo servicio"),
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         body: Center(
           child: Form(

@@ -4,7 +4,7 @@ import 'package:web_app/app_state.dart';
 import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/domain/made_appointment.dart';
-import 'package:web_app/widgets/buttons/app_bar_button.dart';
+import 'package:web_app/widgets/non_home_app_bar.dart';
 
 class TakeTurnPage extends StatefulWidget {
   TakeTurnPage({
@@ -154,23 +154,7 @@ class TakeTurnPageState extends State<TakeTurnPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.appointment.businessName,
-            style: const TextStyle(
-                color: Colors.white,
-                fontSize: 25,
-                fontWeight: FontWeight.bold)),
-        backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-        toolbarHeight: 80,
-        leadingWidth: 75,
-        leading: AppBarButton(
-          tooltip: "Atrás",
-          icon: Icons.west,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
+      appBar: NonHomeAppBar(context, text: widget.appointment.businessName),
       body: FutureBuilder(
         future: getCustomerAppointment(appState.currentUser!.uid),
         builder: ((context, snapshot) {
