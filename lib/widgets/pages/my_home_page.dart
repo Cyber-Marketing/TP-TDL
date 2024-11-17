@@ -31,6 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
           toolbarHeight: 80,
           title: Row(
@@ -64,9 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Consumer<AppState>(
               builder: (context, appState, _) => AuthButtons(
                   isSignedIn: appState.isSignedIn,
-                  signOut: () {
-                    FirebaseAuth.instance.signOut();
-                  }),
+                  signOut: FirebaseAuth.instance.signOut),
             ),
             SizedBox(width: 25),
           ],

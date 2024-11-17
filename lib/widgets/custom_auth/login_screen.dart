@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:web_app/custom_page_route.dart';
 import 'package:web_app/widgets/form_fields/custom_email_field.dart';
 import 'package:web_app/widgets/form_fields/custom_password_field.dart';
+import 'package:web_app/widgets/pages/auth_gate.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -62,7 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     }
                     loaderOverlay.hide();
                     if (context.mounted) {
-                      Navigator.pushNamed(context, '');
+                      Navigator.push(
+                          context, CustomPageRoute(pageWidget: AuthGate()));
                     }
                   },
                 )
