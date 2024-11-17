@@ -56,11 +56,10 @@ class MyAppointmentsPage extends StatelessWidget {
             }
           }
           return myAppointments(appointments);
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
         }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       }),
     );
   }

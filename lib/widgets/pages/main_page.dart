@@ -16,25 +16,13 @@ class _MainPageState extends State<MainPage> {
     return StreamBuilder(
       stream: _servicesStream,
       builder: (BuildContext context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(
-            child: Text('Error: ${snapshot.error}'),
-          );
-        }
-
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(
-            child: Text('No services available'),
-          );
-        }
-
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (!snapshot.hasData) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
 
-        List<ServiceCard> availableServicesCards = snapshot.data?.docs
+        var availableServicesCards = snapshot.data?.docs
             .map((serviceDoc) {
               try {
                 return ServiceCard(

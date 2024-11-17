@@ -5,7 +5,7 @@ import 'package:web_app/app_state.dart';
 import 'package:web_app/domain/app_user.dart';
 import 'package:web_app/settings/firebase_options.dart';
 import 'package:web_app/widgets/custom_auth/login_screen.dart';
-import 'package:web_app/widgets/custom_auth/profile_screen.dart';
+import 'package:web_app/widgets/pages/profile_screen.dart';
 import 'package:web_app/widgets/custom_auth/registration_screen.dart';
 import 'package:web_app/widgets/pages/auth_gate.dart';
 
