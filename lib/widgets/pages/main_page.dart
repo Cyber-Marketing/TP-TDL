@@ -9,7 +9,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final Stream _servicesStream = ServiceRepository().getServicesStream();
+  final Stream _servicesStream = ServicesRepository().getServicesStream();
 
   @override
   Widget build(BuildContext context) {

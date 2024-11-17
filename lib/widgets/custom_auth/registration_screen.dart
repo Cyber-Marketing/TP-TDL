@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:web_app/data/appointment_database.dart';
+import 'package:web_app/data/users_repository.dart';
+import 'package:web_app/domain/app_user.dart';
 import 'package:web_app/widgets/form_fields/custom_email_field.dart';
 import 'package:web_app/widgets/form_fields/custom_password_field.dart';
+import 'package:web_app/widgets/form_fields/custom_text_field.dart';
 
 class RegistrationScreen extends StatefulWidget {
   @override
@@ -13,10 +16,8 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final formKey = GlobalKey<FormState>();
-  late String email;
-  late String password;
+  AppUser appUser = AppUser(role: 'Cliente');
   List<String> options = ['Cliente', 'Proveedor'];
-  String selectedUserRole = 'Cliente';
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +33,28 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                CustomTextField(
+                  hintText: 'Ingresá tu nombre',
+                  onChanged: (value) => appUser.name = value,
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                CustomTextField(
+                  hintText: 'Ingresá tu apellido',
+                  onChanged: (value) => appUser.lastName = value,
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
                 CustomEmailField(
-                  onChanged: (value) => email = value,
+                  onChanged: (value) => appUser.email = value,
                 ),
                 SizedBox(
                   height: 8.0,
                 ),
                 CustomPasswordField(
-                  onChanged: (value) => password = value,
+                  onChanged: (value) => appUser.password = value,
                 ),
                 SizedBox(
                   height: 8.0,
@@ -47,10 +62,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Elegí el tipo de usuario:'),
+                    Text('¿Qué tipo de usuario sos?:'),
                     SizedBox(width: 15),
                     DropdownButton(
-                      value: selectedUserRole,
+                      value: appUser.role,
                       items: options.map((String dropDownStringItem) {
                         return DropdownMenuItem(
                           value: dropDownStringItem,
@@ -61,7 +76,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       }).toList(),
                       onChanged: (newSelectedRole) {
                         setState(() {
-                          selectedUserRole = newSelectedRole!;
+                          appUser.role = newSelectedRole!;
                         });
                       },
                     )
@@ -78,11 +93,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     try {
                       await FirebaseAuth.instance
                           .createUserWithEmailAndPassword(
-                        email: email,
-                        password: password,
+                        email: appUser.email,
+                        password: appUser.password,
                       )
                           .then((value) {
-                        saveUserRole(value.user, selectedUserRole);
+                        appUser.uid = value.user!.uid;
+                        UsersRepository().save(appUser);
+                        // Mover coleccion de appointments de un user adentro del documento user
                         addCustomerAppointment(value.user!.uid);
                       });
                     } on FirebaseAuthException catch (e) {
@@ -118,14 +135,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 }
 
-saveUserRole(User? user, String role) async {
+saveUserProfile(AppUser appUser) async {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   users
-      .add({
-        'uid': user?.uid,
-        'email': user?.email,
-        'role': role,
-      })
+      .add(appUser.toMap())
       .then((value) => print("User added successfully!"))
       .catchError((error) => print("Failed to add user: $error"));
   return;

@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:web_app/domain/service.dart';
 
-class ServiceRepository {
+class ServicesRepository {
   CollectionReference collection =
       FirebaseFirestore.instance.collection('availableServices');
 
-  ServiceRepository();
+  ServicesRepository();
 
   save(Service service) async {
     var serviceMap = service.toMap();

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:web_app/widgets/form_fields/custom_input_decoration.dart';
 
 class CustomTextField extends StatelessWidget {
-  CustomTextField({super.key, required this.onChanged});
+  CustomTextField({super.key, required this.onChanged, required this.hintText});
 
   final void Function(String)? onChanged;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class CustomTextField extends StatelessWidget {
           keyboardType: TextInputType.name,
           textAlign: TextAlign.left,
           decoration: CustomInputDecoration(
-            hintText: '...',
+            hintText: hintText,
             context: context,
           )),
     );

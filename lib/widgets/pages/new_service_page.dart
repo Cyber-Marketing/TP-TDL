@@ -49,15 +49,21 @@ class _NewServicePageState extends State<NewServicePage> {
                     Text(
                       "Nombre del negocio",
                     ),
-                    CustomTextField(onChanged: (value) => businessName = value),
+                    CustomTextField(
+                        hintText: "Ingresá el nombre de tu negocio",
+                        onChanged: (value) => businessName = value),
                     Text(
                       "Descripción",
                     ),
-                    CustomTextField(onChanged: (value) => description = value),
+                    CustomTextField(
+                        hintText: "Ingresá el nombre de tu negocio",
+                        onChanged: (value) => description = value),
                     Text(
                       "Categoría",
                     ),
-                    CustomTextField(onChanged: (value) => category = value),
+                    CustomTextField(
+                        hintText: "Ingresá la categoría de tu servicio",
+                        onChanged: (value) => category = value),
                     Text(
                       "Duración del servicio (en minutos)",
                     ),
@@ -80,7 +86,7 @@ class _NewServicePageState extends State<NewServicePage> {
                             duration: duration,
                             price: price);
                         loaderOverlay.show();
-                        ServiceRepository().save(service);
+                        ServicesRepository().save(service);
                         loaderOverlay.hide();
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text("Servicio creado con éxito ✅")));
