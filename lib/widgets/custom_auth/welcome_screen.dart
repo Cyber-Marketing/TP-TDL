@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:web_app/custom_page_route.dart';
+import 'package:web_app/widgets/custom_auth/login_screen.dart';
+import 'package:web_app/widgets/custom_auth/registration_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override
@@ -13,14 +16,16 @@ class WelcomeScreen extends StatelessWidget {
                 ElevatedButton(
                   child: Text('Iniciar sesión'),
                   onPressed: () {
-                    Navigator.pushNamed(context, 'login_screen');
+                    Navigator.push(
+                        context, CustomPageRoute(pageWidget: LoginScreen()));
                   },
                 ),
                 SizedBox(height: 10),
                 ElevatedButton(
                     child: Text('Registrarse'),
                     onPressed: () {
-                      Navigator.pushNamed(context, 'registration_screen');
+                      Navigator.push(context,
+                          CustomPageRoute(pageWidget: RegistrationScreen()));
                     }),
               ]),
         ));

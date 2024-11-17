@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:web_app/custom_page_route.dart';
 import 'package:web_app/widgets/pages/new_service_page.dart';
 
 class NewServiceButton extends StatelessWidget {
@@ -10,7 +12,7 @@ class NewServiceButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
         onPressed: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => NewServicePage())),
+            context, CustomPageRoute(pageWidget: NewServicePage())),
         backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
         child: Icon(Icons.post_add,
             color: Theme.of(context).colorScheme.surfaceBright));

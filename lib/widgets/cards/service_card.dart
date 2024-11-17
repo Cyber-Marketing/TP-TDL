@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:web_app/custom_page_route.dart';
 import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/pages/take_turn_page.dart';
@@ -28,8 +29,8 @@ class ServiceCard extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => TakeTurnPage(
+                    CustomPageRoute(
+                        pageWidget: TakeTurnPage(
                             appointment: Appointment(
                                 businessName: service.businessName,
                                 serviceDescription: service.description,
