@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
@@ -40,14 +41,18 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
               child: CircularProgressIndicator(),
             );
           }
-          List<MadeAppointment> appointments = [];
-          int length = snapshot.data!.data()!.length;
-          if (length > 1) {
-            for (int i = 1; i < length; i++) {
-              appointments.add(
-                  MadeAppointment.fromMap(snapshot.data!['appointment$i']));
-            }
-          }
+          var appointments = snapshot.data!.docs
+              .map((appointmentDoc) {
+                try {
+                  return MadeAppointment.fromMap(appointmentDoc.data());
+                } catch (e) {
+                  print('Error creating appointment: $e');
+                  return null;
+                }
+              })
+              .where((appointment) => appointment != null)
+              .cast<MadeAppointment>()
+              .toList();
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -154,16 +159,22 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                     if (_authorization(appointments,
                         completeSchedules[serviceTime]!, serviceDay)) {
                       int appointmentNumber = appointments.length + 1;
-                      await updateCustomerAppointment(
-                          appState.currentUser!.uid,
-                          MadeAppointment(
-                              'appointment$appointmentNumber',
-                              widget.appointment.businessName,
-                              widget.appointment.serviceDescription,
-                              widget.appointment.servicePrice,
-                              serviceDay,
-                              completeSchedules[serviceTime]!),
-                          'appointment$appointmentNumber');
+                      FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(appState.currentUser!.uid)
+                          .collection("appointments")
+                          .add(MadeAppointment(
+                                  'appointment$appointmentNumber',
+                                  widget.appointment.businessName,
+                                  widget.appointment.serviceDescription,
+                                  widget.appointment.servicePrice,
+                                  serviceDay,
+                                  completeSchedules[serviceTime]!)
+                              .toMap())
+                          .then(
+                              (value) => print("Service created successfully!"))
+                          .catchError((error) =>
+                              print("Failed to create service: $error"));
                       menssage = 'Turno reservado';
                       if (context.mounted) {
                         Navigator.pop(context);

@@ -17,9 +17,9 @@ class AppState extends ChangeNotifier {
     FirebaseAuth.instance.userChanges().listen((User? user) async {
       _currentUser = await FirebaseFirestore.instance
           .collection('users')
-          .where('uid', isEqualTo: user?.uid)
+          .doc(user?.uid)
           .get()
-          .then((snapshot) => AppUser.fromMap(snapshot.docs.first));
+          .then((snapshot) => AppUser.fromMap(snapshot.data()));
       _isSignedIn = user != null;
       notifyListeners();
     });

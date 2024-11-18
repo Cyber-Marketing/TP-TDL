@@ -47,23 +47,26 @@ class MyPastAppointmentsPage extends StatelessWidget {
     return FutureBuilder(
       future: getCustomerAppointment(appState.currentUser!.uid),
       builder: ((context, snapshot) {
-        if (snapshot.hasData) {
-          List<MadeAppointment> pastAppointments = [];
-          int length = snapshot.data!.data()!.length;
-          if (length > 1) {
-            for (int i = 1; i < length; i++) {
-              MadeAppointment app =
-                  MadeAppointment.fromMap(snapshot.data!['appointment$i']);
-              if (app.getServiceDateTime().isBefore(serviceDayToday)) {
-                pastAppointments.add(app);
-              }
-            }
-          }
-          return myPastAppointments(pastAppointments);
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        var pastAppointments = snapshot.data!.docs
+            .map((appointmentDoc) {
+              try {
+                return MadeAppointment.fromMap(appointmentDoc.data());
+              } catch (e) {
+                print('Error creating appointment: $e');
+                return null;
+              }
+            })
+            .where((app) =>
+                app != null &&
+                app.getServiceDateTime().isBefore(serviceDayToday))
+            .cast<MadeAppointment>()
+            .toList();
+        return myPastAppointments(pastAppointments);
       }),
     );
   }

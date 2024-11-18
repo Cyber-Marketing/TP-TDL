@@ -22,7 +22,7 @@ class _MainPageState extends State<MainPage> {
           );
         }
 
-        var availableServicesCards = snapshot.data?.docs
+        var servicesCards = snapshot.data?.docs
             .map((serviceDoc) {
               try {
                 return ServiceCard(
@@ -43,7 +43,7 @@ class _MainPageState extends State<MainPage> {
           crossAxisSpacing: 30,
           mainAxisSpacing: 50,
           childAspectRatio: 2,
-          children: availableServicesCards,
+          children: servicesCards,
         );
       },
     );

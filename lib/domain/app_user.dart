@@ -17,6 +17,8 @@ class AppUser {
   factory AppUser.fromMap(userMap) {
     return AppUser(
       uid: userMap['uid'],
+      name: userMap['name'],
+      lastName: userMap['lastName'],
       email: userMap['email'],
       role: userMap['role'],
     );

@@ -3,7 +3,7 @@ import 'package:web_app/domain/service.dart';
 
 class ServicesRepository {
   CollectionReference collection =
-      FirebaseFirestore.instance.collection('availableServices');
+      FirebaseFirestore.instance.collection('services');
 
   ServicesRepository();
 

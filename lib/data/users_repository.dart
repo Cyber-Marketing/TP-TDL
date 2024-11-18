@@ -9,7 +9,8 @@ class UsersRepository {
 
   save(AppUser user) async {
     collection
-        .add(user.toMap())
+        .doc(user.uid)
+        .set(user.toMap())
         .then((value) => print("User profile saved successfully!"))
         .catchError((error) => print("Failed to save user: $error"));
     return;
