@@ -31,7 +31,7 @@ Future<void> updateCustomerCancelledAppointment(
   await database
       .collection('cancelled')
       .doc(user)
-      .update({'cancelled$number': appointment});
+      .update({'cancelled$number': appointment.toMap()});
   await database
       .collection('appointments')
       .doc(user)
