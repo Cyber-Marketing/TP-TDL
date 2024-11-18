@@ -2,12 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:web_app/custom_page_route.dart';
 import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/data/users_repository.dart';
 import 'package:web_app/domain/app_user.dart';
 import 'package:web_app/widgets/form_fields/custom_email_field.dart';
 import 'package:web_app/widgets/form_fields/custom_password_field.dart';
 import 'package:web_app/widgets/form_fields/custom_text_field.dart';
+import 'package:web_app/widgets/pages/auth_gate.dart';
 
 class RegistrationScreen extends StatefulWidget {
   @override
@@ -122,7 +124,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     }
                     loaderOverlay.hide();
                     if (context.mounted) {
-                      Navigator.pushNamed(context, '');
+                      Navigator.push(
+                          context, CustomPageRoute(pageWidget: AuthGate()));
                     }
                   },
                 ),

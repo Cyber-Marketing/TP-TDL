@@ -28,10 +28,7 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 34, 255, 181)),
       ),
-      initialRoute: '',
-      routes: {
-        '': (context) => AuthGate(),
-      },
+      home: AuthGate(),
     );
   }
 }
