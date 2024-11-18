@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
 class MadeAppointment {
+  String appointmentName;
   String businessName;
   String serviceDescription;
   double servicePrice;
   DateTime serviceDay;
   (TimeOfDay, TimeOfDay) serviceTime;
 
-  MadeAppointment(this.businessName, this.serviceDescription, this.servicePrice,
-      this.serviceDay, this.serviceTime);
+  MadeAppointment(
+      this.appointmentName,
+      this.businessName,
+      this.serviceDescription,
+      this.servicePrice,
+      this.serviceDay,
+      this.serviceTime);
 
   String getServiceDay() {
     return "${serviceDay.day}/${serviceDay.month}/${serviceDay.year}";
@@ -19,8 +25,20 @@ class MadeAppointment {
     return "${startServiceTime.hour}:${startServiceTime.minute}hs - ${endServiceTime.hour}:${endServiceTime.minute}hs";
   }
 
+  DateTime getServiceDateTime() {
+    var (startServiceTime, endServiceTime) = serviceTime;
+    return DateTime(
+      serviceDay.year,
+      serviceDay.month,
+      serviceDay.day,
+      endServiceTime.hour,
+      endServiceTime.minute,
+    );
+  }
+
   factory MadeAppointment.fromMap(madeAppointmentMap) {
     return MadeAppointment(
+        madeAppointmentMap['appointmentName'],
         madeAppointmentMap['businessName'],
         madeAppointmentMap['serviceDescription'],
         madeAppointmentMap['servicePrice'],
@@ -40,6 +58,7 @@ class MadeAppointment {
 
   Map<String, dynamic> toMap() {
     return {
+      'appointmentName': appointmentName,
       'businessName': businessName,
       'serviceDescription': serviceDescription,
       'servicePrice': servicePrice,
