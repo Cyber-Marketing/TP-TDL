@@ -1,15 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
-import 'package:web_app/router.dart';
 import 'package:web_app/settings/firebase_options.dart';
+import 'package:web_app/widgets/pages/auth_gate.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FirebaseUIAuth.configureProviders([EmailAuthProvider()]);
 
   runApp(ChangeNotifierProvider(
     create: (context) => AppState(),
@@ -22,7 +20,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       title: 'App Turnos',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -30,7 +28,7 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 34, 255, 181)),
       ),
-      routerConfig: router,
+      home: AuthGate(),
     );
   }
 }

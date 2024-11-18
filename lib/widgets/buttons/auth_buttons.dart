@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:web_app/app_state.dart';
+import 'package:web_app/custom_page_route.dart';
+import 'package:web_app/domain/app_user.dart';
 import 'package:web_app/widgets/buttons/app_bar_button.dart';
+import 'package:web_app/widgets/pages/profile_screen.dart';
 import 'styled_button.dart';
 
 class AuthButtons extends StatelessWidget {
@@ -15,19 +19,22 @@ class AuthButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppUser? user = context.watch<AppState>().currentUser;
+
     return Row(
       children: [
-        StyledButton(
-            onPressed: () {
-              !isSignedIn ? context.goNamed('sign-in') : signOut();
-            },
-            text: !isSignedIn ? 'Iniciar sesión' : 'Cerrar sesión'),
+        StyledButton(onPressed: () => signOut(), text: 'Cerrar sesión'),
         Visibility(
           visible: isSignedIn,
           child: AppBarButton(
               tooltip: "Perfil",
               icon: Icons.account_circle,
-              onPressed: () => context.goNamed('profile')),
+              onPressed: () => Navigator.push(
+                  context,
+                  CustomPageRoute(
+                      pageWidget: ProfileScreen(
+                    user: user!,
+                  )))),
         )
       ],
     );

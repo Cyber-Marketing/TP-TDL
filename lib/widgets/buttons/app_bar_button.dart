@@ -7,7 +7,6 @@ class AppBarButton extends StatelessWidget {
   final String tooltip;
   final IconData icon;
   final void Function()? onPressed;
-
   @override
   Widget build(BuildContext context) {
     return Row(
