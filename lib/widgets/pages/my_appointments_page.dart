@@ -3,96 +3,40 @@ import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
 import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/domain/made_appointment.dart';
+import 'package:web_app/widgets/cards/appointment_card.dart';
+import 'package:web_app/widgets/section_title.dart';
 
 class MyAppointmentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<AppState>();
-    DateTime serviceDayToday = DateTime.now();
-
-    ListView myAppointments(List<MadeAppointment> appointments) {
-      if (appointments.isEmpty) {
-        return ListView(children: [
-          Padding(
-              padding: const EdgeInsets.all(20),
-              child: Text(
-                'No reservaste ningún turno aún',
-                style: TextStyle(
-                    fontSize: 30, color: const Color.fromARGB(255, 8, 63, 49)),
-              ))
-        ]);
-      }
-
-      int totalAppointments = appointments.length;
-      int length = 0;
-
-      return ListView(
-        children: [
-          FutureBuilder(
-              future: getCustomerCancelled(appState.currentUser!.uid),
-              builder: ((context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                length = snapshot.data!.data()!.length;
-
-                return Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Text(
-                        'Tenés $totalAppointments turno${totalAppointments > 1 ? 's' : ''}:',
-                        style: TextStyle(
-                            fontSize: 60,
-                            color: const Color.fromARGB(255, 8, 63, 49))));
-              })),
-          for (var appointment in appointments)
-            ListTile(
-              leading: Icon(Icons.favorite),
-              title: Text(
-                  "${appointment.businessName}\n${appointment.serviceDescription}\n${appointment.getServiceDay()}\n${appointment.getServiceTime()}\n"),
-              subtitle: IconButton(
-                  icon: Icon(Icons.cancel_outlined),
-                  tooltip: "Cancelar",
-                  color: Colors.black,
-                  onPressed: () async {
-                    late String menssage;
-                    await updateCustomerCancelledAppointment(
-                        appState.currentUser!.uid, appointment, length);
-                    menssage = 'Turno cancelado';
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(menssage)));
-                    }
-                  }),
-            )
-        ],
-      );
-    }
+    String userUid = context.watch<AppState>().currentUser!.uid;
 
     return FutureBuilder(
-      future: getCustomerAppointment(appState.currentUser!.uid),
+      future: getCustomerAppointments(userUid),
       builder: ((context, snapshot) {
         if (!snapshot.hasData) {
-          return const Center(
+          return Center(
             child: CircularProgressIndicator(),
           );
         }
         var appointments = snapshot.data!.docs
-            .map((appointmentDoc) {
-              try {
-                return MadeAppointment.fromMap(appointmentDoc.data());
-              } catch (e) {
-                print('Error creating appointment: $e');
-                return null;
-              }
-            })
-            .where((app) =>
-                app != null &&
-                app.getServiceDateTime().isAfter(serviceDayToday))
-            .cast<MadeAppointment>()
+            .map((appointmentDoc) =>
+                MadeAppointment.fromMap(appointmentDoc.data()))
+            .where((app) => app.getServiceDateTime().isAfter(DateTime.now()))
             .toList();
-        return myAppointments(appointments);
+
+        String sectionTitle = appointments.isEmpty
+            ? 'No reservaste ningún turno aún'
+            : 'Tenés ${appointments.length} turno${appointments.length > 1 ? 's' : ''}:';
+
+        return ListView(
+          padding: EdgeInsets.all(30),
+          children: [
+            SectionTitle(text: sectionTitle),
+            for (var appointment in appointments)
+              AppointmentCard(appointment: appointment, userUid: userUid)
+          ],
+        );
       }),
     );
   }

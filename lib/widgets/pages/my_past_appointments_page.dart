@@ -45,7 +45,7 @@ class MyPastAppointmentsPage extends StatelessWidget {
     }
 
     return FutureBuilder(
-      future: getCustomerAppointment(appState.currentUser!.uid),
+      future: getCustomerAppointments(appState.currentUser!.uid),
       builder: ((context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(

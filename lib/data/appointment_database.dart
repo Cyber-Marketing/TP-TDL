@@ -8,7 +8,7 @@ Future<void> addCustomerAppointment(String userUid) async {
   await database.collection('cancelled').doc(userUid).set({'user': userUid});
 }
 
-Future<QuerySnapshot<Map<String, dynamic>>> getCustomerAppointment(
+Future<QuerySnapshot<Map<String, dynamic>>> getCustomerAppointments(
     String userUid) async {
   return await database
       .collection('users')
