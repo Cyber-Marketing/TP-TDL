@@ -51,7 +51,8 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(widget.appointment.businessName),
+              Text("${widget.appointment.businessName}\n",
+               style: TextStyle(fontWeight: FontWeight.bold)),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
                   "Descripción: ",
