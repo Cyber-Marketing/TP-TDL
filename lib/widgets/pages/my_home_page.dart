@@ -7,6 +7,8 @@ import 'package:web_app/widgets/buttons/app_bar_button.dart';
 import 'package:web_app/widgets/buttons/new_service_button.dart';
 import 'main_page.dart';
 import 'my_appointments_page.dart';
+import 'my_past_appointments_page.dart';
+import 'my_cancelled_appointments_page.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -24,6 +26,10 @@ class _MyHomePageState extends State<MyHomePage> {
         page = MainPage();
       case 1:
         page = MyAppointmentsPage();
+      case 2:
+        page = MyCancelledAppointmentsPage();
+      case 3:
+        page = MyPastAppointmentsPage();
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -54,6 +60,34 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       setState(() {
                         selectedIndex = 1;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Consumer<AppState>(
+                builder: (_, appState, __) => Visibility(
+                  visible: appState.isSignedIn && appState.userIsCustomer(),
+                  child: AppBarButton(
+                    tooltip: "Mis turnos cancelados",
+                    icon: Icons.event_busy,
+                    onPressed: () {
+                      setState(() {
+                        selectedIndex = 2;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Consumer<AppState>(
+                builder: (_, appState, __) => Visibility(
+                  visible: appState.isSignedIn && appState.userIsCustomer(),
+                  child: AppBarButton(
+                    tooltip: "Mis turnos anteriores",
+                    icon: Icons.event_repeat,
+                    onPressed: () {
+                      setState(() {
+                        selectedIndex = 3;
                       });
                     },
                   ),
