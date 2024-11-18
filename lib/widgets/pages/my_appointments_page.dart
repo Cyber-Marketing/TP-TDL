@@ -8,6 +8,7 @@ class MyAppointmentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<AppState>();
+    DateTime serviceDayToday = DateTime.now();
 
     ListView myAppointments(List<MadeAppointment> appointments) {
       if (appointments.isEmpty) {
@@ -51,8 +52,10 @@ class MyAppointmentsPage extends StatelessWidget {
           int length = snapshot.data!.data()!.length;
           if (length > 1) {
             for (int i = 1; i < length; i++) {
-              appointments.add(
-                  MadeAppointment.fromMap(snapshot.data!['appointment$i']));
+              MadeAppointment app = MadeAppointment.fromMap(snapshot.data!['appointment$i']);
+              if(app.getServiceDateTime().isAfter(serviceDayToday)){
+                  appointments.add(app);
+                }
             }
           }
           return myAppointments(appointments);
