@@ -5,6 +5,7 @@ import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/domain/made_appointment.dart';
 import 'package:web_app/widgets/non_home_app_bar.dart';
+import 'package:web_app/data/free_appointments.dart';
 
 class MakeAppointmentPage extends StatefulWidget {
   MakeAppointmentPage({
@@ -26,8 +27,7 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
   Widget build(BuildContext context) {
     var appState = context.watch<AppState>();
     var completeSchedules = widget.appointment.createSchedules();
-    var newSchedules = completeSchedules.keys.toList();
-    newSchedules.add("");
+    List<String> newSchedules = [""];
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
@@ -116,21 +116,31 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                     "Seleccione el horario: ",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  DropdownButton<String>(
-                    value: serviceTime,
-                    icon: const Icon(Icons.timer),
-                    style: TextStyle(color: Colors.black),
-                    items: newSchedules
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                          value: value, child: Text(value));
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        serviceTime = newValue!;
-                      });
-                    },
-                  ),
+                  FutureBuilder<List<String>>(
+                  future: getFreeAppointments(completeSchedules,
+                      widget.appointment.businessName,serviceDay.day),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator());
+                    }
+                    newSchedules = snapshot.data!;
+                    return DropdownButton<String>(
+                      value: serviceTime,
+                      icon: const Icon(Icons.timer),
+                      style: TextStyle(color: Colors.black),
+                      items: newSchedules
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                            value: value, child: Text(value));
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          serviceTime = newValue!;
+                        });
+                      },
+                    );
+                  }),
                 ],
               ),
               IconButton(
