@@ -15,14 +15,43 @@ class ServiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.inversePrimary,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Theme.of(context).colorScheme.inversePrimary,
+          ),
       child: Center(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Negocio: ${service.businessName}\nDescripción: ${service.description}\nPrecio: ${service.price.toStringAsFixed(2)}",
-            style: TextStyle(fontSize: 20),
+            "Negocio: ",
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+
+          ),
+          Text(
+            service.businessName,
+            style: TextStyle(fontSize: 13),
+
+          ),
+          Text(
+            "Descripción: ",
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+
+          ),
+          Text(
+            service.description,
+            style: TextStyle(fontSize: 13),
+
+          ),
+          Text(
+            "Precio: ",
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+
+          ),
+          Text(
+            service.price.toStringAsFixed(2),
+            style: TextStyle(fontSize: 13),
+
           ),
           IconButton(
               iconSize: 30,
