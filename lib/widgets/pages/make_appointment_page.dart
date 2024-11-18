@@ -21,7 +21,7 @@ class MakeAppointmentPage extends StatefulWidget {
 
 class MakeAppointmentPageState extends State<MakeAppointmentPage> {
   DateTime serviceDay = DateTime.now();
-  String serviceTime = "";
+  String serviceTime = "Elegí una opción";
 
   @override
   Widget build(BuildContext context) {
@@ -150,19 +150,20 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                 color: Colors.black,
                 onPressed: () async {
                   late String menssage;
-                  if (serviceTime != "") {
+                  if (serviceTime != "Elegí una opción") {
                     if (_authorization(appointments,
                         completeSchedules[serviceTime]!, serviceDay)) {
+                          int appointmentNumber = appointments.length + 1;
                       await updateCustomerAppointment(
                           appState.currentUser!.uid,
                           MadeAppointment(
+                                  'appointment$appointmentNumber',
                                   widget.appointment.businessName,
                                   widget.appointment.serviceDescription,
                                   widget.appointment.servicePrice,
                                   serviceDay,
-                                  completeSchedules[serviceTime]!)
-                              .toMap(),
-                          appointments.length + 1);
+                                  completeSchedules[serviceTime]!),
+                          'appointment$appointmentNumber');
                       menssage = 'Turno reservado';
                       if (context.mounted) {
                         Navigator.pop(context);
