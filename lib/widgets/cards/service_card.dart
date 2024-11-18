@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:web_app/custom_page_route.dart';
 import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/domain/service.dart';
+import 'package:web_app/widgets/colored_tag.dart';
 import 'package:web_app/widgets/pages/make_appointment_page.dart';
 
 class ServiceCard extends StatelessWidget {
@@ -15,17 +16,28 @@ class ServiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.inversePrimary,
-      child: Center(
-          child: Column(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+        color: Theme.of(context).colorScheme.inversePrimary,
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 40),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Negocio: ${service.businessName}\nDescripción: ${service.description}\nPrecio: ${service.price.toStringAsFixed(2)}",
-            style: TextStyle(fontSize: 20),
+            service.businessName,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
           ),
-          IconButton(
+          Text(service.description),
+          SizedBox(height: 10),
+          ColoredTag(text: service.category),
+          SizedBox(height: 20),
+          Center(
+            child: IconButton(
+              tooltip: "Reservar turno",
               iconSize: 30,
+              icon: const Icon(Icons.book),
               onPressed: () {
                 Navigator.push(
                     context,
@@ -40,9 +52,10 @@ class ServiceCard extends StatelessWidget {
                                     hours: service.duration ~/ 60,
                                     minutes: service.duration.round() % 60)))));
               },
-              icon: const Icon(Icons.book))
+            ),
+          )
         ],
-      )),
+      ),
     );
   }
 }
