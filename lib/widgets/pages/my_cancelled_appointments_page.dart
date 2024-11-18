@@ -9,7 +9,8 @@ class MyCancelledAppointmentsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<AppState>();
 
-    ListView myCancelledAppointments(List<MadeAppointment> cancelledAppointments) {
+    ListView myCancelledAppointments(
+        List<MadeAppointment> cancelledAppointments) {
       if (cancelledAppointments.isEmpty) {
         return ListView(children: [
           Padding(
@@ -51,8 +52,8 @@ class MyCancelledAppointmentsPage extends StatelessWidget {
           int length = snapshot.data!.data()!.length;
           if (length > 1) {
             for (int i = 1; i < length; i++) {
-              cancelledAppointments.add(
-                  MadeAppointment.fromMap(snapshot.data!['cancelled$i']));
+              cancelledAppointments
+                  .add(MadeAppointment.fromMap(snapshot.data!['cancelled$i']));
             }
           }
           return myCancelledAppointments(cancelledAppointments);

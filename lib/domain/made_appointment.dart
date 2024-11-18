@@ -8,8 +8,13 @@ class MadeAppointment {
   DateTime serviceDay;
   (TimeOfDay, TimeOfDay) serviceTime;
 
-  MadeAppointment(this.appointmentName,this.businessName, this.serviceDescription, this.servicePrice,
-      this.serviceDay, this.serviceTime);
+  MadeAppointment(
+      this.appointmentName,
+      this.businessName,
+      this.serviceDescription,
+      this.servicePrice,
+      this.serviceDay,
+      this.serviceTime);
 
   String getServiceDay() {
     return "${serviceDay.day}/${serviceDay.month}/${serviceDay.year}";
@@ -20,7 +25,7 @@ class MadeAppointment {
     return "${startServiceTime.hour}:${startServiceTime.minute}hs - ${endServiceTime.hour}:${endServiceTime.minute}hs";
   }
 
-  DateTime getServiceDateTime(){
+  DateTime getServiceDateTime() {
     var (startServiceTime, endServiceTime) = serviceTime;
     return DateTime(
       serviceDay.year,
@@ -28,7 +33,7 @@ class MadeAppointment {
       serviceDay.day,
       endServiceTime.hour,
       endServiceTime.minute,
-      );
+    );
   }
 
   factory MadeAppointment.fromMap(madeAppointmentMap) {

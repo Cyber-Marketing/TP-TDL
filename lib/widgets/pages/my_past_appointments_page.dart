@@ -52,9 +52,10 @@ class MyPastAppointmentsPage extends StatelessWidget {
           int length = snapshot.data!.data()!.length;
           if (length > 1) {
             for (int i = 1; i < length; i++) {
-              MadeAppointment app = MadeAppointment.fromMap(snapshot.data!['appointment$i']);
-              if(app.getServiceDateTime().isBefore(serviceDayToday)){
-                  pastAppointments.add(app);
+              MadeAppointment app =
+                  MadeAppointment.fromMap(snapshot.data!['appointment$i']);
+              if (app.getServiceDateTime().isBefore(serviceDayToday)) {
+                pastAppointments.add(app);
               }
             }
           }

@@ -51,8 +51,7 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("${widget.appointment.businessName}\n",
-               style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(widget.appointment.businessName),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
                   "Descripción: ",
@@ -118,30 +117,30 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   FutureBuilder<List<String>>(
-                  future: getFreeAppointments(completeSchedules,
-                      widget.appointment.businessName,serviceDay.day),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(
-                        child: CircularProgressIndicator());
-                    }
-                    newSchedules = snapshot.data!;
-                    return DropdownButton<String>(
-                      value: serviceTime,
-                      icon: const Icon(Icons.timer),
-                      style: TextStyle(color: Colors.black),
-                      items: newSchedules
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                            value: value, child: Text(value));
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          serviceTime = newValue!;
-                        });
-                      },
-                    );
-                  }),
+                      future: getFreeAppointments(completeSchedules,
+                          widget.appointment.businessName, serviceDay.day),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        newSchedules = snapshot.data!;
+                        return DropdownButton<String>(
+                          value: serviceTime,
+                          icon: const Icon(Icons.timer),
+                          style: TextStyle(color: Colors.black),
+                          items: newSchedules
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                                value: value, child: Text(value));
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              serviceTime = newValue!;
+                            });
+                          },
+                        );
+                      }),
                 ],
               ),
               IconButton(
@@ -154,16 +153,16 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                   if (serviceTime != "Elegí una opción") {
                     if (_authorization(appointments,
                         completeSchedules[serviceTime]!, serviceDay)) {
-                          int appointmentNumber = appointments.length + 1;
+                      int appointmentNumber = appointments.length + 1;
                       await updateCustomerAppointment(
                           appState.currentUser!.uid,
                           MadeAppointment(
-                                  'appointment$appointmentNumber',
-                                  widget.appointment.businessName,
-                                  widget.appointment.serviceDescription,
-                                  widget.appointment.servicePrice,
-                                  serviceDay,
-                                  completeSchedules[serviceTime]!),
+                              'appointment$appointmentNumber',
+                              widget.appointment.businessName,
+                              widget.appointment.serviceDescription,
+                              widget.appointment.servicePrice,
+                              serviceDay,
+                              completeSchedules[serviceTime]!),
                           'appointment$appointmentNumber');
                       menssage = 'Turno reservado';
                       if (context.mounted) {

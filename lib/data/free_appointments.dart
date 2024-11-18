@@ -4,8 +4,10 @@ import 'package:web_app/domain/made_appointment.dart';
 
 FirebaseFirestore database = FirebaseFirestore.instance;
 
-Future<List<String>> getFreeAppointments(Map<String, (TimeOfDay, TimeOfDay)> 
-    completeSchedules,String businessName, int serviceDay) async {
+Future<List<String>> getFreeAppointments(
+    Map<String, (TimeOfDay, TimeOfDay)> completeSchedules,
+    String businessName,
+    int serviceDay) async {
   var data = await database.collection('appointments').get();
   List<String> freeAppointments = [];
   if (data.docs.isEmpty) {

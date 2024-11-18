@@ -24,53 +24,66 @@ class MyAppointmentsPage extends StatelessWidget {
       }
 
       int totalAppointments = appointments.length;
-      int length = 0;
+      // int length = 0;
 
-      return ListView(
-        children: [
-          FutureBuilder(
-              future: getCustomerCancelled(appState.currentUser!.uid),
-              builder: ((context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                length = snapshot.data!.data()!.length;
-
-                return Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Text(
-                      'Tenés $totalAppointments turno${totalAppointments > 1 ? 's' : ''}:',
-                      style: TextStyle(
-                          fontSize: 60,
-                          color: const Color.fromARGB(255, 8, 63, 49))
-                          )
-                );
-              }
-            )
-          ),
-          for (var appointment in appointments)
-            ListTile(
-              leading: Icon(Icons.favorite),
-              title: Text("${appointment.businessName}\n${appointment.serviceDescription}\n${appointment.getServiceDay()}\n${appointment.getServiceTime()}\n"),
-              subtitle: IconButton(
-                icon: Icon(Icons.cancel_outlined),
-                tooltip: "Cancelar",
-                color: Colors.black,
-                onPressed: () async {
-                  late String menssage;
-                  await updateCustomerCancelledAppointment(appState.currentUser!.uid, appointment, length);
-                  menssage = 'Turno cancelado';
-                  if(context.mounted){
-                    ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text(menssage)));
-                  }
-                }
-            ),
+      return ListView(children: [
+        Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text(
+                'Tenés $totalAppointments turno${totalAppointments > 1 ? 's' : ''}:',
+                style: TextStyle(
+                    fontSize: 60,
+                    color: const Color.fromARGB(255, 8, 63, 49)))),
+        for (var appointment in appointments)
+          ListTile(
+            leading: Icon(Icons.favorite),
+            title: Text(
+                "${appointment.businessName}\n${appointment.serviceDescription}\n${appointment.getServiceDay()}\n${appointment.getServiceTime()}"),
           )
-        ],
-      );
+      ]);
+
+      // return ListView(
+      //   children: [
+      //     FutureBuilder(
+      //         future: getCustomerCancelled(appState.currentUser!.uid),
+      //         builder: ((context, snapshot) {
+      //           if (!snapshot.hasData) {
+      //             return const Center(
+      //               child: CircularProgressIndicator(),
+      //             );
+      //           }
+      //           length = snapshot.data!.data()!.length;
+
+      //           return Padding(
+      //               padding: const EdgeInsets.all(20),
+      //               child: Text(
+      //                   'Tenés $totalAppointments turno${totalAppointments > 1 ? 's' : ''}:',
+      //                   style: TextStyle(
+      //                       fontSize: 60,
+      //                       color: const Color.fromARGB(255, 8, 63, 49))));
+      //         })),
+      //     for (var appointment in appointments)
+      //       ListTile(
+      //         leading: Icon(Icons.favorite),
+      //         title: Text(
+      //             "${appointment.businessName}\n${appointment.serviceDescription}\n${appointment.getServiceDay()}\n${appointment.getServiceTime()}\n"),
+      //         subtitle: IconButton(
+      //             icon: Icon(Icons.cancel_outlined),
+      //             tooltip: "Cancelar",
+      //             color: Colors.black,
+      //             onPressed: () async {
+      //               late String menssage;
+      //               await updateCustomerCancelledAppointment(
+      //                   appState.currentUser!.uid, appointment, length);
+      //               menssage = 'Turno cancelado';
+      //               if (context.mounted) {
+      //                 ScaffoldMessenger.of(context)
+      //                     .showSnackBar(SnackBar(content: Text(menssage)));
+      //               }
+      //             }),
+      //       )
+      //   ],
+      // );
     }
 
     return FutureBuilder(
@@ -81,10 +94,11 @@ class MyAppointmentsPage extends StatelessWidget {
           int length = snapshot.data!.data()!.length;
           if (length > 1) {
             for (int i = 1; i < length; i++) {
-              MadeAppointment app = MadeAppointment.fromMap(snapshot.data!['appointment$i']);
-              if(app.getServiceDateTime().isAfter(serviceDayToday)){
-                  appointments.add(app);
-                }
+              MadeAppointment app =
+                  MadeAppointment.fromMap(snapshot.data!['appointment$i']);
+              if (app.getServiceDateTime().isAfter(serviceDayToday)) {
+                appointments.add(app);
+              }
             }
           }
           return myAppointments(appointments);

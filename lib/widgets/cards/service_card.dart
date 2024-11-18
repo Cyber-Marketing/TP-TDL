@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:web_app/custom_page_route.dart';
 import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/domain/service.dart';
+import 'package:web_app/widgets/colored_tag.dart';
 import 'package:web_app/widgets/pages/make_appointment_page.dart';
 
 class ServiceCard extends StatelessWidget {
@@ -16,45 +17,27 @@ class ServiceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Theme.of(context).colorScheme.inversePrimary,
-          ),
-      child: Center(
-          child: Column(
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+        color: Theme.of(context).colorScheme.inversePrimary,
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 40),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Negocio: ",
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-
-          ),
-          Text(
             service.businessName,
-            style: TextStyle(fontSize: 13),
-
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
           ),
-          Text(
-            "Descripción: ",
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-
-          ),
-          Text(
-            service.description,
-            style: TextStyle(fontSize: 13),
-
-          ),
-          Text(
-            "Precio: ",
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-
-          ),
-          Text(
-            service.price.toStringAsFixed(2),
-            style: TextStyle(fontSize: 13),
-
-          ),
-          IconButton(
+          Text(service.description),
+          SizedBox(height: 10),
+          ColoredTag(text: service.category),
+          SizedBox(height: 20),
+          Center(
+            child: IconButton(
+              tooltip: "Reservar turno",
               iconSize: 30,
+              icon: const Icon(Icons.book),
               onPressed: () {
                 Navigator.push(
                     context,
@@ -69,9 +52,10 @@ class ServiceCard extends StatelessWidget {
                                     hours: service.duration ~/ 60,
                                     minutes: service.duration.round() % 60)))));
               },
-              icon: const Icon(Icons.book))
+            ),
+          )
         ],
-      )),
+      ),
     );
   }
 }
