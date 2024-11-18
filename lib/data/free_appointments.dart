@@ -6,7 +6,7 @@ FirebaseFirestore database = FirebaseFirestore.instance;
 
 Future<List<String>> getFreeAppointments(Map<String, (TimeOfDay, TimeOfDay)> 
     completeSchedules,String businessName, int serviceDay) async {
-  var data = await database.collection('data').get();
+  var data = await database.collection('appointments').get();
   List<String> freeAppointments = [];
   if (data.docs.isEmpty) {
     return freeAppointments;
@@ -32,6 +32,6 @@ Future<List<String>> getFreeAppointments(Map<String, (TimeOfDay, TimeOfDay)>
     }
   }
   freeAppointments = completeSchedules.keys.toList();
-  freeAppointments.add("");
+  freeAppointments.add("Elegí una opción");
   return freeAppointments;
 }
