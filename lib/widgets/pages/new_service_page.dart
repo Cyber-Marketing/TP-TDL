@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:provider/provider.dart';
+import 'package:web_app/app_state.dart';
 import 'package:web_app/data/service_repository.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/form_fields/custom_number_field.dart';
@@ -22,6 +24,7 @@ class _NewServicePageState extends State<NewServicePage> {
   @override
   Widget build(BuildContext context) {
     var loaderOverlay = context.loaderOverlay;
+    String userUid = context.watch<AppState>().currentUser!.uid;
 
     return LoaderOverlay(
       child: Scaffold(
@@ -45,7 +48,7 @@ class _NewServicePageState extends State<NewServicePage> {
                       "Descripción",
                     ),
                     CustomTextField(
-                        hintText: "Ingresá el nombre de tu negocio",
+                        hintText: "Ingresá una breve descripción",
                         onChanged: (value) => description = value),
                     Text(
                       "Categoría",
@@ -69,6 +72,7 @@ class _NewServicePageState extends State<NewServicePage> {
                       onPressed: () async {
                         if (!formKey.currentState!.validate()) return;
                         var service = Service(
+                            ownerUid: userUid,
                             businessName: businessName,
                             description: description,
                             category: category,

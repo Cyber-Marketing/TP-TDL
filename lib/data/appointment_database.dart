@@ -5,6 +5,13 @@ import 'package:web_app/domain/made_appointment.dart';
 
 FirebaseFirestore database = FirebaseFirestore.instance;
 
+Stream<QuerySnapshot<Map<String, dynamic>>> getUserAppointmentsStream(userUid) {
+  return database
+      .collection('appointments')
+      .where('userUid', isEqualTo: userUid)
+      .snapshots();
+}
+
 Future<QuerySnapshot<Map<String, dynamic>>> getUserAppointments(
     String userUid) async {
   return await database

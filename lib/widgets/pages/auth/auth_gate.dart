@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/material.dart';
-import 'package:web_app/widgets/custom_auth/welcome_screen.dart';
+import 'package:web_app/widgets/pages/auth/welcome_screen.dart';
 import 'package:web_app/widgets/pages/my_home_page.dart';
 
 class AuthGate extends StatelessWidget {

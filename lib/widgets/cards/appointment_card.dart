@@ -31,16 +31,31 @@ class AppointmentCard extends StatelessWidget {
           Text(appointment.getServiceTime()),
           isCancellable
               ? IconButton(
-                  icon: Icon(Icons.cancel_outlined),
+                  icon: Icon(Icons.disabled_by_default),
                   tooltip: "Cancelar",
                   color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  onPressed: () {
-                    cancelAppointment(userUid, appointment);
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Turno cancelado')));
-                    }
-                  })
+                  onPressed: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: Text('¿Seguro querés cancelar el turno?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('No'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            cancelAppointment(userUid, appointment);
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Turno cancelado')));
+                          },
+                          child: Text('Sí'),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               : Container()
         ],
       ),

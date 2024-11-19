@@ -8,9 +8,8 @@ class ServicesRepository {
   ServicesRepository();
 
   save(Service service) async {
-    var serviceMap = service.toMap();
     collection
-        .add(serviceMap)
+        .add(service.toMap())
         .then((value) => print("Service created successfully!"))
         .catchError((error) => print("Failed to create service: $error"));
     return;

@@ -1,4 +1,5 @@
 class Service {
+  String ownerUid;
   String businessName;
   String description;
   String category;
@@ -6,7 +7,8 @@ class Service {
   double price;
 
   Service(
-      {required this.businessName,
+      {required this.ownerUid,
+      required this.businessName,
       required this.description,
       required this.category,
       required this.duration,
@@ -14,6 +16,7 @@ class Service {
 
   factory Service.fromMap(serviceMap) {
     return Service(
+      ownerUid: serviceMap["ownerUid"],
       businessName: serviceMap["businessName"],
       description: serviceMap["description"],
       category: serviceMap["category"],
@@ -24,6 +27,7 @@ class Service {
 
   Map<String, dynamic> toMap() {
     return {
+      'ownerUid': ownerUid,
       'businessName': businessName,
       'description': description,
       'category': category,

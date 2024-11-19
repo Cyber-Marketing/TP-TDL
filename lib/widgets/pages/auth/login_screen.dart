@@ -4,7 +4,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:web_app/custom_page_route.dart';
 import 'package:web_app/widgets/form_fields/custom_email_field.dart';
 import 'package:web_app/widgets/form_fields/custom_password_field.dart';
-import 'package:web_app/widgets/pages/auth_gate.dart';
+import 'package:web_app/widgets/pages/auth/auth_gate.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

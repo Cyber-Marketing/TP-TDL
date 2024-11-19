@@ -37,7 +37,7 @@ class ServiceCard extends StatelessWidget {
             child: IconButton(
               tooltip: "Reservar turno",
               iconSize: 30,
-              icon: const Icon(Icons.book),
+              icon: const Icon(Icons.bookmarks),
               onPressed: () {
                 Navigator.push(
                     context,

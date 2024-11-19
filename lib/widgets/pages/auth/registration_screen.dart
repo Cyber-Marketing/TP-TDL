@@ -8,7 +8,7 @@ import 'package:web_app/domain/app_user.dart';
 import 'package:web_app/widgets/form_fields/custom_email_field.dart';
 import 'package:web_app/widgets/form_fields/custom_password_field.dart';
 import 'package:web_app/widgets/form_fields/custom_text_field.dart';
-import 'package:web_app/widgets/pages/auth_gate.dart';
+import 'package:web_app/widgets/pages/auth/auth_gate.dart';
 
 class RegistrationScreen extends StatefulWidget {
   @override

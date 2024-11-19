@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
 import 'package:web_app/settings/firebase_options.dart';
-import 'package:web_app/widgets/pages/auth_gate.dart';
+import 'package:web_app/widgets/pages/auth/auth_gate.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
