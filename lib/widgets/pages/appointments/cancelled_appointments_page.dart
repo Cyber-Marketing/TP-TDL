@@ -6,13 +6,13 @@ import 'package:web_app/domain/made_appointment.dart';
 import 'package:web_app/widgets/cards/appointment_card.dart';
 import 'package:web_app/widgets/section_title.dart';
 
-class MyPastAppointmentsPage extends StatelessWidget {
+class CancelledAppointmentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String userUid = context.watch<AppState>().currentUser!.uid;
 
     return FutureBuilder(
-      future: getUserAppointments(userUid),
+      future: getUserCancelledAppointments(userUid),
       builder: ((context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -25,12 +25,12 @@ class MyPastAppointmentsPage extends StatelessWidget {
               appointmentMap['uid'] = docSnapshot.id;
               return MadeAppointment.fromMap(appointmentMap);
             })
-            .where((app) => app.hasEnded())
+            .where((app) => app.getServiceDateTime().isAfter(DateTime.now()))
             .toList();
 
         String sectionTitle = appointments.isEmpty
-            ? 'No tenés turnos terminados'
-            : 'Tuviste ${appointments.length} turno${appointments.length > 1 ? 's' : ''}:';
+            ? 'No cancelaste ningún turno aún'
+            : 'Cancelaste ${appointments.length} turno${appointments.length > 1 ? 's' : ''} :';
 
         return ListView(
           padding: EdgeInsets.all(30),
@@ -40,7 +40,7 @@ class MyPastAppointmentsPage extends StatelessWidget {
               AppointmentCard(
                   appointment: appointment,
                   userUid: userUid,
-                  isCancellable: false)
+                  isCancellable: false),
           ],
         );
       }),

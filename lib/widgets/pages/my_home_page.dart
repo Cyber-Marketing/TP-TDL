@@ -6,9 +6,9 @@ import 'package:web_app/widgets/buttons/auth_buttons.dart';
 import 'package:web_app/widgets/buttons/app_bar_button.dart';
 import 'package:web_app/widgets/buttons/new_service_button.dart';
 import 'main_page.dart';
-import 'appointments/my_appointments_page.dart';
-import 'appointments/my_past_appointments_page.dart';
-import 'appointments/my_cancelled_appointments_page.dart';
+import 'appointments/pending_appointments_page.dart';
+import 'appointments/ended_appointments_page.dart';
+import 'appointments/cancelled_appointments_page.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -25,11 +25,11 @@ class _MyHomePageState extends State<MyHomePage> {
       case 0:
         page = MainPage();
       case 1:
-        page = MyAppointmentsPage();
+        page = PendingAppointmentsPage();
       case 2:
-        page = MyCancelledAppointmentsPage();
+        page = CancelledAppointmentsPage();
       case 3:
-        page = MyPastAppointmentsPage();
+        page = EndedAppointmentsPage();
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 builder: (_, appState, __) => Visibility(
                   visible: appState.isSignedIn && appState.userIsCustomer(),
                   child: AppBarButton(
-                    tooltip: "Mis turnos",
+                    tooltip: "Turnos pendientes",
                     icon: Icons.event,
                     onPressed: () {
                       setState(() {
@@ -69,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 builder: (_, appState, __) => Visibility(
                   visible: appState.isSignedIn && appState.userIsCustomer(),
                   child: AppBarButton(
-                    tooltip: "Mis turnos cancelados",
+                    tooltip: "Turnos cancelados",
                     icon: Icons.event_busy,
                     onPressed: () {
                       setState(() {
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 builder: (_, appState, __) => Visibility(
                   visible: appState.isSignedIn && appState.userIsCustomer(),
                   child: AppBarButton(
-                    tooltip: "Mis turnos anteriores",
+                    tooltip: "Turnos terminados",
                     icon: Icons.event_repeat,
                     onPressed: () {
                       setState(() {
