@@ -45,22 +45,30 @@ class MyCancelledAppointmentsPage extends StatelessWidget {
     }
 
     return FutureBuilder(
-      future: getCustomerCancelled(appState.currentUser!.uid),
+      future: getUserCancelledAppointments(appState.currentUser!.uid),
       builder: ((context, snapshot) {
-        if (snapshot.hasData) {
-          List<MadeAppointment> cancelledAppointments = [];
-          int length = snapshot.data!.data()!.length;
-          if (length > 1) {
-            for (int i = 1; i < length; i++) {
-              cancelledAppointments
-                  .add(MadeAppointment.fromMap(snapshot.data!['cancelled$i']));
-            }
-          }
-          return myCancelledAppointments(cancelledAppointments);
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        var cancelledAppointments = snapshot.data!.docs
+            .map((docSnapshot) {
+              var appointmentMap = docSnapshot.data();
+              appointmentMap['uid'] = docSnapshot.id;
+              return MadeAppointment.fromMap(appointmentMap);
+            })
+            .where((app) => app.getServiceDateTime().isAfter(DateTime.now()))
+            .toList();
+        // List<MadeAppointment> cancelledAppointments = [];
+        // int length = snapshot.data!.data()!.length;
+        // if (length > 1) {
+        //   for (int i = 1; i < length; i++) {
+        //     cancelledAppointments
+        //         .add(MadeAppointment.fromMap(snapshot.data!['cancelled$i']));
+        //   }
+        // }
+        return myCancelledAppointments(cancelledAppointments);
       }),
     );
   }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class MadeAppointment {
+  String uid = '';
   String appointmentName;
   String businessName;
   String serviceDescription;
   double servicePrice;
   DateTime serviceDay;
   (TimeOfDay, TimeOfDay) serviceTime;
+  bool isCancelled = false;
 
   MadeAppointment(
       this.appointmentName,
@@ -37,7 +39,7 @@ class MadeAppointment {
   }
 
   factory MadeAppointment.fromMap(madeAppointmentMap) {
-    return MadeAppointment(
+    var instance = MadeAppointment(
         madeAppointmentMap['appointmentName'],
         madeAppointmentMap['businessName'],
         madeAppointmentMap['serviceDescription'],
@@ -54,6 +56,9 @@ class MadeAppointment {
               hour: madeAppointmentMap['serviceTime.\$2.hour'],
               minute: madeAppointmentMap['serviceTime.\$2.minute'])
         ));
+    instance.uid = madeAppointmentMap['uid'];
+    instance.isCancelled = madeAppointmentMap['isCancelled'];
+    return instance;
   }
 
   Map<String, dynamic> toMap() {
@@ -69,6 +74,7 @@ class MadeAppointment {
       'serviceTime.\$1.minute': serviceTime.$1.minute,
       'serviceTime.\$2.hour': serviceTime.$2.hour,
       'serviceTime.\$2.minute': serviceTime.$2.minute,
+      'isCancelled': isCancelled,
     };
   }
 }

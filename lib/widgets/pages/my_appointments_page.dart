@@ -12,7 +12,7 @@ class MyAppointmentsPage extends StatelessWidget {
     String userUid = context.watch<AppState>().currentUser!.uid;
 
     return FutureBuilder(
-      future: getCustomerAppointments(userUid),
+      future: getUserAppointments(userUid),
       builder: ((context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
@@ -20,8 +20,11 @@ class MyAppointmentsPage extends StatelessWidget {
           );
         }
         var appointments = snapshot.data!.docs
-            .map((appointmentDoc) =>
-                MadeAppointment.fromMap(appointmentDoc.data()))
+            .map((docSnapshot) {
+              var appointmentMap = docSnapshot.data();
+              appointmentMap['uid'] = docSnapshot.id;
+              return MadeAppointment.fromMap(appointmentMap);
+            })
             .where((app) => app.getServiceDateTime().isAfter(DateTime.now()))
             .toList();
 

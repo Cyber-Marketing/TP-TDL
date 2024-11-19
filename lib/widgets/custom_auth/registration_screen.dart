@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:web_app/custom_page_route.dart';
-import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/data/users_repository.dart';
 import 'package:web_app/domain/app_user.dart';
 import 'package:web_app/widgets/form_fields/custom_email_field.dart';
@@ -101,8 +100,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           .then((value) {
                         appUser.uid = value.user!.uid;
                         UsersRepository().save(appUser);
-                        // Mover coleccion de appointments de un user adentro del documento user
-                        addCustomerAppointment(value.user!.uid);
                       });
                     } on FirebaseAuthException catch (e) {
                       String errorMessage = 'Default error';

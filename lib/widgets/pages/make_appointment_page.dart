@@ -34,7 +34,7 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       appBar: NonHomeAppBar(context, text: "Reservar turno"),
       body: FutureBuilder(
-        future: getCustomerAppointments(appState.currentUser!.uid),
+        future: getUserAppointments(appState.currentUser!.uid),
         builder: ((context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(

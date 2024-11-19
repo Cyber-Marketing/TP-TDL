@@ -8,18 +8,24 @@ Future<void> addCustomerAppointment(String userUid) async {
   await database.collection('cancelled').doc(userUid).set({'user': userUid});
 }
 
-Future<QuerySnapshot<Map<String, dynamic>>> getCustomerAppointments(
+Future<QuerySnapshot<Map<String, dynamic>>> getUserAppointments(
     String userUid) async {
   return await database
       .collection('users')
       .doc(userUid)
       .collection('appointments')
+      .where('isCancelled', isEqualTo: false)
       .get();
 }
 
-Future<DocumentSnapshot<Map<String, dynamic>>> getCustomerCancelled(
+Future<QuerySnapshot<Map<String, dynamic>>> getUserCancelledAppointments(
     String userUid) async {
-  return await database.collection('cancelled').doc(userUid).get();
+  return await database
+      .collection('users')
+      .doc(userUid)
+      .collection('appointments')
+      .where('isCancelled', isEqualTo: true)
+      .get();
 }
 
 Future<void> updateCustomerAppointment(
@@ -30,14 +36,20 @@ Future<void> updateCustomerAppointment(
       .update({appointmentName: appointment.toMap()});
 }
 
-Future<void> updateCustomerCancelledAppointment(
-    String user, MadeAppointment appointment, int number) async {
+Future<void> cancelAppointment(
+    String userUid, MadeAppointment appointment) async {
   await database
-      .collection('cancelled')
-      .doc(user)
-      .update({'cancelled$number': appointment.toMap()});
-  await database
+      .collection('users')
+      .doc(userUid)
       .collection('appointments')
-      .doc(user)
-      .update({appointment.appointmentName: FieldValue.delete()});
+      .doc(appointment.uid)
+      .update({"isCancelled": true});
+  // await database
+  //     .collection('cancelled')
+  //     .doc(user)
+  //     .update({'cancelled$number': appointment.toMap()});
+  // await database
+  //     .collection('appointments')
+  //     .doc(user)
+  //     .update({appointment.appointmentName: FieldValue.delete()});
 }

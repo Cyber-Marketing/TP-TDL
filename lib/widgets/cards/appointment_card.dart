@@ -24,15 +24,16 @@ class AppointmentCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-              "${appointment.businessName}\n${appointment.serviceDescription}\n${appointment.getServiceDay()}\n${appointment.getServiceTime()}\n"),
+          Text(appointment.businessName),
+          Text(appointment.serviceDescription),
+          Text(appointment.getServiceDay()),
+          Text(appointment.getServiceTime()),
           IconButton(
               icon: Icon(Icons.cancel_outlined),
               tooltip: "Cancelar",
-              color: Colors.black,
-              onPressed: () async {
-                await updateCustomerCancelledAppointment(
-                    userUid, appointment, 0);
+              color: Theme.of(context).colorScheme.inversePrimary,
+              onPressed: () {
+                cancelAppointment(userUid, appointment);
                 if (context.mounted) {
                   ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text('Turno cancelado')));
