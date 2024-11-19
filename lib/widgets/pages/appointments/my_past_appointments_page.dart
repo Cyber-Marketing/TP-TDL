@@ -6,7 +6,7 @@ import 'package:web_app/domain/made_appointment.dart';
 import 'package:web_app/widgets/cards/appointment_card.dart';
 import 'package:web_app/widgets/section_title.dart';
 
-class MyAppointmentsPage extends StatelessWidget {
+class MyPastAppointmentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String userUid = context.watch<AppState>().currentUser!.uid;
@@ -15,7 +15,7 @@ class MyAppointmentsPage extends StatelessWidget {
       future: getUserAppointments(userUid),
       builder: ((context, snapshot) {
         if (!snapshot.hasData) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
@@ -25,19 +25,22 @@ class MyAppointmentsPage extends StatelessWidget {
               appointmentMap['uid'] = docSnapshot.id;
               return MadeAppointment.fromMap(appointmentMap);
             })
-            .where((app) => app.getServiceDateTime().isAfter(DateTime.now()))
+            .where((app) => app.hasEnded())
             .toList();
 
         String sectionTitle = appointments.isEmpty
-            ? 'No reservaste ningún turno aún'
-            : 'Tenés ${appointments.length} turno${appointments.length > 1 ? 's' : ''}:';
+            ? 'No tenés turnos terminados'
+            : 'Tuviste ${appointments.length} turno${appointments.length > 1 ? 's' : ''}:';
 
         return ListView(
           padding: EdgeInsets.all(30),
           children: [
             SectionTitle(text: sectionTitle),
             for (var appointment in appointments)
-              AppointmentCard(appointment: appointment, userUid: userUid)
+              AppointmentCard(
+                  appointment: appointment,
+                  userUid: userUid,
+                  isCancellable: false)
           ],
         );
       }),

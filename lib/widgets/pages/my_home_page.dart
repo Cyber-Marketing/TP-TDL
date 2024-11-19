@@ -6,9 +6,9 @@ import 'package:web_app/widgets/buttons/auth_buttons.dart';
 import 'package:web_app/widgets/buttons/app_bar_button.dart';
 import 'package:web_app/widgets/buttons/new_service_button.dart';
 import 'main_page.dart';
-import 'my_appointments_page.dart';
-import 'my_past_appointments_page.dart';
-import 'my_cancelled_appointments_page.dart';
+import 'appointments/my_appointments_page.dart';
+import 'appointments/my_past_appointments_page.dart';
+import 'appointments/my_cancelled_appointments_page.dart';
 
 class MyHomePage extends StatefulWidget {
   @override

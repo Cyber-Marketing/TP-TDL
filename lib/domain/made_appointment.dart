@@ -65,4 +65,8 @@ class MadeAppointment {
       'isCancelled': isCancelled,
     };
   }
+
+  bool hasEnded() {
+    return getServiceDateTime().isBefore(DateTime.now());
+  }
 }

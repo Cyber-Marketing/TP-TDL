@@ -3,7 +3,7 @@ import 'package:web_app/custom_page_route.dart';
 import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/colored_tag.dart';
-import 'package:web_app/widgets/pages/make_appointment_page.dart';
+import 'package:web_app/widgets/pages/appointments/make_appointment_page.dart';
 
 class ServiceCard extends StatelessWidget {
   ServiceCard({
