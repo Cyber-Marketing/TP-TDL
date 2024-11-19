@@ -7,8 +7,7 @@ import 'package:web_app/domain/made_appointment.dart';
 class MyPastAppointmentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<AppState>();
-    DateTime serviceDayToday = DateTime.now();
+    String userUid = context.watch<AppState>().currentUser!.uid;
 
     ListView myPastAppointments(List<MadeAppointment> pastAppointments) {
       if (pastAppointments.isEmpty) {
@@ -45,7 +44,7 @@ class MyPastAppointmentsPage extends StatelessWidget {
     }
 
     return FutureBuilder(
-      future: getUserAppointments(appState.currentUser!.uid),
+      future: getUserAppointments(userUid),
       builder: ((context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -53,18 +52,12 @@ class MyPastAppointmentsPage extends StatelessWidget {
           );
         }
         var pastAppointments = snapshot.data!.docs
-            .map((appointmentDoc) {
-              try {
-                return MadeAppointment.fromMap(appointmentDoc.data());
-              } catch (e) {
-                print('Error creating appointment: $e');
-                return null;
-              }
+            .map((docSnapshot) {
+              var appointmentMap = docSnapshot.data();
+              appointmentMap['uid'] = docSnapshot.id;
+              return MadeAppointment.fromMap(appointmentMap);
             })
-            .where((app) =>
-                app != null &&
-                app.getServiceDateTime().isBefore(serviceDayToday))
-            .cast<MadeAppointment>()
+            .where((app) => app.getServiceDateTime().isBefore(DateTime.now()))
             .toList();
         return myPastAppointments(pastAppointments);
       }),
