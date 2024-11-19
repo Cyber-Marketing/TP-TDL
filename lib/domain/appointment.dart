@@ -30,20 +30,21 @@ class Appointment {
 
   Map<String, (TimeOfDay, TimeOfDay)> createSchedules() {
     Map<String, (TimeOfDay, TimeOfDay)> schedules = {};
-    DateTime service = timeRange.start;
-    TimeOfDay serviceTime =
-        TimeOfDay(hour: timeRange.start.hour, minute: timeRange.start.minute);
-    TimeOfDay close =
-        TimeOfDay(hour: timeRange.end.hour, minute: timeRange.end.minute);
-    while (serviceTime.isBefore(close)) {
-      String schedule = "${service.hour}:${service.minute}hs - ";
-      service = service.add(serviceDuration);
+
+    DateTime startTimeIterator = timeRange.start;
+    TimeOfDay startTime = TimeOfDay.fromDateTime(timeRange.start);
+    TimeOfDay closeTime = TimeOfDay.fromDateTime(timeRange.end);
+    while (startTime.isBefore(closeTime)) {
+      String schedule =
+          "${startTimeIterator.hour}:${startTimeIterator.minute}hs - ";
+      startTimeIterator = startTimeIterator.add(serviceDuration);
       TimeOfDay start =
-          TimeOfDay(hour: serviceTime.hour, minute: serviceTime.minute);
-      serviceTime = TimeOfDay(hour: service.hour, minute: service.minute);
-      if (serviceTime.isBefore(close) || serviceTime.isAtSameTimeAs(close)) {
-        schedule = "$schedule${serviceTime.hour}:${serviceTime.minute}hs";
-        schedules[schedule] = (start, serviceTime);
+          TimeOfDay(hour: startTime.hour, minute: startTime.minute);
+      startTime = TimeOfDay.fromDateTime(startTimeIterator);
+      if (startTime.isBefore(closeTime) ||
+          startTime.isAtSameTimeAs(closeTime)) {
+        schedule = "$schedule${startTime.hour}:${startTime.minute}hs";
+        schedules[schedule] = (start, startTime);
       }
     }
     return schedules;

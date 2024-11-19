@@ -2,21 +2,16 @@ import 'package:flutter/material.dart';
 
 class MadeAppointment {
   String uid = '';
-  String appointmentName;
   String businessName;
   String serviceDescription;
   double servicePrice;
   DateTime serviceDay;
   (TimeOfDay, TimeOfDay) serviceTime;
-  bool isCancelled = false;
+  bool isCancelled;
 
-  MadeAppointment(
-      this.appointmentName,
-      this.businessName,
-      this.serviceDescription,
-      this.servicePrice,
-      this.serviceDay,
-      this.serviceTime);
+  MadeAppointment(this.businessName, this.serviceDescription, this.servicePrice,
+      this.serviceDay, this.serviceTime,
+      {this.isCancelled = false});
 
   String getServiceDay() {
     return "${serviceDay.day}/${serviceDay.month}/${serviceDay.year}";
@@ -40,14 +35,11 @@ class MadeAppointment {
 
   factory MadeAppointment.fromMap(madeAppointmentMap) {
     var instance = MadeAppointment(
-        madeAppointmentMap['appointmentName'],
+        isCancelled: madeAppointmentMap['isCancelled'],
         madeAppointmentMap['businessName'],
         madeAppointmentMap['serviceDescription'],
         madeAppointmentMap['servicePrice'],
-        DateTime(
-            madeAppointmentMap['serviceDay.year'],
-            madeAppointmentMap['serviceDay.month'],
-            madeAppointmentMap['serviceDay.day']),
+        DateTime.parse(madeAppointmentMap['serviceDay']),
         (
           TimeOfDay(
               hour: madeAppointmentMap['serviceTime.\$1.hour'],
@@ -57,19 +49,15 @@ class MadeAppointment {
               minute: madeAppointmentMap['serviceTime.\$2.minute'])
         ));
     instance.uid = madeAppointmentMap['uid'];
-    instance.isCancelled = madeAppointmentMap['isCancelled'];
     return instance;
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'appointmentName': appointmentName,
       'businessName': businessName,
       'serviceDescription': serviceDescription,
       'servicePrice': servicePrice,
-      'serviceDay.year': serviceDay.year,
-      'serviceDay.month': serviceDay.month,
-      'serviceDay.day': serviceDay.day,
+      'serviceDay': serviceDay.toString(),
       'serviceTime.\$1.hour': serviceTime.$1.hour,
       'serviceTime.\$1.minute': serviceTime.$1.minute,
       'serviceTime.\$2.hour': serviceTime.$2.hour,

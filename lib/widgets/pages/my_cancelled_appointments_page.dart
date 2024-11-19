@@ -3,56 +3,23 @@ import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
 import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/domain/made_appointment.dart';
+import 'package:web_app/widgets/cards/appointment_card.dart';
+import 'package:web_app/widgets/section_title.dart';
 
 class MyCancelledAppointmentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<AppState>();
-
-    ListView myCancelledAppointments(
-        List<MadeAppointment> cancelledAppointments) {
-      if (cancelledAppointments.isEmpty) {
-        return ListView(children: [
-          Padding(
-              padding: const EdgeInsets.all(20),
-              child: Text(
-                'No cancelaste ningún turno aún',
-                style: TextStyle(
-                    fontSize: 30, color: const Color.fromARGB(255, 8, 63, 49)),
-              ))
-        ]);
-      }
-
-      int totalCancelledAppointments = cancelledAppointments.length;
-
-      return ListView(
-        children: [
-          Padding(
-              padding: const EdgeInsets.all(20),
-              child: Text(
-                  'Cancelaste $totalCancelledAppointments turno${totalCancelledAppointments > 1 ? 's' : ''} :',
-                  style: TextStyle(
-                      fontSize: 60,
-                      color: const Color.fromARGB(255, 8, 63, 49)))),
-          for (var appointment in cancelledAppointments)
-            ListTile(
-              leading: Icon(Icons.delete_forever),
-              title: Text(
-                  "${appointment.businessName}\n${appointment.serviceDescription}\n${appointment.getServiceDay()}\n${appointment.getServiceTime()}"),
-            ),
-        ],
-      );
-    }
+    String userUid = context.watch<AppState>().currentUser!.uid;
 
     return FutureBuilder(
-      future: getUserCancelledAppointments(appState.currentUser!.uid),
+      future: getUserCancelledAppointments(userUid),
       builder: ((context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
-        var cancelledAppointments = snapshot.data!.docs
+        var appointments = snapshot.data!.docs
             .map((docSnapshot) {
               var appointmentMap = docSnapshot.data();
               appointmentMap['uid'] = docSnapshot.id;
@@ -60,15 +27,22 @@ class MyCancelledAppointmentsPage extends StatelessWidget {
             })
             .where((app) => app.getServiceDateTime().isAfter(DateTime.now()))
             .toList();
-        // List<MadeAppointment> cancelledAppointments = [];
-        // int length = snapshot.data!.data()!.length;
-        // if (length > 1) {
-        //   for (int i = 1; i < length; i++) {
-        //     cancelledAppointments
-        //         .add(MadeAppointment.fromMap(snapshot.data!['cancelled$i']));
-        //   }
-        // }
-        return myCancelledAppointments(cancelledAppointments);
+
+        String sectionTitle = appointments.isEmpty
+            ? 'No cancelaste ningún turno aún'
+            : 'Cancelaste ${appointments.length} turno${appointments.length > 1 ? 's' : ''} :';
+
+        return ListView(
+          padding: EdgeInsets.all(30),
+          children: [
+            SectionTitle(text: sectionTitle),
+            for (var appointment in appointments)
+              AppointmentCard(
+                  appointment: appointment,
+                  userUid: userUid,
+                  isCancellable: false),
+          ],
+        );
       }),
     );
   }

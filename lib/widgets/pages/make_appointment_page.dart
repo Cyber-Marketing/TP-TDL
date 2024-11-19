@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
@@ -6,7 +5,6 @@ import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/domain/made_appointment.dart';
 import 'package:web_app/widgets/non_home_app_bar.dart';
-import 'package:web_app/data/free_appointments.dart';
 
 class MakeAppointmentPage extends StatefulWidget {
   MakeAppointmentPage({
@@ -21,12 +19,13 @@ class MakeAppointmentPage extends StatefulWidget {
 }
 
 class MakeAppointmentPageState extends State<MakeAppointmentPage> {
-  DateTime serviceDay = DateTime.now();
+  DateTime serviceDay =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   String serviceTime = "Elegí una opción";
 
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<AppState>();
+    var userUid = context.watch<AppState>().currentUser!.uid;
     var completeSchedules = widget.appointment.createSchedules();
     List<String> newSchedules = [""];
 
@@ -34,7 +33,7 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       appBar: NonHomeAppBar(context, text: "Reservar turno"),
       body: FutureBuilder(
-        future: getUserAppointments(appState.currentUser!.uid),
+        future: getUserAppointments(userUid),
         builder: ((context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -42,9 +41,11 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
             );
           }
           var appointments = snapshot.data!.docs
-              .map((appointmentDoc) {
+              .map((snapshotDoc) {
                 try {
-                  return MadeAppointment.fromMap(appointmentDoc.data());
+                  var appointmentMap = snapshotDoc.data();
+                  appointmentMap['uid'] = snapshotDoc.id;
+                  return MadeAppointment.fromMap(appointmentMap);
                 } catch (e) {
                   print('Error creating appointment: $e');
                   return null;
@@ -90,25 +91,21 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Seleccione el día: ",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
                   IconButton(
+                    icon: const Icon(Icons.calendar_month),
                     onPressed: () async {
-                      DateTime? newserviceTime = await showDatePicker(
+                      DateTime? newServiceTime = await showDatePicker(
                           context: context,
                           initialDate: serviceDay,
                           firstDate: widget.appointment.timeRange.start,
                           lastDate: widget.appointment.timeRange.end,
                           helpText: "Seleccione el día");
-                      if (newserviceTime != null) {
+                      if (newServiceTime != null) {
                         setState(() {
-                          serviceDay = newserviceTime;
+                          serviceDay = newServiceTime;
                         });
                       }
                     },
-                    icon: const Icon(Icons.calendar_month),
                   ),
                   Text(
                       "${serviceDay.day}/${serviceDay.month}/${serviceDay.year}"),
@@ -123,7 +120,7 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                   ),
                   FutureBuilder<List<String>>(
                       future: getFreeAppointments(completeSchedules,
-                          widget.appointment.businessName, serviceDay.day),
+                          widget.appointment.businessName, serviceDay),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
                           return const Center(
@@ -158,23 +155,8 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                   if (serviceTime != "Elegí una opción") {
                     if (_authorization(appointments,
                         completeSchedules[serviceTime]!, serviceDay)) {
-                      int appointmentNumber = appointments.length + 1;
-                      FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(appState.currentUser!.uid)
-                          .collection("appointments")
-                          .add(MadeAppointment(
-                                  'appointment$appointmentNumber',
-                                  widget.appointment.businessName,
-                                  widget.appointment.serviceDescription,
-                                  widget.appointment.servicePrice,
-                                  serviceDay,
-                                  completeSchedules[serviceTime]!)
-                              .toMap())
-                          .then(
-                              (value) => print("Service created successfully!"))
-                          .catchError((error) =>
-                              print("Failed to create service: $error"));
+                      makeAppointment(userUid, widget.appointment,
+                          completeSchedules, serviceDay, serviceTime);
                       menssage = 'Turno reservado';
                       if (context.mounted) {
                         Navigator.pop(context);
