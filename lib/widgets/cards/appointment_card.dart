@@ -38,19 +38,19 @@ class AppointmentCard extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
                       title: Text('¿Seguro querés cancelar el turno?'),
-                      actions: <Widget>[
+                      actions: [
                         TextButton(
-                          onPressed: () => Navigator.pop(context),
                           child: Text('No'),
+                          onPressed: () => Navigator.pop(context),
                         ),
                         TextButton(
+                          child: Text('Sí'),
                           onPressed: () {
                             cancelAppointment(userUid, appointment);
                             Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text('Turno cancelado')));
                           },
-                          child: Text('Sí'),
                         ),
                       ],
                     ),

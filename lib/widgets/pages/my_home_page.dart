@@ -5,6 +5,7 @@ import 'package:web_app/app_state.dart';
 import 'package:web_app/widgets/buttons/auth_buttons.dart';
 import 'package:web_app/widgets/buttons/app_bar_button.dart';
 import 'package:web_app/widgets/buttons/new_service_button.dart';
+import 'package:web_app/widgets/pages/my_services_page.dart';
 import 'main_page.dart';
 import 'appointments/pending_appointments_page.dart';
 import 'appointments/ended_appointments_page.dart';
@@ -30,6 +31,8 @@ class _MyHomePageState extends State<MyHomePage> {
         page = CancelledAppointmentsPage();
       case 3:
         page = EndedAppointmentsPage();
+      case 4:
+        page = MyServicesPage();
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -88,6 +91,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       setState(() {
                         selectedIndex = 3;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Consumer<AppState>(
+                builder: (_, appState, __) => Visibility(
+                  visible: appState.isSignedIn && !appState.userIsCustomer(),
+                  child: AppBarButton(
+                    tooltip: "Mis servicios",
+                    icon: Icons.store_outlined,
+                    onPressed: () {
+                      setState(() {
+                        selectedIndex = 4;
                       });
                     },
                   ),

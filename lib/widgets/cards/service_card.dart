@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:web_app/custom_page_route.dart';
-import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/domain/service.dart';
-import 'package:web_app/widgets/colored_tag.dart';
-import 'package:web_app/widgets/pages/appointments/make_appointment_page.dart';
 
 class ServiceCard extends StatelessWidget {
-  ServiceCard({
-    super.key,
-    required this.service,
-  });
+  ServiceCard({required this.service});
 
   final Service service;
 
@@ -20,40 +13,44 @@ class ServiceCard extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(15)),
         color: Theme.of(context).colorScheme.inversePrimary,
       ),
-      padding: EdgeInsets.symmetric(horizontal: 40),
+      margin: EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            service.businessName,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-          ),
+          Text(service.businessName),
           Text(service.description),
-          SizedBox(height: 10),
-          ColoredTag(text: service.category),
-          SizedBox(height: 20),
-          Center(
-            child: IconButton(
-              tooltip: "Reservar turno",
-              iconSize: 30,
-              icon: const Icon(Icons.bookmarks),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    CustomPageRoute(
-                        pageWidget: MakeAppointmentPage(
-                            appointment: Appointment(
-                                businessName: service.businessName,
-                                serviceDescription: service.description,
-                                category: service.category,
-                                servicePrice: service.price,
-                                serviceDuration: Duration(
-                                    hours: service.duration ~/ 60,
-                                    minutes: service.duration.round() % 60)))));
-              },
-            ),
-          )
+          Text(service.category),
+          Text(service.duration.toString()),
+          Text(service.price.toString()),
+          // isCancellable
+          //     ? IconButton(
+          //         icon: Icon(Icons.disabled_by_default),
+          //         tooltip: "Cancelar",
+          //         color: Theme.of(context).colorScheme.onPrimaryContainer,
+          //         onPressed: () => showDialog<String>(
+          //           context: context,
+          //           builder: (BuildContext context) => AlertDialog(
+          //             title: Text('¿Seguro querés cancelar el turno?'),
+          //             actions: [
+          //               TextButton(
+          //                 child: Text('No'),
+          //                 onPressed: () => Navigator.pop(context),
+          //               ),
+          //               TextButton(
+          //                 child: Text('Sí'),
+          //                 onPressed: () {
+          //                   cancelAppointment(userUid, appointment);
+          //                   Navigator.pop(context);
+          //                   ScaffoldMessenger.of(context).showSnackBar(
+          //                       SnackBar(content: Text('Turno cancelado')));
+          //                 },
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       )
+          //     : Container()
         ],
       ),
     );

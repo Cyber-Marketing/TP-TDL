@@ -18,4 +18,8 @@ class ServicesRepository {
   Stream<QuerySnapshot<Object?>> getServicesStream() {
     return collection.snapshots();
   }
+
+  Future<QuerySnapshot<Object?>> getServicesByUser(String userUid) async {
+    return await collection.where('ownerUid', isEqualTo: userUid).get();
+  }
 }
