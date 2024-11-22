@@ -8,10 +8,7 @@ class ServicesRepository {
   ServicesRepository();
 
   save(Service service) async {
-    collection
-        .add(service.toMap())
-        .then((value) => print("Service created successfully!"))
-        .catchError((error) => print("Failed to create service: $error"));
+    collection.add(service.toMap()).then((value) => service.uid = value.id);
     return;
   }
 
@@ -21,5 +18,9 @@ class ServicesRepository {
 
   Future<QuerySnapshot<Object?>> getServicesByUser(String userUid) async {
     return await collection.where('ownerUid', isEqualTo: userUid).get();
+  }
+
+  Future<void> delete(String serviceUid) async {
+    await collection.doc(serviceUid).delete();
   }
 }

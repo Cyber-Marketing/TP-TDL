@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MadeAppointment {
-  String uid = '';
+  String uid;
   String businessName;
   String serviceDescription;
   double servicePrice;
@@ -11,7 +11,7 @@ class MadeAppointment {
 
   MadeAppointment(this.businessName, this.serviceDescription, this.servicePrice,
       this.serviceDay, this.serviceTime,
-      {this.isCancelled = false});
+      {this.isCancelled = false, this.uid = ''});
 
   String getServiceDay() {
     return "${serviceDay.day}/${serviceDay.month}/${serviceDay.year}";

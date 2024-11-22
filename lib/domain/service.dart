@@ -1,4 +1,5 @@
 class Service {
+  String uid;
   String ownerUid;
   String businessName;
   String description;
@@ -7,7 +8,8 @@ class Service {
   double price;
 
   Service(
-      {required this.ownerUid,
+      {this.uid = '',
+      required this.ownerUid,
       required this.businessName,
       required this.description,
       required this.category,
@@ -16,6 +18,7 @@ class Service {
 
   factory Service.fromMap(serviceMap) {
     return Service(
+      uid: serviceMap["uid"] ?? '',
       ownerUid: serviceMap["ownerUid"],
       businessName: serviceMap["businessName"],
       description: serviceMap["description"],

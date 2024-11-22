@@ -71,7 +71,7 @@ class _NewServicePageState extends State<NewServicePage> {
                       child: Text('Crear'),
                       onPressed: () async {
                         if (!formKey.currentState!.validate()) return;
-                        var service = Service(
+                        Service service = Service(
                             ownerUid: userUid,
                             businessName: businessName,
                             description: description,

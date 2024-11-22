@@ -20,7 +20,8 @@ class MyServicesPage extends StatelessWidget {
           );
         }
         var services = snapshot.data!.docs.map((docSnapshot) {
-          var serviceMap = docSnapshot.data();
+          var serviceMap = docSnapshot.data() as Map;
+          serviceMap['uid'] = docSnapshot.id;
           return Service.fromMap(serviceMap);
         }).toList();
 

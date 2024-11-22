@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:web_app/data/service_repository.dart';
 import 'package:web_app/domain/service.dart';
+import 'package:web_app/widgets/colored_tag.dart';
 
 class ServiceCard extends StatelessWidget {
   ServiceCard({required this.service});
@@ -20,37 +22,35 @@ class ServiceCard extends StatelessWidget {
         children: [
           Text(service.businessName),
           Text(service.description),
-          Text(service.category),
-          Text(service.duration.toString()),
-          Text(service.price.toString()),
-          // isCancellable
-          //     ? IconButton(
-          //         icon: Icon(Icons.disabled_by_default),
-          //         tooltip: "Cancelar",
-          //         color: Theme.of(context).colorScheme.onPrimaryContainer,
-          //         onPressed: () => showDialog<String>(
-          //           context: context,
-          //           builder: (BuildContext context) => AlertDialog(
-          //             title: Text('¿Seguro querés cancelar el turno?'),
-          //             actions: [
-          //               TextButton(
-          //                 child: Text('No'),
-          //                 onPressed: () => Navigator.pop(context),
-          //               ),
-          //               TextButton(
-          //                 child: Text('Sí'),
-          //                 onPressed: () {
-          //                   cancelAppointment(userUid, appointment);
-          //                   Navigator.pop(context);
-          //                   ScaffoldMessenger.of(context).showSnackBar(
-          //                       SnackBar(content: Text('Turno cancelado')));
-          //                 },
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //       )
-          //     : Container()
+          ColoredTag(text: service.category),
+          Text("Duración: ${service.duration.toString()} minutos"),
+          Text("Precio: \$${service.price.toString()}"),
+          IconButton(
+            icon: Icon(Icons.delete_outlined),
+            tooltip: "Eliminar",
+            color: Theme.of(context).colorScheme.onPrimaryContainer,
+            onPressed: () => showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: Text('¿Seguro querés eliminar el servicio?'),
+                actions: [
+                  TextButton(
+                    child: Text('No'),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  TextButton(
+                    child: Text('Sí'),
+                    onPressed: () {
+                      ServicesRepository().delete(service.uid);
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Servicio eliminado')));
+                    },
+                  ),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
