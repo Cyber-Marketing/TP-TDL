@@ -33,7 +33,7 @@ class AuthButtons extends StatelessWidget {
                   context,
                   CustomPageRoute(
                       pageWidget: ProfileScreen(
-                    user: user!,
+                    user: user,
                   )))),
         )
       ],
