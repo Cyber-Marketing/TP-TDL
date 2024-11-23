@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:web_app/domain/made_appointment.dart';
+import 'package:web_app/domain/appointment.dart';
 
 FirebaseFirestore database = FirebaseFirestore.instance;
 

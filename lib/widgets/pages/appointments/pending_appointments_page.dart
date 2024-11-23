@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
 import 'package:web_app/data/appointment_database.dart';
-import 'package:web_app/domain/made_appointment.dart';
+import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/widgets/cards/appointment_card.dart';
 import 'package:web_app/widgets/section_title.dart';
 

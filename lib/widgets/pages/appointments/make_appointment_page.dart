@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
 import 'package:web_app/data/appointment_database.dart';
-import 'package:web_app/domain/made_appointment.dart';
+import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/non_home_app_bar.dart';
 
@@ -149,9 +149,9 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                 icon: Icon(Icons.done_outline_sharp),
                 tooltip: "Confirmar",
                 alignment: Alignment.centerLeft,
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
                 onPressed: () async {
-                  late String menssage;
+                  late String message;
                   if (serviceTime != "Elegí una opción") {
                     if (_authorization(appointments,
                         completeSchedules[serviceTime]!, serviceDay)) {
@@ -162,19 +162,19 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                           serviceDay,
                           completeSchedules[serviceTime]!);
                       makeAppointment(userUid, appointment);
-                      menssage = 'Turno reservado';
+                      message = 'Turno reservado';
                       if (context.mounted) {
                         Navigator.pop(context);
                       }
                     } else {
-                      menssage = 'Se superponen horarios';
+                      message = 'Se superponen horarios';
                     }
                   } else {
-                    menssage = 'Lo siento, faltan realizar selecciones';
+                    message = 'Lo siento, faltan realizar selecciones';
                   }
                   if (context.mounted) {
                     ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(menssage)));
+                        .showSnackBar(SnackBar(content: Text(message)));
                   }
                 },
               )
