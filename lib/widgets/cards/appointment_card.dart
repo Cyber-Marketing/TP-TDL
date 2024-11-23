@@ -7,11 +7,13 @@ class AppointmentCard extends StatelessWidget {
       {super.key,
       required this.appointment,
       required this.userUid,
-      this.isCancellable = true});
+      this.isCancellable = true,
+      this.isRateable = false});
 
-  final MadeAppointment appointment;
+  final Appointment appointment;
   final String userUid;
   final bool isCancellable;
+  final bool isRateable;
 
   @override
   Widget build(BuildContext context) {
@@ -29,34 +31,64 @@ class AppointmentCard extends StatelessWidget {
           Text(appointment.serviceDescription),
           Text(appointment.getServiceDay()),
           Text(appointment.getServiceTime()),
-          isCancellable
-              ? IconButton(
-                  icon: Icon(Icons.disabled_by_default),
-                  tooltip: "Cancelar",
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  onPressed: () => showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: Text('¿Seguro querés cancelar el turno?'),
-                      actions: [
-                        TextButton(
-                          child: Text('No'),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                        TextButton(
-                          child: Text('Sí'),
-                          onPressed: () {
-                            cancelAppointment(userUid, appointment);
-                            Navigator.pop(context);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Turno cancelado')));
-                          },
-                        ),
-                      ],
+          Visibility(
+            visible: isCancellable,
+            child: IconButton(
+              icon: Icon(Icons.disabled_by_default),
+              tooltip: "Cancelar",
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: Text('¿Seguro querés cancelar el turno?'),
+                  actions: [
+                    TextButton(
+                      child: Text('No'),
+                      onPressed: () => Navigator.pop(context),
                     ),
-                  ),
-                )
-              : Container()
+                    TextButton(
+                      child: Text('Sí'),
+                      onPressed: () {
+                        cancelAppointment(appointment);
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Turno cancelado')));
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: isRateable,
+            child: IconButton(
+              icon: Icon(Icons.grade_outlined),
+              tooltip: "Calificar",
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: Text('¿Qué nota le das al servicio recibido?'),
+                  actions: [
+                    TextButton(
+                      child: Text('Cancelar'),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                    TextButton(
+                      child: Text('Enviar'),
+                      onPressed: () {
+                        rateAppointment(userUid, appointment, 5);
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Turno calificado exitosamente')));
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MadeAppointment {
+class Appointment {
   String uid;
   String businessName;
   String serviceDescription;
@@ -9,7 +9,7 @@ class MadeAppointment {
   (TimeOfDay, TimeOfDay) serviceTime;
   bool isCancelled;
 
-  MadeAppointment(this.businessName, this.serviceDescription, this.servicePrice,
+  Appointment(this.businessName, this.serviceDescription, this.servicePrice,
       this.serviceDay, this.serviceTime,
       {this.isCancelled = false, this.uid = ''});
 
@@ -33,8 +33,8 @@ class MadeAppointment {
     );
   }
 
-  factory MadeAppointment.fromMap(madeAppointmentMap) {
-    var instance = MadeAppointment(
+  factory Appointment.fromMap(madeAppointmentMap) {
+    var instance = Appointment(
         isCancelled: madeAppointmentMap['isCancelled'],
         madeAppointmentMap['businessName'],
         madeAppointmentMap['serviceDescription'],

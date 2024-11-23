@@ -23,7 +23,7 @@ class PendingAppointmentsPage extends StatelessWidget {
             .map((docSnapshot) {
               var appointmentMap = docSnapshot.data();
               appointmentMap['uid'] = docSnapshot.id;
-              return MadeAppointment.fromMap(appointmentMap);
+              return Appointment.fromMap(appointmentMap);
             })
             .where((app) => !app.hasEnded())
             .toList();

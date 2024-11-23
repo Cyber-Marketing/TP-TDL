@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
-import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/domain/made_appointment.dart';
+import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/non_home_app_bar.dart';
 
 class MakeAppointmentPage extends StatefulWidget {
   MakeAppointmentPage({
     super.key,
-    required this.appointment,
+    required this.service,
   });
 
-  final Appointment appointment;
+  final Service service;
 
   @override
   State<MakeAppointmentPage> createState() => MakeAppointmentPageState();
@@ -26,7 +26,7 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
   @override
   Widget build(BuildContext context) {
     var userUid = context.watch<AppState>().currentUser!.uid;
-    var completeSchedules = widget.appointment.createSchedules();
+    var completeSchedules = widget.service.createSchedules();
     List<String> newSchedules = [""];
 
     return Scaffold(
@@ -45,32 +45,32 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                 try {
                   var appointmentMap = snapshotDoc.data();
                   appointmentMap['uid'] = snapshotDoc.id;
-                  return MadeAppointment.fromMap(appointmentMap);
+                  return Appointment.fromMap(appointmentMap);
                 } catch (e) {
                   print('Error creating appointment: $e');
                   return null;
                 }
               })
               .where((appointment) => appointment != null)
-              .cast<MadeAppointment>()
+              .cast<Appointment>()
               .toList();
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(widget.appointment.businessName),
+              Text(widget.service.businessName),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
                   "Descripción: ",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Text(widget.appointment.serviceDescription)
+                Text(widget.service.description)
               ]),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
                   "Precio: ",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Text("\$${widget.appointment.servicePrice.toStringAsFixed(2)}")
+                Text("\$${widget.service.price.toStringAsFixed(2)}")
               ]),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
@@ -78,7 +78,7 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
-                    "${widget.appointment.timeRange.start.hour}:${widget.appointment.timeRange.start.minute}hs - ${widget.appointment.timeRange.end.hour}:${widget.appointment.timeRange.end.minute}hs")
+                    "${widget.service.timeRange.start.hour}:${widget.service.timeRange.start.minute}hs - ${widget.service.timeRange.end.hour}:${widget.service.timeRange.end.minute}hs")
               ]),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 Text(
@@ -86,7 +86,7 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
-                    "${widget.appointment.serviceDuration.toString().substring(0, widget.appointment.serviceDuration.toString().indexOf("."))}hs")
+                    "${widget.service.getDuration().toString().substring(0, widget.service.getDuration().toString().indexOf("."))}hs")
               ]),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -97,8 +97,8 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                       DateTime? newServiceTime = await showDatePicker(
                           context: context,
                           initialDate: serviceDay,
-                          firstDate: widget.appointment.timeRange.start,
-                          lastDate: widget.appointment.timeRange.end,
+                          firstDate: widget.service.timeRange.start,
+                          lastDate: widget.service.timeRange.end,
                           helpText: "Seleccione el día");
                       if (newServiceTime != null) {
                         setState(() {
@@ -120,7 +120,7 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                   ),
                   FutureBuilder<List<String>>(
                       future: getFreeAppointments(completeSchedules,
-                          widget.appointment.businessName, serviceDay),
+                          widget.service.businessName, serviceDay),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
                           return const Center(
@@ -155,8 +155,13 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                   if (serviceTime != "Elegí una opción") {
                     if (_authorization(appointments,
                         completeSchedules[serviceTime]!, serviceDay)) {
-                      makeAppointment(userUid, widget.appointment,
-                          completeSchedules, serviceDay, serviceTime);
+                      var appointment = Appointment(
+                          widget.service.businessName,
+                          widget.service.description,
+                          widget.service.price,
+                          serviceDay,
+                          completeSchedules[serviceTime]!);
+                      makeAppointment(userUid, appointment);
                       menssage = 'Turno reservado';
                       if (context.mounted) {
                         Navigator.pop(context);
@@ -180,7 +185,7 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
     );
   }
 
-  bool _authorization(List<MadeAppointment> appointments,
+  bool _authorization(List<Appointment> appointments,
       (TimeOfDay, TimeOfDay) serviceTime, DateTime serviceDay) {
     for (var appointment in appointments) {
       if (appointment.serviceDay.year == serviceDay.year &&

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/domain/made_appointment.dart';
 
 FirebaseFirestore database = FirebaseFirestore.instance;
@@ -30,27 +29,15 @@ Future<QuerySnapshot<Map<String, dynamic>>> getUserCancelledAppointments(
       .get();
 }
 
-Future<void> cancelAppointment(
-    String userUid, MadeAppointment appointment) async {
+Future<void> cancelAppointment(Appointment appointment) async {
   await database
       .collection('appointments')
       .doc(appointment.uid)
       .update({"isCancelled": true});
 }
 
-makeAppointment(
-    String userUid,
-    Appointment appointment,
-    Map<String, (TimeOfDay, TimeOfDay)> completeSchedules,
-    DateTime serviceDay,
-    String serviceTime) async {
-  var appointmentMap = MadeAppointment(
-          appointment.businessName,
-          appointment.serviceDescription,
-          appointment.servicePrice,
-          serviceDay,
-          completeSchedules[serviceTime]!)
-      .toMap();
+makeAppointment(String userUid, Appointment appointment) async {
+  var appointmentMap = appointment.toMap();
   appointmentMap['userUid'] = userUid;
   await database.collection("appointments").add(appointmentMap);
 }
@@ -68,7 +55,7 @@ Future<List<String>> getFreeAppointments(
     for (var snapshotDoc in snapshot.docs) {
       var appointmentMap = snapshotDoc.data();
       appointmentMap['uid'] = snapshotDoc.id;
-      MadeAppointment app = MadeAppointment.fromMap(appointmentMap);
+      Appointment app = Appointment.fromMap(appointmentMap);
       for (var times in completeSchedules.entries) {
         var (startTime, endTime) = times.value;
         if (app.serviceTime.$1.isAtSameTimeAs(startTime) &&
@@ -83,4 +70,12 @@ Future<List<String>> getFreeAppointments(
     freeAppointments.add("Elegí una opción");
     return freeAppointments;
   });
+}
+
+Future<void> rateAppointment(
+    String userUid, Appointment appointment, int rating) async {
+  await database
+      .collection('appointments')
+      .doc(appointment.uid)
+      .update({"rating": rating});
 }

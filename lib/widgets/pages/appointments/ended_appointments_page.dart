@@ -23,7 +23,7 @@ class EndedAppointmentsPage extends StatelessWidget {
             .map((docSnapshot) {
               var appointmentMap = docSnapshot.data();
               appointmentMap['uid'] = docSnapshot.id;
-              return MadeAppointment.fromMap(appointmentMap);
+              return Appointment.fromMap(appointmentMap);
             })
             .where((app) => app.hasEnded())
             .toList();
@@ -38,9 +38,11 @@ class EndedAppointmentsPage extends StatelessWidget {
             SectionTitle(text: sectionTitle),
             for (var appointment in appointments)
               AppointmentCard(
-                  appointment: appointment,
-                  userUid: userUid,
-                  isCancellable: false)
+                appointment: appointment,
+                userUid: userUid,
+                isCancellable: false,
+                isRateable: true,
+              )
           ],
         );
       }),

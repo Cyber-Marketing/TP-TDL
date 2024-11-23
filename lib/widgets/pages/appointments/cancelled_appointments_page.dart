@@ -23,7 +23,7 @@ class CancelledAppointmentsPage extends StatelessWidget {
             .map((docSnapshot) {
               var appointmentMap = docSnapshot.data();
               appointmentMap['uid'] = docSnapshot.id;
-              return MadeAppointment.fromMap(appointmentMap);
+              return Appointment.fromMap(appointmentMap);
             })
             .where((app) => app.getServiceDateTime().isAfter(DateTime.now()))
             .toList();

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:web_app/custom_page_route.dart';
-import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/colored_tag.dart';
 import 'package:web_app/widgets/pages/appointments/make_appointment_page.dart';
@@ -46,16 +45,7 @@ class AppointableServiceCard extends StatelessWidget {
                   Navigator.push(
                       context,
                       CustomPageRoute(
-                          pageWidget: MakeAppointmentPage(
-                              appointment: Appointment(
-                                  businessName: service.businessName,
-                                  serviceDescription: service.description,
-                                  category: service.category,
-                                  servicePrice: service.price,
-                                  serviceDuration: Duration(
-                                      hours: service.duration ~/ 60,
-                                      minutes:
-                                          service.duration.round() % 60)))));
+                          pageWidget: MakeAppointmentPage(service: service)));
                 },
               ),
             ),
