@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Appointment {
   String uid;
+  String userUid;
   String businessName;
   String serviceDescription;
   double servicePrice;
@@ -13,7 +14,11 @@ class Appointment {
 
   Appointment(this.businessName, this.serviceDescription, this.servicePrice,
       this.serviceDay, this.serviceTime,
-      {this.isCancelled = false, this.uid = '', this.rating, this.comment});
+      {this.isCancelled = false,
+      this.uid = '',
+      this.userUid = '',
+      this.rating,
+      this.comment});
 
   String getServiceDay() {
     return "${serviceDay.day}/${serviceDay.month}/${serviceDay.year}";
@@ -37,6 +42,7 @@ class Appointment {
 
   factory Appointment.fromMap(appointmentMap) {
     return Appointment(
+        userUid: appointmentMap['userUid'],
         uid: appointmentMap['uid'],
         isCancelled: appointmentMap['isCancelled'],
         rating: appointmentMap['rating'],
@@ -57,6 +63,7 @@ class Appointment {
 
   Map<String, dynamic> toMap() {
     return {
+      'userUid': userUid,
       'businessName': businessName,
       'serviceDescription': serviceDescription,
       'servicePrice': servicePrice,

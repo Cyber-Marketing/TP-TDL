@@ -37,8 +37,9 @@ Future<void> cancelAppointment(Appointment appointment) async {
 }
 
 makeAppointment(String userUid, Appointment appointment) async {
+  appointment.userUid = userUid;
   var appointmentMap = appointment.toMap();
-  appointmentMap['userUid'] = userUid;
+  // appointmentMap['userUid'] = userUid;
   await database.collection("appointments").add(appointmentMap);
 }
 
@@ -78,4 +79,8 @@ Future<void> giveAppointmentFeedback(
       .collection('appointments')
       .doc(appointmentUid)
       .update({"rating": rating, "comment": comment});
+}
+
+Stream<QuerySnapshot<Map<String, dynamic>>> getAppointmentsStream() {
+  return database.collection('appointments').snapshots();
 }
