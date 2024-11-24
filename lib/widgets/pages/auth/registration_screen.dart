@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -133,13 +132,4 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
     );
   }
-}
-
-saveUserProfile(AppUser appUser) async {
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
-  users
-      .add(appUser.toMap())
-      .then((value) => print("User added successfully!"))
-      .catchError((error) => print("Failed to add user: $error"));
-  return;
 }

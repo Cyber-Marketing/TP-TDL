@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:web_app/custom_page_route.dart';
 import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/domain/appointment.dart';
+import 'package:web_app/widgets/pages/appointments/give_appointment_feedback_page.dart';
+import 'package:web_app/widgets/rating_stars.dart';
 
 class AppointmentCard extends StatelessWidget {
   const AppointmentCard(
@@ -31,6 +34,13 @@ class AppointmentCard extends StatelessWidget {
           Text(appointment.serviceDescription),
           Text(appointment.getServiceDay()),
           Text(appointment.getServiceTime()),
+          SizedBox(height: 30),
+          Visibility(
+              visible: appointment.rating != null,
+              child: RatingStars(rating: appointment.rating ?? 1)),
+          Visibility(
+              visible: appointment.comment != null,
+              child: Text('Tu comentario: ${appointment.comment}')),
           Visibility(
             visible: isCancellable,
             child: IconButton(
@@ -61,32 +71,18 @@ class AppointmentCard extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: isRateable,
+            visible: isRateable && appointment.rating == null,
             child: IconButton(
-              icon: Icon(Icons.grade_outlined),
-              tooltip: "Calificar",
+              icon: Icon(Icons.grading_outlined),
+              tooltip: "Dar feedback",
               color: Theme.of(context).colorScheme.onPrimaryContainer,
-              onPressed: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: Text('¿Qué nota le das al servicio recibido?'),
-                  actions: [
-                    TextButton(
-                      child: Text('Cancelar'),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    TextButton(
-                      child: Text('Enviar'),
-                      onPressed: () {
-                        rateAppointment(userUid, appointment, 5);
-                        Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('Turno calificado exitosamente')));
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    CustomPageRoute(
+                        pageWidget: GiveAppointmentFeedbackPage(
+                            appointment: appointment)));
+              },
             ),
           )
         ],

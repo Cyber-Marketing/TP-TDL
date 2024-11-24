@@ -72,10 +72,10 @@ Future<List<String>> getFreeAppointments(
   });
 }
 
-Future<void> rateAppointment(
-    String userUid, Appointment appointment, int rating) async {
+Future<void> giveAppointmentFeedback(
+    String appointmentUid, int rating, String? comment) async {
   await database
       .collection('appointments')
-      .doc(appointment.uid)
-      .update({"rating": rating});
+      .doc(appointmentUid)
+      .update({"rating": rating, "comment": comment});
 }

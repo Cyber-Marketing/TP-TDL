@@ -8,10 +8,12 @@ class Appointment {
   DateTime serviceDay;
   (TimeOfDay, TimeOfDay) serviceTime;
   bool isCancelled;
+  int? rating;
+  String? comment;
 
   Appointment(this.businessName, this.serviceDescription, this.servicePrice,
       this.serviceDay, this.serviceTime,
-      {this.isCancelled = false, this.uid = ''});
+      {this.isCancelled = false, this.uid = '', this.rating, this.comment});
 
   String getServiceDay() {
     return "${serviceDay.day}/${serviceDay.month}/${serviceDay.year}";
@@ -33,23 +35,24 @@ class Appointment {
     );
   }
 
-  factory Appointment.fromMap(madeAppointmentMap) {
-    var instance = Appointment(
-        isCancelled: madeAppointmentMap['isCancelled'],
-        madeAppointmentMap['businessName'],
-        madeAppointmentMap['serviceDescription'],
-        madeAppointmentMap['servicePrice'],
-        DateTime.parse(madeAppointmentMap['serviceDay']),
+  factory Appointment.fromMap(appointmentMap) {
+    return Appointment(
+        uid: appointmentMap['uid'],
+        isCancelled: appointmentMap['isCancelled'],
+        rating: appointmentMap['rating'],
+        comment: appointmentMap['comment'],
+        appointmentMap['businessName'],
+        appointmentMap['serviceDescription'],
+        appointmentMap['servicePrice'],
+        DateTime.parse(appointmentMap['serviceDay']),
         (
           TimeOfDay(
-              hour: madeAppointmentMap['serviceTime.\$1.hour'],
-              minute: madeAppointmentMap['serviceTime.\$1.minute']),
+              hour: appointmentMap['serviceTime.\$1.hour'],
+              minute: appointmentMap['serviceTime.\$1.minute']),
           TimeOfDay(
-              hour: madeAppointmentMap['serviceTime.\$2.hour'],
-              minute: madeAppointmentMap['serviceTime.\$2.minute'])
+              hour: appointmentMap['serviceTime.\$2.hour'],
+              minute: appointmentMap['serviceTime.\$2.minute'])
         ));
-    instance.uid = madeAppointmentMap['uid'];
-    return instance;
   }
 
   Map<String, dynamic> toMap() {
@@ -63,6 +66,7 @@ class Appointment {
       'serviceTime.\$2.hour': serviceTime.$2.hour,
       'serviceTime.\$2.minute': serviceTime.$2.minute,
       'isCancelled': isCancelled,
+      'rating': rating,
     };
   }
 
