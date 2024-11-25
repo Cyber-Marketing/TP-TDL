@@ -20,9 +20,12 @@ class ServiceCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(service.businessName),
-          Text(service.description),
           ColoredTag(text: service.category),
+          Text(
+            service.businessName,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          Text(service.description),
           Text("Duración: ${service.duration.toString()} minutos"),
           Text("Precio: \$${service.price.toString()}"),
           IconButton(
