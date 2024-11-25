@@ -116,3 +116,9 @@ Future<void> giveAppointmentFeedback(
 Stream<QuerySnapshot<Map<String, dynamic>>> getAppointmentsStream() {
   return database.collection('appointments').snapshots();
 }
+
+Future<QuerySnapshot<Map<String, dynamic>>> getAppointmentsByBusinessName(String businessName) async {
+  return await database.collection('appointments')
+      .where('businessName', isEqualTo: businessName)
+      .get();
+}
