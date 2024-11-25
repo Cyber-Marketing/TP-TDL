@@ -36,11 +36,30 @@ Future<void> cancelAppointment(Appointment appointment) async {
       .update({"isCancelled": true});
 }
 
-makeAppointment(String userUid, Appointment appointment) async {
-  appointment.userUid = userUid;
-  var appointmentMap = appointment.toMap();
-  // appointmentMap['userUid'] = userUid;
-  await database.collection("appointments").add(appointmentMap);
+makeAppointment(String userUid, Appointment newAppointment) async {
+  bool needToAddNew = true;
+  var query = database
+      .collection('appointments')
+      .where('userUid', isEqualTo: userUid)
+      .where('businessName', isEqualTo: newAppointment.businessName)
+      .where('serviceDay', isEqualTo: newAppointment.serviceDay.toString());
+  await query.get().then((snapshot) async {
+    for (var snapshotDoc in snapshot.docs) {
+      var appointmentMap = snapshotDoc.data();
+      appointmentMap['uid'] = snapshotDoc.id;
+      Appointment old = Appointment.fromMap(appointmentMap);
+      if (old.serviceTime.$1.isAtSameTimeAs(newAppointment.serviceTime.$1) &&
+            old.serviceTime.$2.isAtSameTimeAs(newAppointment.serviceTime.$2) &&
+            old.isCancelled) {
+          await snapshotDoc.reference.update({'isCancelled': false});
+          needToAddNew = false;
+          break;
+      }}});
+    if(needToAddNew) {
+      newAppointment.userUid = userUid;
+      var appointmentMap = newAppointment.toMap();
+      await database.collection("appointments").add(appointmentMap);
+    }
 }
 
 Future<List<String>> getFreeAppointments(
