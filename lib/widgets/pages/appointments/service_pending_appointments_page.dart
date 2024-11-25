@@ -53,7 +53,7 @@ class _ServicePendingAppointmentsPageState extends State<ServicePendingAppointme
                 String pluralSuffix = appointments.length > 1 ? 's' : '';
                 String sectionTitle = appointments.isEmpty
                     ? 'No te reservaron ningún turno aún'
-                    : 'Tenés ${appointments.length} turno$pluralSuffix reservado$pluralSuffix:';
+                    : 'Tenés ${appointments.length} turno$pluralSuffix reservado$pluralSuffix por alguien:';
 
                 return ListView(
                   padding: EdgeInsets.all(30),
