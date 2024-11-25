@@ -6,13 +6,14 @@ class Appointment {
   String businessName;
   String serviceDescription;
   double servicePrice;
+  String userFullName;
   DateTime serviceDay;
   (TimeOfDay, TimeOfDay) serviceTime;
   bool isCancelled;
   int? rating;
   String? comment;
 
-  Appointment(this.businessName, this.serviceDescription, this.servicePrice,
+  Appointment(this.businessName, this.serviceDescription, this.servicePrice, this.userFullName,
       this.serviceDay, this.serviceTime,
       {this.isCancelled = false,
       this.uid = '',
@@ -50,6 +51,7 @@ class Appointment {
         appointmentMap['businessName'],
         appointmentMap['serviceDescription'],
         appointmentMap['servicePrice'],
+        appointmentMap['userFullName'],
         DateTime.parse(appointmentMap['serviceDay']),
         (
           TimeOfDay(
@@ -67,6 +69,7 @@ class Appointment {
       'businessName': businessName,
       'serviceDescription': serviceDescription,
       'servicePrice': servicePrice,
+      'userFullName': userFullName,
       'serviceDay': serviceDay.toString(),
       'serviceTime.\$1.hour': serviceTime.$1.hour,
       'serviceTime.\$1.minute': serviceTime.$1.minute,

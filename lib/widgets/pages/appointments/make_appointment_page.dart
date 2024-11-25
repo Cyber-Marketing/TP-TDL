@@ -26,6 +26,8 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
   @override
   Widget build(BuildContext context) {
     var userUid = context.watch<AppState>().currentUser!.uid;
+    var userName = context.watch<AppState>().currentUser!.name;
+    var userLastName = context.watch<AppState>().currentUser!.lastName;
     var completeSchedules = widget.service.createSchedules();
     List<String> newSchedules = [""];
 
@@ -159,6 +161,7 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                           widget.service.businessName,
                           widget.service.description,
                           widget.service.price,
+                          '$userName $userLastName',
                           serviceDay,
                           completeSchedules[serviceTime]!);
                       makeAppointment(userUid, appointment);
