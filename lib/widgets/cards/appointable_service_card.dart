@@ -3,6 +3,7 @@ import 'package:web_app/custom_page_route.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/colored_tag.dart';
 import 'package:web_app/widgets/pages/appointments/make_appointment_page.dart';
+import 'package:web_app/widgets/pages/appointments/check_feedback_page.dart';
 
 class AppointableServiceCard extends StatelessWidget {
   AppointableServiceCard({
@@ -28,18 +29,19 @@ class AppointableServiceCard extends StatelessWidget {
         children: [
           Text(
             service.businessName,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           Text(service.description),
           SizedBox(height: 10),
           ColoredTag(text: service.category),
           SizedBox(height: 20),
-          Visibility(
+          Row(
+            children: [Visibility(
             visible: showButton,
             child: Center(
               child: IconButton(
                 tooltip: "Reservar turno",
-                iconSize: 30,
+                iconSize: 18,
                 icon: const Icon(Icons.bookmarks),
                 onPressed: () {
                   Navigator.push(
@@ -49,6 +51,24 @@ class AppointableServiceCard extends StatelessWidget {
                 },
               ),
             ),
+          ),
+          Visibility(
+            visible: showButton,
+            child: Center(
+              child: IconButton(
+                tooltip: "Ver opiniones",
+                iconSize: 18,
+                icon: const Icon(Icons.forum),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      CustomPageRoute(
+                          pageWidget: CheckFeedbackPage(service: service)));
+                },
+              ),
+            ),
+          )
+            ]
           )
         ],
       ),
