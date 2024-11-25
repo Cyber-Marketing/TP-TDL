@@ -30,11 +30,35 @@ class AppointmentCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(appointment.businessName),
-          Text(appointment.serviceDescription),
-          Text(appointment.getServiceDay()),
-          Text(appointment.getServiceTime()),
-          SizedBox(height: 30),
+          Text(
+            appointment.businessName,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          Row(
+            children: [
+              Text("Descripcion: ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(appointment.serviceDescription)
+            ],
+          ),
+          Row(
+            children: [
+              Text("Dia del servicio: ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(appointment.getServiceDay())
+            ],
+          ),
+          Row(
+            children: [
+              Text("Horario del servicio: ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(appointment.getServiceTime())
+            ],
+          ),
+          Row(
+            children: [
+              Text("Precio del servicio: ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text("${appointment.servicePrice}")
+            ],
+          ),
+          SizedBox(height: 15),
           Visibility(
               visible: appointment.rating != null,
               child: RatingStars(rating: appointment.rating ?? 1)),
