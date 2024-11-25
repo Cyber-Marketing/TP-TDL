@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:web_app/custom_page_route.dart';
 import 'package:web_app/data/service_repository.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/colored_tag.dart';
+import 'package:web_app/widgets/pages/appointments/check_feedback_page.dart';
 
 class ServiceCard extends StatelessWidget {
   ServiceCard({required this.service});
 
   final Service service;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +24,47 @@ class ServiceCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ColoredTag(text: service.category),
+          SizedBox(height: 15),
           Text(
             service.businessName,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
-          Text(service.description),
-          Text("Duración: ${service.duration.toString()} minutos"),
-          Text("Precio: \$${service.price.toString()}"),
-          IconButton(
-            icon: Icon(Icons.delete_outlined),
+          Row(
+            children: [
+              Text("- Descripcion: ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(service.description)
+            ],
+          ),
+          Row(
+            children: [
+              Text("- Duración del servicio: ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text("${service.duration.toString()} minutos")
+            ],
+          ),
+          Row(
+            children: [
+              Text("- Precio del servicio: ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text("\$${service.price.toString()}")
+            ],
+          ),
+          SizedBox(height: 15),
+          Row(children: [
+            IconButton(
+                tooltip: "Ver opiniones",
+                iconSize: 18,
+                icon: const Icon(Icons.forum),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      CustomPageRoute(
+                          pageWidget: CheckFeedbackPage(service: service)));
+                },
+            ),
+            SizedBox(width: 20),  
+            IconButton(
+            icon: Icon(Icons.delete),
+            iconSize: 18,
             tooltip: "Eliminar",
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
             onPressed: () => showDialog<String>(
               context: context,
               builder: (BuildContext context) => AlertDialog(
@@ -54,7 +87,8 @@ class ServiceCard extends StatelessWidget {
               ),
             ),
           )
-        ],
+          ])
+        ]
       ),
     );
   }
