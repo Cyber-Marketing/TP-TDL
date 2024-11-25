@@ -46,8 +46,9 @@ makeAppointment(String userUid, Appointment appointment) async {
 Future<List<String>> getFreeAppointments(
     Map<String, (TimeOfDay, TimeOfDay)> completeSchedules,
     String businessName,
-    DateTime serviceDay) async {
+    DateTime serviceDay, DateTime rightNow) async {
   List<String> freeAppointments = [];
+  Map<String, (TimeOfDay, TimeOfDay)> newSchedules = Map.from(completeSchedules); 
   var query = database
       .collection('appointments')
       .where('businessName', isEqualTo: businessName)
@@ -61,13 +62,24 @@ Future<List<String>> getFreeAppointments(
         var (startTime, endTime) = times.value;
         if (app.serviceTime.$1.isAtSameTimeAs(startTime) &&
             app.serviceTime.$2.isAtSameTimeAs(endTime)) {
-          completeSchedules.remove(times.key);
+          newSchedules.remove(times.key);
           break;
+        }
+        else if ((serviceDay.day < rightNow.day &&
+            serviceDay.month < rightNow.month &&
+            serviceDay.year < rightNow.year) || 
+            (serviceDay.day == rightNow.day &&
+            serviceDay.month == rightNow.month &&
+            serviceDay.year == rightNow.year &&
+            startTime.isBefore(TimeOfDay(hour: rightNow.hour,
+            minute:rightNow.minute)))) {
+          newSchedules.remove(times.key);
         }
       }
     }
-
-    freeAppointments = completeSchedules.keys.toList();
+    if (newSchedules.isNotEmpty) {
+      freeAppointments = newSchedules.keys.toList();
+    }
     freeAppointments.add("Elegí una opción");
     return freeAppointments;
   });

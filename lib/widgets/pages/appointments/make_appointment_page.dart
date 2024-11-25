@@ -120,7 +120,7 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                   ),
                   FutureBuilder<List<String>>(
                       future: getFreeAppointments(completeSchedules,
-                          widget.service.businessName, serviceDay),
+                          widget.service.businessName, serviceDay, DateTime.now()),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
                           return const Center(
@@ -167,10 +167,11 @@ class MakeAppointmentPageState extends State<MakeAppointmentPage> {
                         Navigator.pop(context);
                       }
                     } else {
-                      message = 'Se superponen horarios';
+                      message = 'Se superponen horarios!';
                     }
                   } else {
-                    message = 'Lo siento, faltan realizar selecciones';
+                    message = 'Lo siento, no realizaste una selección o'
+                        ' ya no hay más turnos disponibles para esta fecha!';
                   }
                   if (context.mounted) {
                     ScaffoldMessenger.of(context)
