@@ -72,7 +72,7 @@ Future<List<String>> getFreeAppointments(
       .collection('appointments')
       .where('businessName', isEqualTo: businessName)
       .where('serviceDay', isEqualTo: serviceDay.toString());
-  return await query.get().then((snapshot) {
+  await query.get().then((snapshot) {
     for (var snapshotDoc in snapshot.docs) {
       var appointmentMap = snapshotDoc.data();
       appointmentMap['uid'] = snapshotDoc.id;
@@ -85,24 +85,26 @@ Future<List<String>> getFreeAppointments(
           newSchedules.remove(times.key);
           break;
         }
-        else if ((serviceDay.day < rightNow.day &&
-            serviceDay.month < rightNow.month &&
-            serviceDay.year < rightNow.year) || 
-            (serviceDay.day == rightNow.day &&
-            serviceDay.month == rightNow.month &&
-            serviceDay.year == rightNow.year &&
-            startTime.isBefore(TimeOfDay(hour: rightNow.hour,
-            minute:rightNow.minute)))) {
-          newSchedules.remove(times.key);
-        }
       }
+  }});
+  for (var times in completeSchedules.entries) {
+    var (startTime, endTime) = times.value;
+    if ((serviceDay.day < rightNow.day &&
+        serviceDay.month <= rightNow.month &&
+        serviceDay.year <= rightNow.year) || 
+        (serviceDay.day == rightNow.day &&
+        serviceDay.month == rightNow.month &&
+        serviceDay.year == rightNow.year &&
+        startTime.isBefore(TimeOfDay(hour: rightNow.hour,
+        minute:rightNow.minute)))) {
+          newSchedules.remove(times.key);
     }
-    if (newSchedules.isNotEmpty) {
-      freeAppointments = newSchedules.keys.toList();
-    }
-    freeAppointments.add("Elegí una opción");
-    return freeAppointments;
-  });
+  }
+  if (newSchedules.isNotEmpty) {
+    freeAppointments = newSchedules.keys.toList();
+  }
+  freeAppointments.add("Elegí una opción");
+  return freeAppointments;
 }
 
 Future<void> giveAppointmentFeedback(
