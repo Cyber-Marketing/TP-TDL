@@ -61,7 +61,8 @@ Future<List<String>> getFreeAppointments(
       for (var times in completeSchedules.entries) {
         var (startTime, endTime) = times.value;
         if (app.serviceTime.$1.isAtSameTimeAs(startTime) &&
-            app.serviceTime.$2.isAtSameTimeAs(endTime)) {
+            app.serviceTime.$2.isAtSameTimeAs(endTime) &&
+            !app.isCancelled) {
           newSchedules.remove(times.key);
           break;
         }
