@@ -51,7 +51,7 @@ class _ServiceCancelledAppointmentsPageState extends State<ServiceCancelledAppoi
 
                 String sectionTitle = appointments.isEmpty
                     ? 'No te cancelaron ningún turno aún'
-                    : 'Te cancelaron ${appointments.length} turno${appointments.length > 1 ? 's' : ''} :';
+                    : 'Te cancelaron ${appointments.length} turno${appointments.length > 1 ? 's' : ''}:';
 
                 return ListView(
                   padding: EdgeInsets.all(30),

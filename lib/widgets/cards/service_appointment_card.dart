@@ -36,14 +36,8 @@ class ServiceAppointmentCard extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("- Dia del servicio: ", style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(appointment.getServiceDay())
-            ],
-          ),
-          Row(
-            children: [
-              Text("- Horario del servicio: ", style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(appointment.getServiceTime())
+              Text("- Dia y horario: ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text("${appointment.getServiceDay()} ${appointment.getServiceTime()}")
             ],
           ),
           Row(
