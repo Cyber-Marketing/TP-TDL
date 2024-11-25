@@ -77,6 +77,7 @@ class Appointment {
       'serviceTime.\$2.minute': serviceTime.$2.minute,
       'isCancelled': isCancelled,
       'rating': rating,
+      'comment':comment
     };
   }
 
