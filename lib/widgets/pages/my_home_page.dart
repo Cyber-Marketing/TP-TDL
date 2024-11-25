@@ -10,6 +10,8 @@ import 'main_page.dart';
 import 'appointments/pending_appointments_page.dart';
 import 'appointments/ended_appointments_page.dart';
 import 'appointments/cancelled_appointments_page.dart';
+import 'appointments/service_cancelled_appointments_page.dart';
+import 'appointments/service_pending_appointments_page.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -33,6 +35,10 @@ class _MyHomePageState extends State<MyHomePage> {
         page = EndedAppointmentsPage();
       case 4:
         page = MyServicesPage();
+      case 5:
+        page = ServicePendingAppointmentsPage();
+      case 6:
+        page = ServiceCancelledAppointmentsPage();
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -105,6 +111,34 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       setState(() {
                         selectedIndex = 4;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Consumer<AppState>(
+                builder: (_, appState, __) => Visibility(
+                  visible: appState.isSignedIn && !appState.userIsCustomer(),
+                  child: AppBarButton(
+                    tooltip: "Servicios reservados",
+                    icon: Icons.work_history_outlined,
+                    onPressed: () {
+                      setState(() {
+                        selectedIndex = 5;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Consumer<AppState>(
+                builder: (_, appState, __) => Visibility(
+                  visible: appState.isSignedIn && !appState.userIsCustomer(),
+                  child: AppBarButton(
+                    tooltip: "Servicios cancelados",
+                    icon: Icons.work_off_outlined,
+                    onPressed: () {
+                      setState(() {
+                        selectedIndex = 6;
                       });
                     },
                   ),
