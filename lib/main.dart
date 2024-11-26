@@ -26,7 +26,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 34, 255, 181)),
+            seedColor: const Color.fromARGB(255, 96, 195, 228)),
       ),
       home: AuthGate(),
     );

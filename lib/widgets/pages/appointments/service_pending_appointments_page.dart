@@ -13,7 +13,8 @@ class ServicePendingAppointmentsPage extends StatefulWidget {
       _ServicePendingAppointmentsPageState();
 }
 
-class _ServicePendingAppointmentsPageState extends State<ServicePendingAppointmentsPage> {
+class _ServicePendingAppointmentsPageState
+    extends State<ServicePendingAppointmentsPage> {
   var _appointmentsStream = getAppointmentsStream();
   List<String> businessNames = [];
 
@@ -29,42 +30,42 @@ class _ServicePendingAppointmentsPageState extends State<ServicePendingAppointme
             );
           }
           return FutureBuilder(
-              future: ServicesRepository().getBusinessNamesByUserUid(userUid),
-              builder: (context, snapshotBusiness) {
-                if (!snapshotBusiness.hasData) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                businessNames = snapshotBusiness.data!;
-
-                var appointments = snapshot.data!.docs
-                    .map((docSnapshot) {
-                      var appointmentMap = docSnapshot.data();
-                      appointmentMap['uid'] = docSnapshot.id;
-                      return Appointment.fromMap(appointmentMap);
-                    })
-                    .where((app) =>
-                        !app.hasEnded() &&
-                        app.isCancelled == false &&
-                        businessNames.contains(app.businessName))
-                    .toList();
-
-                String pluralSuffix = appointments.length > 1 ? 's' : '';
-                String sectionTitle = appointments.isEmpty
-                    ? 'No te reservaron ningún turno aún'
-                    : 'Tenés ${appointments.length} turno$pluralSuffix reservado$pluralSuffix por alguien:';
-
-                return ListView(
-                  padding: EdgeInsets.all(30),
-                  children: [
-                    SectionTitle(text: sectionTitle),
-                    for (var appointment in appointments)
-                      ServiceAppointmentCard(appointment: appointment)
-                  ],
+            future: ServicesRepository().getBusinessNamesByUserUid(userUid),
+            builder: (context, snapshotBusiness) {
+              if (!snapshotBusiness.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
-              },
-            );
+              }
+              businessNames = snapshotBusiness.data!;
+
+              var appointments = snapshot.data!.docs
+                  .map((docSnapshot) {
+                    var appointmentMap = docSnapshot.data();
+                    appointmentMap['uid'] = docSnapshot.id;
+                    return Appointment.fromMap(appointmentMap);
+                  })
+                  .where((app) =>
+                      !app.hasEnded() &&
+                      app.isCancelled == false &&
+                      businessNames.contains(app.businessName))
+                  .toList();
+
+              String pluralSuffix = appointments.length > 1 ? 's' : '';
+              String sectionTitle = appointments.isEmpty
+                  ? 'No te reservaron ningún turno aún'
+                  : 'Tenés ${appointments.length} turno$pluralSuffix reservado$pluralSuffix por alguien:';
+
+              return ListView(
+                padding: EdgeInsets.all(30),
+                children: [
+                  SectionTitle(text: sectionTitle),
+                  for (var appointment in appointments)
+                    ServiceAppointmentCard(appointment: appointment)
+                ],
+              );
+            },
+          );
         });
   }
 }

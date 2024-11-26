@@ -25,9 +25,8 @@ class ServicesRepository {
   }
 
   Future<List<String>> getBusinessNamesByUserUid(String userUid) async {
-    QuerySnapshot querySnapshot = await collection
-        .where('ownerUid', isEqualTo: userUid)
-        .get();
+    QuerySnapshot querySnapshot =
+        await collection.where('ownerUid', isEqualTo: userUid).get();
     List<String> businessNames = [];
     for (DocumentSnapshot document in querySnapshot.docs) {
       businessNames.add(await document.get('businessName'));

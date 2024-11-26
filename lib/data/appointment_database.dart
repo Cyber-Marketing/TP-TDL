@@ -49,25 +49,29 @@ makeAppointment(String userUid, Appointment newAppointment) async {
       appointmentMap['uid'] = snapshotDoc.id;
       Appointment old = Appointment.fromMap(appointmentMap);
       if (old.serviceTime.$1.isAtSameTimeAs(newAppointment.serviceTime.$1) &&
-            old.serviceTime.$2.isAtSameTimeAs(newAppointment.serviceTime.$2) &&
-            old.isCancelled) {
-          await snapshotDoc.reference.update({'isCancelled': false});
-          needToAddNew = false;
-          break;
-      }}});
-    if(needToAddNew) {
-      newAppointment.userUid = userUid;
-      var appointmentMap = newAppointment.toMap();
-      await database.collection("appointments").add(appointmentMap);
+          old.serviceTime.$2.isAtSameTimeAs(newAppointment.serviceTime.$2) &&
+          old.isCancelled) {
+        await snapshotDoc.reference.update({'isCancelled': false});
+        needToAddNew = false;
+        break;
+      }
     }
+  });
+  if (needToAddNew) {
+    newAppointment.userUid = userUid;
+    var appointmentMap = newAppointment.toMap();
+    await database.collection("appointments").add(appointmentMap);
+  }
 }
 
 Future<List<String>> getFreeAppointments(
     Map<String, (TimeOfDay, TimeOfDay)> completeSchedules,
     String businessName,
-    DateTime serviceDay, DateTime rightNow) async {
+    DateTime serviceDay,
+    DateTime rightNow) async {
   List<String> freeAppointments = [];
-  Map<String, (TimeOfDay, TimeOfDay)> newSchedules = Map.from(completeSchedules); 
+  Map<String, (TimeOfDay, TimeOfDay)> newSchedules =
+      Map.from(completeSchedules);
   var query = database
       .collection('appointments')
       .where('businessName', isEqualTo: businessName)
@@ -86,18 +90,19 @@ Future<List<String>> getFreeAppointments(
           break;
         }
       }
-  }});
+    }
+  });
   for (var times in completeSchedules.entries) {
     var (startTime, endTime) = times.value;
     if ((serviceDay.day < rightNow.day &&
-        serviceDay.month <= rightNow.month &&
-        serviceDay.year <= rightNow.year) || 
+            serviceDay.month <= rightNow.month &&
+            serviceDay.year <= rightNow.year) ||
         (serviceDay.day == rightNow.day &&
-        serviceDay.month == rightNow.month &&
-        serviceDay.year == rightNow.year &&
-        startTime.isBefore(TimeOfDay(hour: rightNow.hour,
-        minute:rightNow.minute)))) {
-          newSchedules.remove(times.key);
+            serviceDay.month == rightNow.month &&
+            serviceDay.year == rightNow.year &&
+            startTime.isBefore(
+                TimeOfDay(hour: rightNow.hour, minute: rightNow.minute)))) {
+      newSchedules.remove(times.key);
     }
   }
   if (newSchedules.isNotEmpty) {
@@ -119,8 +124,10 @@ Stream<QuerySnapshot<Map<String, dynamic>>> getAppointmentsStream() {
   return database.collection('appointments').snapshots();
 }
 
-Future<QuerySnapshot<Map<String, dynamic>>> getAppointmentsByBusinessName(String businessName) async {
-  return await database.collection('appointments')
+Future<QuerySnapshot<Map<String, dynamic>>> getAppointmentsByBusinessName(
+    String businessName) async {
+  return await database
+      .collection('appointments')
       .where('businessName', isEqualTo: businessName)
       .get();
 }

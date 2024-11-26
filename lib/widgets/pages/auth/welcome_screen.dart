@@ -7,27 +7,43 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.onError,
         body: Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  child: Text('Iniciar sesión'),
-                  onPressed: () {
-                    Navigator.push(
-                        context, CustomPageRoute(pageWidget: LoginScreen()));
-                  },
-                ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                    child: Text('Registrarse'),
+          child: Container(
+            margin: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.height * 0.25,
+                horizontal: MediaQuery.of(context).size.width * 0.35),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: Border.all(
+                  color: Theme.of(context).colorScheme.primary, width: 1.5),
+              borderRadius: BorderRadius.all(Radius.circular(25)),
+            ),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('App Turnos',
+                      style: TextStyle(
+                          fontSize: 50,
+                          color: Theme.of(context).colorScheme.primary)),
+                  SizedBox(height: 30),
+                  ElevatedButton(
+                    child: Text('Iniciar sesión'),
                     onPressed: () {
-                      Navigator.push(context,
-                          CustomPageRoute(pageWidget: RegistrationScreen()));
-                    }),
-              ]),
+                      Navigator.push(
+                          context, CustomPageRoute(pageWidget: LoginScreen()));
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                      child: Text('Registrarse'),
+                      onPressed: () {
+                        Navigator.push(context,
+                            CustomPageRoute(pageWidget: RegistrationScreen()));
+                      }),
+                ]),
+          ),
         ));
   }
 }

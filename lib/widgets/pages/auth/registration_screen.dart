@@ -25,7 +25,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     return LoaderOverlay(
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.onError,
         body: Form(
           key: formKey,
           child: Center(
@@ -33,6 +33,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Text('Registración',
+                    style: TextStyle(
+                        fontSize: 50,
+                        color: Theme.of(context).colorScheme.primary)),
+                SizedBox(height: 40),
                 CustomTextField(
                   hintText: 'Ingresá tu nombre',
                   onChanged: (value) => appUser.name = value,

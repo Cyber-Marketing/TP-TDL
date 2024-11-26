@@ -13,13 +13,13 @@ class ColoredTag extends StatelessWidget {
     return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(25)),
-          color: Color.fromARGB(255, 236, 146, 146),
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
         ),
         padding: EdgeInsets.all(5),
         child: Text(
           text,
-          style:
-              TextStyle(color: Color.fromARGB(255, 168, 20, 20), fontSize: 12),
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.onError, fontSize: 12),
         ));
   }
 }

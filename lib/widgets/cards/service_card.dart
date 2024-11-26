@@ -9,7 +9,6 @@ class ServiceCard extends StatelessWidget {
   ServiceCard({required this.service});
 
   final Service service;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -20,48 +19,49 @@ class ServiceCard extends StatelessWidget {
       ),
       margin: EdgeInsets.symmetric(vertical: 10),
       padding: EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ColoredTag(text: service.category),
-          SizedBox(height: 15),
-          Text(
-            service.businessName,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        ColoredTag(text: service.category),
+        SizedBox(height: 15),
+        Text(
+          service.businessName,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        Row(
+          children: [
+            Text("- Descripcion: ",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(service.description)
+          ],
+        ),
+        Row(
+          children: [
+            Text("- Duración del servicio: ",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("${service.duration.toString()} minutos")
+          ],
+        ),
+        Row(
+          children: [
+            Text("- Precio del servicio: ",
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("\$${service.price.toString()}")
+          ],
+        ),
+        SizedBox(height: 15),
+        Row(children: [
+          IconButton(
+            tooltip: "Ver opiniones",
+            iconSize: 18,
+            icon: const Icon(Icons.forum),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  CustomPageRoute(
+                      pageWidget: CheckFeedbackPage(service: service)));
+            },
           ),
-          Row(
-            children: [
-              Text("- Descripcion: ", style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(service.description)
-            ],
-          ),
-          Row(
-            children: [
-              Text("- Duración del servicio: ", style: TextStyle(fontWeight: FontWeight.bold)),
-              Text("${service.duration.toString()} minutos")
-            ],
-          ),
-          Row(
-            children: [
-              Text("- Precio del servicio: ", style: TextStyle(fontWeight: FontWeight.bold)),
-              Text("\$${service.price.toString()}")
-            ],
-          ),
-          SizedBox(height: 15),
-          Row(children: [
-            IconButton(
-                tooltip: "Ver opiniones",
-                iconSize: 18,
-                icon: const Icon(Icons.forum),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      CustomPageRoute(
-                          pageWidget: CheckFeedbackPage(service: service)));
-                },
-            ),
-            SizedBox(width: 20),  
-            IconButton(
+          SizedBox(width: 20),
+          IconButton(
             icon: Icon(Icons.delete),
             iconSize: 18,
             tooltip: "Eliminar",
@@ -87,9 +87,8 @@ class ServiceCard extends StatelessWidget {
               ),
             ),
           )
-          ])
-        ]
-      ),
+        ])
+      ]),
     );
   }
 }

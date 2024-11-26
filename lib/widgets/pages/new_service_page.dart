@@ -29,7 +29,7 @@ class _NewServicePageState extends State<NewServicePage> {
     return LoaderOverlay(
       child: Scaffold(
         appBar: NonHomeAppBar(context, text: "Crear nuevo servicio"),
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: Theme.of(context).colorScheme.onError,
         body: Center(
           child: Form(
               key: formKey,

@@ -14,16 +14,26 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: NonHomeAppBar(context, text: "Mi perfil"),
-      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      backgroundColor: Theme.of(context).colorScheme.onError,
       body: Center(
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text("Tu perfil"),
-          Text("${user.name} ${user.lastName}"),
-          Text(user.email),
-          Text(user.role),
+          SizedBox(
+            height: 50,
+          ),
+          Icon(Icons.face_outlined, size: 200),
+          Text("${user.name} ${user.lastName}", style: TextStyle(fontSize: 50)),
+          SizedBox(height: 20),
+          Text("Rol: ${user.role}"),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Icon(Icons.email),
+            SizedBox(
+              width: 5,
+            ),
+            Text(user.email)
+          ]),
         ],
       )),
     );

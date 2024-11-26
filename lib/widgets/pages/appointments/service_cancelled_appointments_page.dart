@@ -13,7 +13,8 @@ class ServiceCancelledAppointmentsPage extends StatefulWidget {
       _ServiceCancelledAppointmentsPageState();
 }
 
-class _ServiceCancelledAppointmentsPageState extends State<ServiceCancelledAppointmentsPage> {
+class _ServiceCancelledAppointmentsPageState
+    extends State<ServiceCancelledAppointmentsPage> {
   var _appointmentsStream = getAppointmentsStream();
   List<String> businessNames = [];
   @override
@@ -28,43 +29,42 @@ class _ServiceCancelledAppointmentsPageState extends State<ServiceCancelledAppoi
             );
           }
           return FutureBuilder(
-              future: ServicesRepository().getBusinessNamesByUserUid(userUid),
-              builder: (context, snapshotBusiness) {
-                if (!snapshotBusiness.hasData) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                businessNames = snapshotBusiness.data!;
+            future: ServicesRepository().getBusinessNamesByUserUid(userUid),
+            builder: (context, snapshotBusiness) {
+              if (!snapshotBusiness.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              businessNames = snapshotBusiness.data!;
 
-                var appointments = snapshot.data!.docs
-                    .map((docSnapshot) {
-                      var appointmentMap = docSnapshot.data();
-                      appointmentMap['uid'] = docSnapshot.id;
-                      return Appointment.fromMap(appointmentMap);
-                    })
-                    .where((app) =>
-                        app.getServiceDateTime().isAfter(DateTime.now()) &&
-                        app.isCancelled == true &&
-                        businessNames.contains(app.businessName))
-                    .toList();
+              var appointments = snapshot.data!.docs
+                  .map((docSnapshot) {
+                    var appointmentMap = docSnapshot.data();
+                    appointmentMap['uid'] = docSnapshot.id;
+                    return Appointment.fromMap(appointmentMap);
+                  })
+                  .where((app) =>
+                      app.getServiceDateTime().isAfter(DateTime.now()) &&
+                      app.isCancelled == true &&
+                      businessNames.contains(app.businessName))
+                  .toList();
 
-                String sectionTitle = appointments.isEmpty
-                    ? 'No te cancelaron ningún turno aún'
-                    : 'Te cancelaron ${appointments.length} turno${appointments.length > 1 ? 's' : ''}:';
+              String sectionTitle = appointments.isEmpty
+                  ? 'No te cancelaron ningún turno aún'
+                  : 'Te cancelaron ${appointments.length} turno${appointments.length > 1 ? 's' : ''}:';
 
-                return ListView(
-                  padding: EdgeInsets.all(30),
-                  children: [
-                    SectionTitle(text: sectionTitle),
-                    for (var appointment in appointments)
-                      ServiceAppointmentCard(
-                          appointment: appointment,
-                          isCancellable: false),
+              return ListView(
+                padding: EdgeInsets.all(30),
+                children: [
+                  SectionTitle(text: sectionTitle),
+                  for (var appointment in appointments)
+                    ServiceAppointmentCard(
+                        appointment: appointment, isCancellable: false),
                 ],
               );
-              },
-            );
+            },
+          );
         });
   }
 }

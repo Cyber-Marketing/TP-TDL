@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return LoaderOverlay(
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.onError,
         body: Form(
           key: formKey,
           child: Center(
@@ -31,6 +31,11 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Text('Inicio de sesión',
+                    style: TextStyle(
+                        fontSize: 50,
+                        color: Theme.of(context).colorScheme.primary)),
+                SizedBox(height: 40),
                 CustomEmailField(onChanged: (value) {
                   email = value;
                 }),

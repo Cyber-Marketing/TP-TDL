@@ -156,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         body: Container(
-          color: Theme.of(context).colorScheme.primaryContainer,
+          color: Theme.of(context).colorScheme.onError,
           child: page,
         ),
         floatingActionButton: Consumer<AppState>(

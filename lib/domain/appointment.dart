@@ -13,8 +13,8 @@ class Appointment {
   int? rating;
   String? comment;
 
-  Appointment(this.businessName, this.serviceDescription, this.servicePrice, this.userFullName,
-      this.serviceDay, this.serviceTime,
+  Appointment(this.businessName, this.serviceDescription, this.servicePrice,
+      this.userFullName, this.serviceDay, this.serviceTime,
       {this.isCancelled = false,
       this.uid = '',
       this.userUid = '',
@@ -77,7 +77,7 @@ class Appointment {
       'serviceTime.\$2.minute': serviceTime.$2.minute,
       'isCancelled': isCancelled,
       'rating': rating,
-      'comment':comment
+      'comment': comment
     };
   }
 

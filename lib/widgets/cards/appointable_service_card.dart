@@ -35,41 +35,40 @@ class AppointableServiceCard extends StatelessWidget {
           SizedBox(height: 10),
           ColoredTag(text: service.category),
           SizedBox(height: 20),
-          Row(
-            children: [Visibility(
-            visible: showButton,
-            child: Center(
-              child: IconButton(
-                tooltip: "Reservar turno",
-                iconSize: 18,
-                icon: const Icon(Icons.bookmarks),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      CustomPageRoute(
-                          pageWidget: MakeAppointmentPage(service: service)));
-                },
+          Row(children: [
+            Visibility(
+              visible: showButton,
+              child: Center(
+                child: IconButton(
+                  tooltip: "Reservar turno",
+                  iconSize: 18,
+                  icon: const Icon(Icons.bookmarks),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        CustomPageRoute(
+                            pageWidget: MakeAppointmentPage(service: service)));
+                  },
+                ),
               ),
             ),
-          ),
-          Visibility(
-            visible: showButton,
-            child: Center(
-              child: IconButton(
-                tooltip: "Ver opiniones",
-                iconSize: 18,
-                icon: const Icon(Icons.forum),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      CustomPageRoute(
-                          pageWidget: CheckFeedbackPage(service: service)));
-                },
+            Visibility(
+              visible: showButton,
+              child: Center(
+                child: IconButton(
+                  tooltip: "Ver opiniones",
+                  iconSize: 18,
+                  icon: const Icon(Icons.forum),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        CustomPageRoute(
+                            pageWidget: CheckFeedbackPage(service: service)));
+                  },
+                ),
               ),
-            ),
-          )
-            ]
-          )
+            )
+          ])
         ],
       ),
     );

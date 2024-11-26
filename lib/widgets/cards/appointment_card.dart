@@ -36,25 +36,29 @@ class AppointmentCard extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("- Descripcion: ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text("- Descripcion: ",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               Text(appointment.serviceDescription)
             ],
           ),
           Row(
             children: [
-              Text("- Dia del servicio: ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text("- Dia del servicio: ",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               Text(appointment.getServiceDay())
             ],
           ),
           Row(
             children: [
-              Text("- Horario del servicio: ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text("- Horario del servicio: ",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               Text(appointment.getServiceTime())
             ],
           ),
           Row(
             children: [
-              Text("- Precio del servicio: ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text("- Precio del servicio: ",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               Text("\$${appointment.servicePrice}")
             ],
           ),
