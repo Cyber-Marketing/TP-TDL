@@ -16,7 +16,7 @@ class _MainPageState extends State<MainPage> {
   List<Service> _data = [];
   bool _isLoading = false;
   late QueryDocumentSnapshot<Map<String, dynamic>> lastVisible;
-  late int totalServices;
+  int totalServices = 0;
 
   @override
   void initState() {
@@ -88,7 +88,10 @@ class _MainPageState extends State<MainPage> {
                         visible: _currentPage * _pageSize <= totalServices,
                         child: ElevatedButton(
                           onPressed: _loadMoreData,
-                          child: Text('Cargar más'),
+                          child: Text(
+                            '${_currentPage * _pageSize}/$totalServices\nCargar más',
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       );
                 return Center(child: child);
