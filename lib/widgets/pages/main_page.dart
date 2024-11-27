@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
-import 'package:web_app/data/service_repository.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/cards/appointable_service_card.dart';
 
@@ -11,45 +11,93 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final Stream _servicesStream = ServicesRepository().getServicesStream();
+  static const int _pageSize = 6;
+  int _currentPage = 1;
+  List<Service> _data = [];
+  bool _isLoading = false;
+  late QueryDocumentSnapshot<Map<String, dynamic>> lastVisible;
+  late int totalServices;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    var query =
+        FirebaseFirestore.instance.collection('services').limit(_pageSize);
+
+    if (_currentPage == 1) {
+      totalServices = await FirebaseFirestore.instance
+          .collection('services')
+          .count()
+          .get()
+          .then(
+            (res) => res.count ?? 0,
+          );
+    } else {
+      query = query.startAfterDocument(lastVisible);
+    }
+
+    var newServices = await query.get().then((snapshot) {
+      lastVisible = snapshot.docs[snapshot.size - 1];
+
+      return snapshot.docs.map((doc) {
+        var serviceMap = doc.data() as Map;
+        serviceMap['uid'] = doc.id;
+        return Service.fromMap(serviceMap);
+      }).toList();
+    });
+
+    setState(() {
+      _data.addAll(newServices);
+      _isLoading = false;
+    });
+  }
+
+  void _loadMoreData() {
+    setState(() {
+      _currentPage++;
+    });
+    _fetchData();
+  }
 
   @override
   Widget build(BuildContext context) {
-    AppState appState = context.watch<AppState>();
+    bool userIsCustomer = context.watch<AppState>().userIsCustomer();
 
-    return StreamBuilder(
-      stream: _servicesStream,
-      builder: (BuildContext context, snapshot) {
-        if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        var servicesCards = snapshot.data?.docs
-            .map((serviceDoc) {
-              try {
-                return AppointableServiceCard(
-                  showButton: appState.userIsCustomer(),
-                  service: Service.fromMap(serviceDoc.data()!),
-                );
-              } catch (e) {
-                print('Error creating Service: $e');
-                return null;
+    return Expanded(
+        child: GridView.builder(
+            padding: EdgeInsets.all(50),
+            itemCount: _data.length + 1,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisSpacing: 50,
+                crossAxisSpacing: 30,
+                childAspectRatio: 2,
+                crossAxisCount: 3),
+            itemBuilder: (context, index) {
+              if (index == _data.length) {
+                var child = _isLoading
+                    ? CircularProgressIndicator()
+                    : Visibility(
+                        visible: _currentPage * _pageSize <= totalServices,
+                        child: ElevatedButton(
+                          onPressed: _loadMoreData,
+                          child: Text('Cargar más'),
+                        ),
+                      );
+                return Center(child: child);
               }
-            })
-            .where((card) => card != null)
-            .cast<AppointableServiceCard>()
-            .toList();
-        return GridView.count(
-          padding: const EdgeInsets.all(50),
-          crossAxisCount: 3,
-          crossAxisSpacing: 30,
-          mainAxisSpacing: 50,
-          childAspectRatio: 2,
-          children: servicesCards,
-        );
-      },
-    );
+
+              return AppointableServiceCard(
+                showButton: userIsCustomer,
+                service: _data[index],
+              );
+            }));
   }
 }

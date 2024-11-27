@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:web_app/domain/service.dart';
 
 class ServicesRepository {
-  CollectionReference collection =
+  CollectionReference<Map<String, dynamic>> collection =
       FirebaseFirestore.instance.collection('services');
 
   ServicesRepository();
@@ -12,7 +12,7 @@ class ServicesRepository {
     return;
   }
 
-  Stream<QuerySnapshot<Object?>> getServicesStream() {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getServicesStream() {
     return collection.snapshots();
   }
 
