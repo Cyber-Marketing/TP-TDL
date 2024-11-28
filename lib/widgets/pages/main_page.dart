@@ -11,20 +11,28 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  static const int _pageSize = 6;
+  static const int _pageSize = 7;
   int _currentPage = 1;
-  List<Service> _data = [];
+  List<Service> _services = [];
   bool _isLoading = false;
-  late QueryDocumentSnapshot<Map<String, dynamic>> lastVisible;
+  late QueryDocumentSnapshot<Map<String, dynamic>> lastService;
   int totalServices = 0;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _fetchData();
+    _scrollController.addListener(_fetchServicesOnScroll);
+    _fetchServices();
   }
 
-  Future<void> _fetchData() async {
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _fetchServices() async {
     setState(() {
       _isLoading = true;
     });
@@ -41,11 +49,11 @@ class _MainPageState extends State<MainPage> {
             (res) => res.count ?? 0,
           );
     } else {
-      query = query.startAfterDocument(lastVisible);
+      query = query.startAfterDocument(lastService);
     }
 
     var newServices = await query.get().then((snapshot) {
-      lastVisible = snapshot.docs[snapshot.size - 1];
+      lastService = snapshot.docs[snapshot.size - 1];
 
       return snapshot.docs.map((doc) {
         var serviceMap = doc.data() as Map;
@@ -55,16 +63,22 @@ class _MainPageState extends State<MainPage> {
     });
 
     setState(() {
-      _data.addAll(newServices);
+      _services.addAll(newServices);
       _isLoading = false;
     });
   }
 
-  void _loadMoreData() {
+  void _fetchServicesOnScroll() {
+    if (_services.length >= totalServices) {
+      return;
+    }
     setState(() {
       _currentPage++;
     });
-    _fetchData();
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _fetchServices();
+    }
   }
 
   @override
@@ -74,33 +88,20 @@ class _MainPageState extends State<MainPage> {
     return Expanded(
         child: GridView.builder(
             padding: EdgeInsets.all(50),
-            itemCount: _data.length + 1,
+            controller: _scrollController,
+            itemCount: _services.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 mainAxisSpacing: 50,
                 crossAxisSpacing: 30,
                 childAspectRatio: 2,
                 crossAxisCount: 3),
             itemBuilder: (context, index) {
-              if (index == _data.length) {
-                var child = _isLoading
-                    ? CircularProgressIndicator()
-                    : Visibility(
-                        visible: _currentPage * _pageSize <= totalServices,
-                        child: ElevatedButton(
-                          onPressed: _loadMoreData,
-                          child: Text(
-                            '${_currentPage * _pageSize}/$totalServices\nCargar más',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      );
-                return Center(child: child);
-              }
-
-              return AppointableServiceCard(
-                showButton: userIsCustomer,
-                service: _data[index],
-              );
+              return _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : AppointableServiceCard(
+                      showButton: userIsCustomer,
+                      service: _services[index],
+                    );
             }));
   }
 }

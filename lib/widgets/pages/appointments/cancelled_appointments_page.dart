@@ -56,25 +56,5 @@ class _CancelledAppointmentsPageState extends State<CancelledAppointmentsPage> {
             ],
           );
         });
-
-    // return FutureBuilder(
-    //   future: getUserCancelledAppointments(userUid),
-    //   builder: ((context, snapshot) {
-    //     if (!snapshot.hasData) {
-    //       return const Center(
-    //         child: CircularProgressIndicator(),
-    //       );
-    //     }
-    //     var appointments = snapshot.data!.docs
-    //         .map((docSnapshot) {
-    //           var appointmentMap = docSnapshot.data();
-    //           appointmentMap['uid'] = docSnapshot.id;
-    //           return Appointment.fromMap(appointmentMap);
-    //         })
-    //         .where((app) => app.getServiceDateTime().isAfter(DateTime.now()))
-    //         .toList();
-
-    //   }),
-    // );
   }
 }
