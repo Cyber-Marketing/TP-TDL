@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
-import 'package:web_app/widgets/pages/main_page.dart';
+import 'package:web_app/widgets/stream_builders/main_stream_builder.dart';
 import 'package:web_app/widgets/stream_builders/cancelled_stream_builder.dart';
 import 'package:web_app/widgets/stream_builders/ended_stream_builder.dart';
 import 'package:web_app/widgets/stream_builders/my_services_stream_builder.dart';
@@ -15,7 +15,7 @@ class CustomSearchDelegate extends SearchDelegate {
   int selectedIndex;
 
   @override
-  String get searchFieldLabel => 'Buscador de ...';
+  String get searchFieldLabel => 'Buscar...';
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -44,35 +44,32 @@ class CustomSearchDelegate extends SearchDelegate {
     String userUid = context.watch<AppState>().currentUser!.uid;
 
     return switch (selectedIndex) {
-      0 => MainPage(),
+      0 => MainStreamBuilder(
+          userUid: userUid,
+          name: query,
+        ),
       1 => PendingStreamBuilder(
           userUid: userUid,
-          type: 'businessName',
           name: query,
         ),
       2 => CancelledStreamBuilder(
           userUid: userUid,
-          type: 'businessName',
           name: query,
         ),
       3 => EndedStreamBuilder(
           userUid: userUid,
-          type: 'businessName',
           name: query,
         ),
       4 => MyServicesStreamBuilder(
           userUid: userUid,
-          type: 'businessName',
           name: query,
         ),
       5 => ServicePendingStreamBuilder(
           userUid: userUid,
-          type: 'businessName',
           name: query,
         ),
       6 => ServiceCancelledStreamBuilder(
           userUid: userUid,
-          type: 'businessName',
           name: query,
         ),
       _ => throw UnimplementedError('no widget for $selectedIndex'),

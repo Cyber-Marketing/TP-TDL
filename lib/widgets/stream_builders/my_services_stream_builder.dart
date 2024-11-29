@@ -6,10 +6,9 @@ import 'package:web_app/widgets/section_title.dart';
 
 class MyServicesStreamBuilder extends StatelessWidget {
   final String userUid;
-  final String? type;
   final String? name;
 
-  MyServicesStreamBuilder({required this.userUid, this.type, this.name});
+  MyServicesStreamBuilder({required this.userUid, this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -22,38 +21,27 @@ class MyServicesStreamBuilder extends StatelessWidget {
             );
           }
 
-          var services = switch (type) {
-            'businessName' => snapshot.data!.docs
-                .map((docSnapshot) {
-                  var serviceMap = docSnapshot.data() as Map;
-                  serviceMap['uid'] = docSnapshot.id;
-                  return Service.fromMap(serviceMap);
-                })
-                .where((serv) =>
-                    serv.ownerUid == userUid &&
-                    serv.businessName
-                        .toLowerCase()
-                        .contains(name!.toLowerCase()))
-                .toList(),
-            'category' => snapshot.data!.docs
-                .map((docSnapshot) {
-                  var serviceMap = docSnapshot.data() as Map;
-                  serviceMap['uid'] = docSnapshot.id;
-                  return Service.fromMap(serviceMap);
-                })
-                .where((serv) =>
-                    serv.ownerUid == userUid &&
-                    serv.category.toLowerCase().contains(name!.toLowerCase()))
-                .toList(),
-            _ => snapshot.data!.docs
-                .map((docSnapshot) {
-                  var serviceMap = docSnapshot.data() as Map;
-                  serviceMap['uid'] = docSnapshot.id;
-                  return Service.fromMap(serviceMap);
-                })
-                .where((serv) => serv.ownerUid == userUid)
-                .toList(),
-          };
+          var services = name != null
+              ? snapshot.data!.docs
+                  .map((docSnapshot) {
+                    var serviceMap = docSnapshot.data() as Map;
+                    serviceMap['uid'] = docSnapshot.id;
+                    return Service.fromMap(serviceMap);
+                  })
+                  .where((serv) =>
+                      serv.ownerUid == userUid &&
+                      serv.businessName
+                          .toLowerCase()
+                          .contains(name!.toLowerCase()))
+                  .toList()
+              : snapshot.data!.docs
+                  .map((docSnapshot) {
+                    var serviceMap = docSnapshot.data() as Map;
+                    serviceMap['uid'] = docSnapshot.id;
+                    return Service.fromMap(serviceMap);
+                  })
+                  .where((serv) => serv.ownerUid == userUid)
+                  .toList();
 
           String pluralSuffix = services.length > 1 ? 's' : '';
           String sectionTitle = services.isEmpty

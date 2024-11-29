@@ -6,10 +6,9 @@ import 'package:web_app/widgets/section_title.dart';
 
 class CancelledStreamBuilder extends StatelessWidget {
   final String userUid;
-  final String? type;
   final String? name;
 
-  CancelledStreamBuilder({required this.userUid, this.type, this.name});
+  CancelledStreamBuilder({required this.userUid, this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class CancelledStreamBuilder extends StatelessWidget {
             );
           }
 
-          var appointments = type == 'businessName'
+          var appointments = name != null
               ? snapshot.data!.docs
                   .map((docSnapshot) {
                     var appointmentMap = docSnapshot.data();

@@ -6,10 +6,9 @@ import 'package:web_app/widgets/section_title.dart';
 
 class PendingStreamBuilder extends StatelessWidget {
   final String userUid;
-  final String? type;
   final String? name;
 
-  PendingStreamBuilder({required this.userUid, this.type, this.name});
+  PendingStreamBuilder({required this.userUid, this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class PendingStreamBuilder extends StatelessWidget {
             );
           }
 
-          var appointments = type == 'businessName'
+          var appointments = name != null
               ? snapshot.data!.docs
                   .map((docSnapshot) {
                     var appointmentMap = docSnapshot.data();
