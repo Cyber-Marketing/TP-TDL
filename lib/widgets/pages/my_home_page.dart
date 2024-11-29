@@ -5,6 +5,7 @@ import 'package:web_app/app_state.dart';
 import 'package:web_app/widgets/buttons/auth_buttons.dart';
 import 'package:web_app/widgets/buttons/app_bar_button.dart';
 import 'package:web_app/widgets/buttons/new_service_button.dart';
+import 'package:web_app/widgets/form_fields/custom_search_delegate.dart';
 import 'package:web_app/widgets/pages/my_services_page.dart';
 import 'main_page.dart';
 import 'appointments/pending_appointments_page.dart';
@@ -140,6 +141,22 @@ class _MyHomePageState extends State<MyHomePage> {
                       setState(() {
                         selectedIndex = 6;
                       });
+                    },
+                  ),
+                ),
+              ),
+              Consumer<AppState>(
+                builder: (_, appState, __) => Visibility(
+                  visible: appState.isSignedIn,
+                  child: AppBarButton(
+                    tooltip: "Buscador",
+                    icon: Icons.search,
+                    onPressed: () {
+                      showSearch(
+                        context: context,
+                        delegate:
+                            CustomSearchDelegate(selectedIndex: selectedIndex),
+                      );
                     },
                   ),
                 ),
