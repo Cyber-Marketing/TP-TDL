@@ -78,14 +78,6 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return ListView.builder(
-      itemCount: [].length,
-      itemBuilder: (context, index) {
-        var result = [][index];
-        return ListTile(
-          title: Text(result),
-        );
-      },
-    );
+    return Text('');
   }
 }
