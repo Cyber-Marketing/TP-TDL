@@ -3,14 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
 import 'package:web_app/widgets/stream_builders/service_pending_stream_builder.dart';
 
-class ServicePendingAppointmentsSection extends StatefulWidget {
+class PendingAppointedServicesSection extends StatefulWidget {
   @override
-  State<ServicePendingAppointmentsSection> createState() =>
-      _ServicePendingAppointmentsSectionState();
+  State<PendingAppointedServicesSection> createState() =>
+      _PendingAppointedServicesSectionState();
 }
 
-class _ServicePendingAppointmentsSectionState
-    extends State<ServicePendingAppointmentsSection> {
+class _PendingAppointedServicesSectionState
+    extends State<PendingAppointedServicesSection> {
   @override
   Widget build(BuildContext context) {
     String userUid = context.watch<AppState>().currentUser!.uid;

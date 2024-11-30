@@ -6,13 +6,13 @@ import 'package:web_app/widgets/app_bar/auth_buttons.dart';
 import 'package:web_app/widgets/app_bar/app_bar_button.dart';
 import 'package:web_app/widgets/buttons/new_service_button.dart';
 import 'package:web_app/widgets/form_fields/custom_search_delegate.dart';
-import 'package:web_app/widgets/sections/my_services_section.dart';
+import 'package:web_app/widgets/sections/provider_only/my_services_section.dart';
 import '../sections/main_section.dart';
-import '../sections/pending_appointments_section.dart';
-import '../sections/ended_appointments_section.dart';
-import '../sections/cancelled_appointments_section.dart';
-import '../sections/service_cancelled_appointments_section.dart';
-import '../sections/service_pending_appointments_section.dart';
+import '../sections/customer_only/pending_appointments_section.dart';
+import '../sections/customer_only/ended_appointments_section.dart';
+import '../sections/customer_only/cancelled_appointments_section.dart';
+import '../sections/provider_only/cancelled_appointed_services_section.dart';
+import '../sections/provider_only/pending_appointed_services_section.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -37,9 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
       case 4:
         page = MyServicesSection();
       case 5:
-        page = ServicePendingAppointmentsSection();
+        page = PendingAppointedServicesSection();
       case 6:
-        page = ServiceCancelledAppointmentsSection();
+        page = CancelledAppointedServicesSection();
       default:
         throw UnimplementedError('no widget for $selectedSection');
     }
