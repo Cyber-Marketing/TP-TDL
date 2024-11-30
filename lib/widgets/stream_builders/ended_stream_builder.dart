@@ -21,32 +21,25 @@ class EndedStreamBuilder extends StatelessWidget {
             );
           }
 
-          var appointments = name != null
-              ? snapshot.data!.docs
-                  .map((docSnapshot) {
-                    var appointmentMap = docSnapshot.data();
-                    appointmentMap['uid'] = docSnapshot.id;
-                    return Appointment.fromMap(appointmentMap);
-                  })
-                  .where((app) =>
-                      app.hasEnded() &&
-                      app.isCancelled == false &&
-                      app.userUid == userUid &&
-                      app.businessName
-                          .toLowerCase()
-                          .contains(name!.toLowerCase()))
-                  .toList()
-              : snapshot.data!.docs
-                  .map((docSnapshot) {
-                    var appointmentMap = docSnapshot.data();
-                    appointmentMap['uid'] = docSnapshot.id;
-                    return Appointment.fromMap(appointmentMap);
-                  })
-                  .where((app) =>
-                      app.hasEnded() &&
-                      app.isCancelled == false &&
-                      app.userUid == userUid)
-                  .toList();
+          bool Function(Appointment app) filteringCondition = name == null
+              ? (Appointment app) =>
+                  app.hasEnded() &&
+                  app.isCancelled == false &&
+                  app.userUid == userUid
+              : (Appointment app) =>
+                  app.hasEnded() &&
+                  app.isCancelled == false &&
+                  app.userUid == userUid &&
+                  app.businessName.toLowerCase().contains(name!.toLowerCase());
+
+          var appointmentsIterable = snapshot.data!.docs.map((docSnapshot) {
+            var appointmentMap = docSnapshot.data();
+            appointmentMap['uid'] = docSnapshot.id;
+            return Appointment.fromMap(appointmentMap);
+          });
+
+          List<Appointment> appointments =
+              appointmentsIterable.where(filteringCondition).toList();
 
           String sectionTitle = appointments.isEmpty
               ? 'No tenés turnos terminados'
