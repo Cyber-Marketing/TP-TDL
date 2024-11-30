@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:web_app/domain/app_user.dart';
-import 'package:web_app/widgets/app_bar/non_home_app_bar.dart';
+import 'package:web_app/widgets/app_bar/non_home/non_home_app_bar.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({

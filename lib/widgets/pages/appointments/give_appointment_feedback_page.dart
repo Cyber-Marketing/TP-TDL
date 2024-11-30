@@ -3,7 +3,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/widgets/form_fields/custom_text_field.dart';
-import 'package:web_app/widgets/app_bar/non_home_app_bar.dart';
+import 'package:web_app/widgets/app_bar/non_home/non_home_app_bar.dart';
 
 class GiveAppointmentFeedbackPage extends StatefulWidget {
   final Appointment appointment;

@@ -3,7 +3,7 @@ import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/cards/service_feedback_card.dart';
-import 'package:web_app/widgets/app_bar/non_home_app_bar.dart';
+import 'package:web_app/widgets/app_bar/non_home/non_home_app_bar.dart';
 import 'package:web_app/widgets/section_title.dart';
 
 class CheckServiceFeedbackPage extends StatefulWidget {

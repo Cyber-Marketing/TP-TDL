@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:web_app/widgets/app_bar/non_home_app_bar_title.dart';
-import 'package:web_app/widgets/app_bar/go_backwards_button.dart';
+import 'package:web_app/widgets/app_bar/non_home/non_home_app_bar_title.dart';
+import 'package:web_app/widgets/app_bar/non_home/go_backwards_button.dart';
 
 class NonHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   NonHomeAppBar.private({
