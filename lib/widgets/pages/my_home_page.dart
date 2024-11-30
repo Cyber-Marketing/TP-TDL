@@ -69,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   visible: appState.isSignedIn && appState.userIsCustomer(),
                   child: AppBarButton(
                     tooltip: "Turnos pendientes",
-                    icon: Icons.event,
+                    icon: Icons.date_range,
                     onPressed: () {
                       setState(() {
                         selectedSection = 1;
@@ -125,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   visible: appState.isSignedIn && !appState.userIsCustomer(),
                   child: AppBarButton(
                     tooltip: "Servicios pendientes",
-                    icon: Icons.pending_actions_outlined,
+                    icon: Icons.work_history_outlined,
                     onPressed: () {
                       setState(() {
                         selectedSection = 5;

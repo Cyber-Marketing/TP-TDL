@@ -23,14 +23,15 @@ class ProfilePage extends StatelessWidget {
           SizedBox(
             height: 50,
           ),
-          Icon(Icons.face_outlined, size: 200),
-          Text("${user.name} ${user.lastName}", style: TextStyle(fontSize: 50)),
-          SizedBox(height: 20),
+          Icon(Icons.face_outlined, size: 150),
+          Text("${user.name} ${user.lastName}", style: TextStyle(fontSize: 35)),
+          SizedBox(height: 10),
           Text("Rol: ${user.role}"),
+          SizedBox(height: 10),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Icon(Icons.email),
             SizedBox(
-              width: 5,
+              width: 8,
             ),
             Text(user.email)
           ]),

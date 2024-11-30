@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class Appointment {
   String uid;
   String userUid;
+  String userFullName;
   String businessName;
   String serviceDescription;
   double servicePrice;
-  String userFullName;
   DateTime serviceDay;
   (TimeOfDay, TimeOfDay) serviceTime;
   bool isCancelled;

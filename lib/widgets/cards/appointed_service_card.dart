@@ -52,40 +52,49 @@ class AppointedServiceCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 15),
-          appointment.wasAttended
-              ? ColoredTag(text: 'Asistido ✅')
-              : ColoredTag(text: 'Perdido ❌'),
-          SizedBox(height: 5),
-          IconButton(
-            icon: Icon(Icons.manage_accounts_outlined),
-            tooltip: "Actualizar asistencia",
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
-            onPressed: () => showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                title: Text('¿El cliente asistió al turno?'),
-                actions: [
-                  TextButton(
-                    child: Text('No'),
-                    onPressed: () {
-                      appointment.wasAttended = false;
-                      updateAttendance(appointment);
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Asistencia actualizada')));
-                    },
-                  ),
-                  TextButton(
-                    child: Text('Sí'),
-                    onPressed: () {
-                      appointment.wasAttended = true;
-                      updateAttendance(appointment);
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Asistencia actualizada')));
-                    },
-                  ),
+          Visibility(
+              visible: appointment.hasEnded(),
+              child: Column(
+                children: [
+                  ColoredTag(
+                      text:
+                          appointment.wasAttended ? 'Asistido ✅' : 'Perdido ❌'),
+                  SizedBox(height: 5),
                 ],
+              )),
+          Visibility(
+            visible: appointment.hasEnded(),
+            child: IconButton(
+              icon: Icon(Icons.manage_accounts_outlined),
+              tooltip: "Actualizar asistencia",
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: Text('¿El cliente asistió al turno?'),
+                  actions: [
+                    TextButton(
+                      child: Text('No'),
+                      onPressed: () {
+                        appointment.wasAttended = false;
+                        updateAttendance(appointment);
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Asistencia actualizada')));
+                      },
+                    ),
+                    TextButton(
+                      child: Text('Sí'),
+                      onPressed: () {
+                        appointment.wasAttended = true;
+                        updateAttendance(appointment);
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Asistencia actualizada')));
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

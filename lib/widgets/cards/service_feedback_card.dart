@@ -19,16 +19,25 @@ class ServiceFeedbackCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            appointment.userFullName,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Visibility(
+              visible: appointment.comment != null,
+              child: Text(
+                '"${appointment.comment}"',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              )),
+          SizedBox(
+            height: 5,
+          ),
           Visibility(
               visible: appointment.rating != null,
               child: RatingStars(rating: appointment.rating ?? 1)),
-          Visibility(
-              visible: appointment.comment != null,
-              child: Row(children: [
-                Text("Comentario del cliente del servicio: ",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                Text("${appointment.comment}")
-              ]))
         ],
       ),
     );

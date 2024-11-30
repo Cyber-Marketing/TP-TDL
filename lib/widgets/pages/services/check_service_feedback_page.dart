@@ -24,7 +24,8 @@ class CheckServiceFeedbackPageState extends State<CheckServiceFeedbackPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.onError,
-        appBar: NonHomeAppBar(context, text: "Ver opiniones del servicio"),
+        appBar: NonHomeAppBar(context,
+            text: "Opiniones sobre ${widget.service.businessName}"),
         body: FutureBuilder(
           future: getAppointmentsByBusinessName(widget.service.businessName),
           builder: (context, snapshot) {
@@ -33,25 +34,18 @@ class CheckServiceFeedbackPageState extends State<CheckServiceFeedbackPage> {
                 child: CircularProgressIndicator(),
               );
             }
-            var appointments = snapshot.data!.docs
+            List<Appointment> appointments = snapshot.data!.docs
                 .map((snapshotDoc) {
-                  try {
-                    var appointmentMap = snapshotDoc.data();
-                    appointmentMap['uid'] = snapshotDoc.id;
-                    return Appointment.fromMap(appointmentMap);
-                  } catch (e) {
-                    print('Error creating appointment: $e');
-                    return null;
-                  }
+                  var appointmentMap = snapshotDoc.data();
+                  appointmentMap['uid'] = snapshotDoc.id;
+                  return Appointment.fromMap(appointmentMap);
                 })
-                .where((app) => app?.rating != null || app?.comment != null)
-                .cast<Appointment>()
+                .where((app) => app.rating != null || app.comment != null)
                 .toList();
 
             String sectionTitle = appointments.isEmpty
                 ? 'Este servicio no ha recibido opiniones aún'
-                : 'Hay ${appointments.length} opinion${appointments.length > 1 ? 'es' : ''} '
-                    'del servicio ${widget.service.businessName}:';
+                : 'Hay ${appointments.length} opinion${appointments.length > 1 ? 'es' : ''}:';
 
             return ListView(
               padding: EdgeInsets.all(30),

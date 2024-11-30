@@ -58,16 +58,25 @@ class MyAppointmentCard extends StatelessWidget {
           SizedBox(height: 15),
           Visibility(
               visible: appointment.hasEnded(),
-              child: ColoredTag(
-                  text: appointment.wasAttended ? 'Asistido ✅' : 'Perdido ❌')),
-          SizedBox(height: 5),
+              child: Column(
+                children: [
+                  ColoredTag(
+                      text:
+                          appointment.wasAttended ? 'Asistido ✅' : 'Perdido ❌'),
+                  SizedBox(height: 5),
+                ],
+              )),
+          Visibility(
+              visible: appointment.comment != null,
+              child: Column(
+                children: [
+                  Text('Tu comentario: ${appointment.comment}'),
+                  SizedBox(height: 5),
+                ],
+              )),
           Visibility(
               visible: appointment.rating != null,
               child: RatingStars(rating: appointment.rating ?? 1)),
-          SizedBox(height: 5),
-          Visibility(
-              visible: appointment.comment != null,
-              child: Text('Tu comentario: ${appointment.comment}')),
           Visibility(
             visible: !appointment.isCancelled && !appointment.hasEnded(),
             child: IconButton(
