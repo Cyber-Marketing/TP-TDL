@@ -6,7 +6,7 @@ import 'package:web_app/data/service_repository.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/form_fields/custom_number_field.dart';
 import 'package:web_app/widgets/form_fields/custom_text_field.dart';
-import 'package:web_app/widgets/non_home_app_bar.dart';
+import 'package:web_app/widgets/app_bar/non_home_app_bar.dart';
 
 class NewServicePage extends StatefulWidget {
   @override

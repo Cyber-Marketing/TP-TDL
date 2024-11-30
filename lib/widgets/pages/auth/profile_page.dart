@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:web_app/domain/app_user.dart';
-import 'package:web_app/widgets/non_home_app_bar.dart';
+import 'package:web_app/widgets/app_bar/non_home_app_bar.dart';
 
-class ProfileScreen extends StatelessWidget {
-  ProfileScreen({
+class ProfilePage extends StatelessWidget {
+  ProfilePage({
     super.key,
     required this.user,
   });

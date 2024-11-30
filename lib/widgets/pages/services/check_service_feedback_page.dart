@@ -3,11 +3,11 @@ import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/cards/service_feedback_card.dart';
-import 'package:web_app/widgets/non_home_app_bar.dart';
+import 'package:web_app/widgets/app_bar/non_home_app_bar.dart';
 import 'package:web_app/widgets/section_title.dart';
 
-class CheckFeedbackPage extends StatefulWidget {
-  CheckFeedbackPage({
+class CheckServiceFeedbackPage extends StatefulWidget {
+  CheckServiceFeedbackPage({
     super.key,
     required this.service,
   });
@@ -15,10 +15,11 @@ class CheckFeedbackPage extends StatefulWidget {
   final Service service;
 
   @override
-  State<CheckFeedbackPage> createState() => CheckFeedbackPageState();
+  State<CheckServiceFeedbackPage> createState() =>
+      CheckServiceFeedbackPageState();
 }
 
-class CheckFeedbackPageState extends State<CheckFeedbackPage> {
+class CheckServiceFeedbackPageState extends State<CheckServiceFeedbackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

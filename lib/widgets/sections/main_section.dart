@@ -5,12 +5,12 @@ import 'package:web_app/app_state.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/cards/appointable_service_card.dart';
 
-class MainPage extends StatefulWidget {
+class MainSection extends StatefulWidget {
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<MainSection> createState() => _MainSectionState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainSectionState extends State<MainSection> {
   static const int _pageSize = 7;
   int _currentPage = 1;
   List<Service> _services = [];

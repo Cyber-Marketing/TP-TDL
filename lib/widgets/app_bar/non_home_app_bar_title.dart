@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AppBarTitle extends StatelessWidget {
-  const AppBarTitle({
+class NonHomeAppBarTitle extends StatelessWidget {
+  const NonHomeAppBarTitle({
     super.key,
     required this.title,
   });

@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
 import 'package:web_app/routing/custom_page_route.dart';
 import 'package:web_app/domain/app_user.dart';
-import 'package:web_app/widgets/buttons/app_bar_button.dart';
-import 'package:web_app/widgets/pages/auth/profile_screen.dart';
-import 'styled_button.dart';
+import 'package:web_app/widgets/app_bar/app_bar_button.dart';
+import 'package:web_app/widgets/pages/auth/profile_page.dart';
+import '../buttons/styled_button.dart';
 
 class AuthButtons extends StatelessWidget {
   const AuthButtons({
@@ -32,7 +32,7 @@ class AuthButtons extends StatelessWidget {
               onPressed: () => Navigator.push(
                   context,
                   CustomPageRoute(
-                      pageWidget: ProfileScreen(
+                      pageWidget: ProfilePage(
                     user: user!,
                   )))),
         )

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:web_app/routing/custom_page_route.dart';
-import 'package:web_app/widgets/pages/auth/login_screen.dart';
-import 'package:web_app/widgets/pages/auth/registration_screen.dart';
+import 'package:web_app/widgets/pages/auth/login_page.dart';
+import 'package:web_app/widgets/pages/auth/registration_page.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +32,7 @@ class WelcomeScreen extends StatelessWidget {
                     child: Text('Iniciar sesión'),
                     onPressed: () {
                       Navigator.push(
-                          context, CustomPageRoute(pageWidget: LoginScreen()));
+                          context, CustomPageRoute(pageWidget: LoginPage()));
                     },
                   ),
                   SizedBox(height: 10),
@@ -40,7 +40,7 @@ class WelcomeScreen extends StatelessWidget {
                       child: Text('Registrarse'),
                       onPressed: () {
                         Navigator.push(context,
-                            CustomPageRoute(pageWidget: RegistrationScreen()));
+                            CustomPageRoute(pageWidget: RegistrationPage()));
                       }),
                 ]),
           ),

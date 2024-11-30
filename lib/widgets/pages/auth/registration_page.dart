@@ -9,12 +9,12 @@ import 'package:web_app/widgets/form_fields/custom_password_field.dart';
 import 'package:web_app/widgets/form_fields/custom_text_field.dart';
 import 'package:web_app/widgets/pages/auth/auth_gate.dart';
 
-class RegistrationScreen extends StatefulWidget {
+class RegistrationPage extends StatefulWidget {
   @override
-  State<RegistrationScreen> createState() => _RegistrationScreenState();
+  State<RegistrationPage> createState() => _RegistrationPageState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _RegistrationPageState extends State<RegistrationPage> {
   final formKey = GlobalKey<FormState>();
   AppUser appUser = AppUser(role: 'Cliente');
   List<String> options = ['Cliente', 'Proveedor'];

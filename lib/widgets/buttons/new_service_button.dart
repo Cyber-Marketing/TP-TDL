@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:web_app/routing/custom_page_route.dart';
-import 'package:web_app/widgets/pages/new_service_page.dart';
+import 'package:web_app/widgets/pages/services/new_service_page.dart';
 
 class NewServiceButton extends StatelessWidget {
   const NewServiceButton({

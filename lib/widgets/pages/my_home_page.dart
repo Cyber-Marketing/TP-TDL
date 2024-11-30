@@ -2,17 +2,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
-import 'package:web_app/widgets/buttons/auth_buttons.dart';
-import 'package:web_app/widgets/buttons/app_bar_button.dart';
+import 'package:web_app/widgets/app_bar/auth_buttons.dart';
+import 'package:web_app/widgets/app_bar/app_bar_button.dart';
 import 'package:web_app/widgets/buttons/new_service_button.dart';
 import 'package:web_app/widgets/form_fields/custom_search_delegate.dart';
-import 'package:web_app/widgets/pages/my_services_page.dart';
-import 'main_page.dart';
-import 'appointments/pending_appointments_page.dart';
-import 'appointments/ended_appointments_page.dart';
-import 'appointments/cancelled_appointments_page.dart';
-import 'appointments/service_cancelled_appointments_page.dart';
-import 'appointments/service_pending_appointments_page.dart';
+import 'package:web_app/widgets/sections/my_services_section.dart';
+import '../sections/main_section.dart';
+import '../sections/pending_appointments_section.dart';
+import '../sections/ended_appointments_section.dart';
+import '../sections/cancelled_appointments_section.dart';
+import '../sections/service_cancelled_appointments_section.dart';
+import '../sections/service_pending_appointments_section.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -20,28 +20,28 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var selectedIndex = 0;
+  var selectedSection = 0;
 
   @override
   Widget build(BuildContext context) {
     Widget page;
-    switch (selectedIndex) {
+    switch (selectedSection) {
       case 0:
-        page = MainPage();
+        page = MainSection();
       case 1:
-        page = PendingAppointmentsPage();
+        page = PendingAppointmentsSection();
       case 2:
-        page = CancelledAppointmentsPage();
+        page = CancelledAppointmentsSection();
       case 3:
-        page = EndedAppointmentsPage();
+        page = EndedAppointmentsSection();
       case 4:
-        page = MyServicesPage();
+        page = MyServicesSection();
       case 5:
-        page = ServicePendingAppointmentsPage();
+        page = ServicePendingAppointmentsSection();
       case 6:
-        page = ServiceCancelledAppointmentsPage();
+        page = ServiceCancelledAppointmentsSection();
       default:
-        throw UnimplementedError('no widget for $selectedIndex');
+        throw UnimplementedError('no widget for $selectedSection');
     }
 
     return LayoutBuilder(builder: (context, constraints) {
@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 icon: Icons.home,
                 onPressed: () {
                   setState(() {
-                    selectedIndex = 0;
+                    selectedSection = 0;
                   });
                 },
               ),
@@ -69,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: Icons.event,
                     onPressed: () {
                       setState(() {
-                        selectedIndex = 1;
+                        selectedSection = 1;
                       });
                     },
                   ),
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: Icons.event_busy,
                     onPressed: () {
                       setState(() {
-                        selectedIndex = 2;
+                        selectedSection = 2;
                       });
                     },
                   ),
@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: Icons.event_repeat,
                     onPressed: () {
                       setState(() {
-                        selectedIndex = 3;
+                        selectedSection = 3;
                       });
                     },
                   ),
@@ -111,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: Icons.store_outlined,
                     onPressed: () {
                       setState(() {
-                        selectedIndex = 4;
+                        selectedSection = 4;
                       });
                     },
                   ),
@@ -125,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: Icons.work_history_outlined,
                     onPressed: () {
                       setState(() {
-                        selectedIndex = 5;
+                        selectedSection = 5;
                       });
                     },
                   ),
@@ -139,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: Icons.work_off_outlined,
                     onPressed: () {
                       setState(() {
-                        selectedIndex = 6;
+                        selectedSection = 6;
                       });
                     },
                   ),
@@ -154,8 +154,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       showSearch(
                         context: context,
-                        delegate:
-                            CustomSearchDelegate(selectedIndex: selectedIndex),
+                        delegate: CustomSearchDelegate(
+                            selectedIndex: selectedSection),
                       );
                     },
                   ),

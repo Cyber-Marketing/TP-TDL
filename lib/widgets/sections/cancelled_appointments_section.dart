@@ -3,13 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
 import 'package:web_app/widgets/stream_builders/cancelled_stream_builder.dart';
 
-class CancelledAppointmentsPage extends StatefulWidget {
+class CancelledAppointmentsSection extends StatefulWidget {
   @override
-  State<CancelledAppointmentsPage> createState() =>
-      _CancelledAppointmentsPageState();
+  State<CancelledAppointmentsSection> createState() =>
+      _CancelledAppointmentsSectionState();
 }
 
-class _CancelledAppointmentsPageState extends State<CancelledAppointmentsPage> {
+class _CancelledAppointmentsSectionState
+    extends State<CancelledAppointmentsSection> {
   @override
   Widget build(BuildContext context) {
     String userUid = context.watch<AppState>().currentUser!.uid;

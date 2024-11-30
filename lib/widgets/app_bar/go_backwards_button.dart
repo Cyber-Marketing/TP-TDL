@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:web_app/widgets/buttons/app_bar_button.dart';
+import 'package:web_app/widgets/app_bar/app_bar_button.dart';
 
 class GoBackwardsButton extends StatelessWidget {
   const GoBackwardsButton({

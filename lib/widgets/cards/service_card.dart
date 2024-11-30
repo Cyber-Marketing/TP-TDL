@@ -3,7 +3,7 @@ import 'package:web_app/routing/custom_page_route.dart';
 import 'package:web_app/data/service_repository.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/colored_tag.dart';
-import 'package:web_app/widgets/pages/appointments/check_feedback_page.dart';
+import 'package:web_app/widgets/pages/services/check_service_feedback_page.dart';
 
 class ServiceCard extends StatelessWidget {
   ServiceCard({required this.service});
@@ -57,7 +57,7 @@ class ServiceCard extends StatelessWidget {
               Navigator.push(
                   context,
                   CustomPageRoute(
-                      pageWidget: CheckFeedbackPage(service: service)));
+                      pageWidget: CheckServiceFeedbackPage(service: service)));
             },
           ),
           SizedBox(width: 20),
