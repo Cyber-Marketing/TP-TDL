@@ -7,15 +7,9 @@ import 'package:web_app/widgets/pages/appointments/give_appointment_feedback_pag
 import 'package:web_app/widgets/rating_stars.dart';
 
 class MyAppointmentCard extends StatelessWidget {
-  const MyAppointmentCard(
-      {super.key,
-      required this.appointment,
-      this.isCancellable = true,
-      this.isRateable = false});
+  const MyAppointmentCard({super.key, required this.appointment});
 
   final Appointment appointment;
-  final bool isCancellable;
-  final bool isRateable;
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +56,10 @@ class MyAppointmentCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 15),
-          appointment.wasAttended
-              ? ColoredTag(text: 'Asistido ✅')
-              : ColoredTag(text: 'Perdido ❌'),
+          Visibility(
+              visible: appointment.hasEnded(),
+              child: ColoredTag(
+                  text: appointment.wasAttended ? 'Asistido ✅' : 'Perdido ❌')),
           SizedBox(height: 5),
           Visibility(
               visible: appointment.rating != null,
@@ -74,7 +69,7 @@ class MyAppointmentCard extends StatelessWidget {
               visible: appointment.comment != null,
               child: Text('Tu comentario: ${appointment.comment}')),
           Visibility(
-            visible: isCancellable,
+            visible: !appointment.isCancelled && !appointment.hasEnded(),
             child: IconButton(
               icon: Icon(Icons.disabled_by_default),
               tooltip: "Cancelar",

@@ -50,8 +50,7 @@ class CancelledStreamBuilder extends StatelessWidget {
             children: [
               SectionTitle(text: sectionTitle),
               for (var appointment in appointments)
-                MyAppointmentCard(
-                    appointment: appointment, isCancellable: false),
+                MyAppointmentCard(appointment: appointment),
             ],
           );
         });
