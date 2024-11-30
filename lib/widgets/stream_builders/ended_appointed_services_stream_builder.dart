@@ -5,11 +5,11 @@ import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/widgets/cards/appointed_service_card.dart';
 import 'package:web_app/widgets/section_title.dart';
 
-class ServicePendingStreamBuilder extends StatelessWidget {
+class EndedAppointedServicesStreamBuilder extends StatelessWidget {
   final String userUid;
   final String? name;
 
-  ServicePendingStreamBuilder({required this.userUid, this.name});
+  EndedAppointedServicesStreamBuilder({required this.userUid, this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -54,22 +54,22 @@ class ServicePendingStreamBuilder extends StatelessWidget {
                         return Appointment.fromMap(appointmentMap);
                       })
                       .where((app) =>
-                          !app.hasEnded() &&
-                          app.isCancelled == false &&
+                          app.getServiceDateTime().isAfter(DateTime.now()) &&
+                          app.isCancelled == true &&
                           businessNames.contains(app.businessName))
                       .toList();
 
-              String pluralSuffix = appointments.length > 1 ? 's' : '';
               String sectionTitle = appointments.isEmpty
-                  ? 'No te reservaron ningún turno aún'
-                  : 'Tenés ${appointments.length} turno$pluralSuffix reservado$pluralSuffix por alguien:';
+                  ? 'No te cancelaron ningún turno aún'
+                  : 'Te cancelaron ${appointments.length} turno${appointments.length > 1 ? 's' : ''}:';
 
               return ListView(
                 padding: EdgeInsets.all(30),
                 children: [
                   SectionTitle(text: sectionTitle),
                   for (var appointment in appointments)
-                    AppointedServiceCard(appointment: appointment)
+                    AppointedServiceCard(
+                        appointment: appointment, isCancellable: false),
                 ],
               );
             },

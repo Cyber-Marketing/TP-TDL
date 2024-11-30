@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
-import 'package:web_app/widgets/stream_builders/service_pending_stream_builder.dart';
+import 'package:web_app/widgets/stream_builders/pending_appointed_services_stream_builder.dart';
 
 class PendingAppointedServicesSection extends StatefulWidget {
   @override
@@ -15,6 +15,6 @@ class _PendingAppointedServicesSectionState
   Widget build(BuildContext context) {
     String userUid = context.watch<AppState>().currentUser!.uid;
 
-    return ServicePendingStreamBuilder(userUid: userUid);
+    return PendingAppointedServicesStreamBuilder(userUid: userUid);
   }
 }

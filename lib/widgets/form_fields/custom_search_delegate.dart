@@ -6,13 +6,13 @@ import 'package:web_app/widgets/stream_builders/cancelled_stream_builder.dart';
 import 'package:web_app/widgets/stream_builders/ended_stream_builder.dart';
 import 'package:web_app/widgets/stream_builders/my_services_stream_builder.dart';
 import 'package:web_app/widgets/stream_builders/pending_stream_builder.dart';
-import 'package:web_app/widgets/stream_builders/service_cancelled_stream_builder.dart';
-import 'package:web_app/widgets/stream_builders/service_pending_stream_builder.dart';
+import 'package:web_app/widgets/stream_builders/cancelled_appointed_services_stream_builder.dart';
+import 'package:web_app/widgets/stream_builders/pending_appointed_services_stream_builder.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
-  CustomSearchDelegate({required this.selectedIndex});
+  CustomSearchDelegate({required this.selectedSection});
 
-  int selectedIndex;
+  int selectedSection;
 
   @override
   String get searchFieldLabel => 'Buscar...';
@@ -43,7 +43,7 @@ class CustomSearchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     String userUid = context.watch<AppState>().currentUser!.uid;
 
-    return switch (selectedIndex) {
+    return switch (selectedSection) {
       0 => MainStreamBuilder(
           userUid: userUid,
           name: query,
@@ -64,15 +64,15 @@ class CustomSearchDelegate extends SearchDelegate {
           userUid: userUid,
           name: query,
         ),
-      5 => ServicePendingStreamBuilder(
+      5 => PendingAppointedServicesStreamBuilder(
           userUid: userUid,
           name: query,
         ),
-      6 => ServiceCancelledStreamBuilder(
+      6 => CancelledAppointedServicesStreamBuilder(
           userUid: userUid,
           name: query,
         ),
-      _ => throw UnimplementedError('no widget for $selectedIndex'),
+      _ => throw UnimplementedError('no widget for $selectedSection'),
     };
   }
 

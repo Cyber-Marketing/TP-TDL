@@ -5,11 +5,11 @@ import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/widgets/cards/appointed_service_card.dart';
 import 'package:web_app/widgets/section_title.dart';
 
-class ServiceCancelledStreamBuilder extends StatelessWidget {
+class CancelledAppointedServicesStreamBuilder extends StatelessWidget {
   final String userUid;
   final String? name;
 
-  ServiceCancelledStreamBuilder({required this.userUid, this.name});
+  CancelledAppointedServicesStreamBuilder({required this.userUid, this.name});
 
   @override
   Widget build(BuildContext context) {

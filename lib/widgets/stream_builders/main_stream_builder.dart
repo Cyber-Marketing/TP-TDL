@@ -7,9 +7,9 @@ import 'package:web_app/widgets/cards/appointable_service_card.dart';
 
 class MainStreamBuilder extends StatelessWidget {
   final String userUid;
-  final String? name;
+  final String name;
 
-  MainStreamBuilder({required this.userUid, this.name});
+  MainStreamBuilder({required this.userUid, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class MainStreamBuilder extends StatelessWidget {
                 return Service.fromMap(serviceMap);
               })
               .where((serv) =>
-                  serv.businessName.toLowerCase().contains(name!.toLowerCase()))
+                  serv.businessName.toLowerCase().contains(name.toLowerCase()))
               .toList();
 
           return GridView(

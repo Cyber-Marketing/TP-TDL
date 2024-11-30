@@ -6,6 +6,7 @@ import 'package:web_app/widgets/app_bar/auth_buttons.dart';
 import 'package:web_app/widgets/app_bar/app_bar_button.dart';
 import 'package:web_app/widgets/buttons/new_service_button.dart';
 import 'package:web_app/widgets/form_fields/custom_search_delegate.dart';
+import 'package:web_app/widgets/sections/provider_only/ended_appointed_services_section.dart';
 import 'package:web_app/widgets/sections/provider_only/my_services_section.dart';
 import '../sections/main_section.dart';
 import '../sections/customer_only/pending_appointments_section.dart';
@@ -24,22 +25,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget page;
+    Widget section;
     switch (selectedSection) {
       case 0:
-        page = MainSection();
+        section = MainSection();
       case 1:
-        page = PendingAppointmentsSection();
+        section = PendingAppointmentsSection();
       case 2:
-        page = CancelledAppointmentsSection();
+        section = CancelledAppointmentsSection();
       case 3:
-        page = EndedAppointmentsSection();
+        section = EndedAppointmentsSection();
       case 4:
-        page = MyServicesSection();
+        section = MyServicesSection();
       case 5:
-        page = PendingAppointedServicesSection();
+        section = PendingAppointedServicesSection();
       case 6:
-        page = CancelledAppointedServicesSection();
+        section = CancelledAppointedServicesSection();
+      case 7:
+        section = EndedAppointedServicesSection();
       default:
         throw UnimplementedError('no widget for $selectedSection');
     }
@@ -121,8 +124,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 builder: (_, appState, __) => Visibility(
                   visible: appState.isSignedIn && !appState.userIsCustomer(),
                   child: AppBarButton(
-                    tooltip: "Servicios reservados",
-                    icon: Icons.work_history_outlined,
+                    tooltip: "Servicios pendientes",
+                    icon: Icons.pending_actions_outlined,
                     onPressed: () {
                       setState(() {
                         selectedSection = 5;
@@ -147,6 +150,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Consumer<AppState>(
                 builder: (_, appState, __) => Visibility(
+                  visible: appState.isSignedIn && !appState.userIsCustomer(),
+                  child: AppBarButton(
+                    tooltip: "Servicios terminados",
+                    icon: Icons.timer_off_outlined,
+                    onPressed: () {
+                      setState(() {
+                        selectedSection = 7;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Consumer<AppState>(
+                builder: (_, appState, __) => Visibility(
                   visible: appState.isSignedIn,
                   child: AppBarButton(
                     tooltip: "Buscador",
@@ -155,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       showSearch(
                         context: context,
                         delegate: CustomSearchDelegate(
-                            selectedIndex: selectedSection),
+                            selectedSection: selectedSection),
                       );
                     },
                   ),
@@ -174,7 +191,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Container(
           color: Theme.of(context).colorScheme.onError,
-          child: page,
+          child: section,
         ),
         floatingActionButton: Consumer<AppState>(
           builder: (_, appState, __) => Visibility(

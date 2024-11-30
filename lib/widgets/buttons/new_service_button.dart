@@ -13,7 +13,7 @@ class NewServiceButton extends StatelessWidget {
         onPressed: () => Navigator.push(
             context, CustomPageRoute(pageWidget: NewServicePage())),
         backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-        child: Icon(Icons.post_add,
+        child: Icon(Icons.add_business_outlined,
             color: Theme.of(context).colorScheme.surfaceBright));
   }
 }
