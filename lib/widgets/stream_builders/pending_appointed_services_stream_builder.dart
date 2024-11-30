@@ -32,32 +32,27 @@ class PendingAppointedServicesStreamBuilder extends StatelessWidget {
               }
               businessNames = snapshotBusiness.data!;
 
-              var appointments = name != null
-                  ? snapshot.data!.docs
-                      .map((docSnapshot) {
-                        var appointmentMap = docSnapshot.data();
-                        appointmentMap['uid'] = docSnapshot.id;
-                        return Appointment.fromMap(appointmentMap);
-                      })
-                      .where((app) =>
-                          !app.hasEnded() &&
-                          app.isCancelled == false &&
-                          businessNames.contains(app.businessName) &&
-                          app.businessName
-                              .toLowerCase()
-                              .contains(name!.toLowerCase()))
-                      .toList()
-                  : snapshot.data!.docs
-                      .map((docSnapshot) {
-                        var appointmentMap = docSnapshot.data();
-                        appointmentMap['uid'] = docSnapshot.id;
-                        return Appointment.fromMap(appointmentMap);
-                      })
-                      .where((app) =>
-                          !app.hasEnded() &&
-                          app.isCancelled == false &&
-                          businessNames.contains(app.businessName))
-                      .toList();
+              bool Function(Appointment app) filteringCondition = name == null
+                  ? (Appointment app) =>
+                      !app.hasEnded() &&
+                      app.isCancelled == false &&
+                      businessNames.contains(app.businessName)
+                  : (Appointment app) =>
+                      !app.hasEnded() &&
+                      app.isCancelled == false &&
+                      businessNames.contains(app.businessName) &&
+                      app.businessName
+                          .toLowerCase()
+                          .contains(name!.toLowerCase());
+
+              var appointmentsIterable = snapshot.data!.docs.map((docSnapshot) {
+                var appointmentMap = docSnapshot.data();
+                appointmentMap['uid'] = docSnapshot.id;
+                return Appointment.fromMap(appointmentMap);
+              });
+
+              List<Appointment> appointments =
+                  appointmentsIterable.where(filteringCondition).toList();
 
               String pluralSuffix = appointments.length > 1 ? 's' : '';
               String sectionTitle = appointments.isEmpty
