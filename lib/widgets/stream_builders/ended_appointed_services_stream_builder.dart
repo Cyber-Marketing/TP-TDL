@@ -32,36 +32,31 @@ class EndedAppointedServicesStreamBuilder extends StatelessWidget {
               }
               businessNames = snapshotBusiness.data!;
 
-              var appointments = name != null
-                  ? snapshot.data!.docs
-                      .map((docSnapshot) {
-                        var appointmentMap = docSnapshot.data();
-                        appointmentMap['uid'] = docSnapshot.id;
-                        return Appointment.fromMap(appointmentMap);
-                      })
-                      .where((app) =>
-                          !app.hasEnded() &&
-                          app.isCancelled == false &&
-                          businessNames.contains(app.businessName) &&
-                          app.businessName
-                              .toLowerCase()
-                              .contains(name!.toLowerCase()))
-                      .toList()
-                  : snapshot.data!.docs
-                      .map((docSnapshot) {
-                        var appointmentMap = docSnapshot.data();
-                        appointmentMap['uid'] = docSnapshot.id;
-                        return Appointment.fromMap(appointmentMap);
-                      })
-                      .where((app) =>
-                          app.getServiceDateTime().isAfter(DateTime.now()) &&
-                          app.isCancelled == true &&
-                          businessNames.contains(app.businessName))
-                      .toList();
+              bool Function(Appointment app) filteringCondition = name == null
+                  ? (Appointment app) =>
+                      app.hasEnded() &&
+                      app.isCancelled == false &&
+                      businessNames.contains(app.businessName)
+                  : (Appointment app) =>
+                      app.hasEnded() &&
+                      app.isCancelled == false &&
+                      businessNames.contains(app.businessName) &&
+                      app.businessName
+                          .toLowerCase()
+                          .contains(name!.toLowerCase());
+
+              var appointmentsIterable = snapshot.data!.docs.map((docSnapshot) {
+                var appointmentMap = docSnapshot.data();
+                appointmentMap['uid'] = docSnapshot.id;
+                return Appointment.fromMap(appointmentMap);
+              });
+
+              List<Appointment> appointments =
+                  appointmentsIterable.where(filteringCondition).toList();
 
               String sectionTitle = appointments.isEmpty
-                  ? 'No te cancelaron ningún turno aún'
-                  : 'Te cancelaron ${appointments.length} turno${appointments.length > 1 ? 's' : ''}:';
+                  ? 'Ningún turno ha terminado aún'
+                  : '${appointments.length} turno${appointments.length > 1 ? 's' : ''} terminado${appointments.length > 1 ? 's' : ''}:';
 
               return ListView(
                 padding: EdgeInsets.all(30),

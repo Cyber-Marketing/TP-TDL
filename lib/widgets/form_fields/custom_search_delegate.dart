@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app/app_state.dart';
+import 'package:web_app/widgets/stream_builders/ended_appointed_services_stream_builder.dart';
 import 'package:web_app/widgets/stream_builders/main_stream_builder.dart';
 import 'package:web_app/widgets/stream_builders/cancelled_stream_builder.dart';
 import 'package:web_app/widgets/stream_builders/ended_stream_builder.dart';
@@ -69,6 +70,10 @@ class CustomSearchDelegate extends SearchDelegate {
           name: query,
         ),
       6 => CancelledAppointedServicesStreamBuilder(
+          userUid: userUid,
+          name: query,
+        ),
+      7 => EndedAppointedServicesStreamBuilder(
           userUid: userUid,
           name: query,
         ),
