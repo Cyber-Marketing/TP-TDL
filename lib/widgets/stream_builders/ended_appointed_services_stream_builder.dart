@@ -63,8 +63,7 @@ class EndedAppointedServicesStreamBuilder extends StatelessWidget {
                 children: [
                   SectionTitle(text: sectionTitle),
                   for (var appointment in appointments)
-                    AppointedServiceCard(
-                        appointment: appointment, isCancellable: false),
+                    AppointedServiceCard(appointment: appointment),
                 ],
               );
             },

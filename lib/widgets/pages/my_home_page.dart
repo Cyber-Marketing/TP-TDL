@@ -153,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   visible: appState.isSignedIn && !appState.userIsCustomer(),
                   child: AppBarButton(
                     tooltip: "Servicios terminados",
-                    icon: Icons.timer_off_outlined,
+                    icon: Icons.hourglass_bottom_outlined,
                     onPressed: () {
                       setState(() {
                         selectedSection = 7;

@@ -64,6 +64,13 @@ makeAppointment(String userUid, Appointment newAppointment) async {
   }
 }
 
+Future<void> updateAttendance(Appointment appointment) async {
+  await database
+      .collection('appointments')
+      .doc(appointment.uid)
+      .update({"wasAttended": appointment.wasAttended});
+}
+
 Future<List<String>> getFreeAppointments(
     Map<String, (TimeOfDay, TimeOfDay)> completeSchedules,
     String businessName,

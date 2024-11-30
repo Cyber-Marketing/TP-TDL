@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:web_app/routing/custom_page_route.dart';
 import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/domain/appointment.dart';
+import 'package:web_app/widgets/colored_tag.dart';
 import 'package:web_app/widgets/pages/appointments/give_appointment_feedback_page.dart';
 import 'package:web_app/widgets/rating_stars.dart';
 
@@ -61,9 +62,14 @@ class MyAppointmentCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 15),
+          appointment.wasAttended
+              ? ColoredTag(text: 'Asistido ✅')
+              : ColoredTag(text: 'Perdido ❌'),
+          SizedBox(height: 5),
           Visibility(
               visible: appointment.rating != null,
               child: RatingStars(rating: appointment.rating ?? 1)),
+          SizedBox(height: 5),
           Visibility(
               visible: appointment.comment != null,
               child: Text('Tu comentario: ${appointment.comment}')),
@@ -97,7 +103,7 @@ class MyAppointmentCard extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: isRateable && appointment.rating == null,
+            visible: appointment.wasAttended && appointment.rating == null,
             child: IconButton(
               icon: Icon(Icons.grading_outlined),
               tooltip: "Dar feedback",

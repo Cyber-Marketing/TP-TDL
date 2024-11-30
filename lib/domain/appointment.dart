@@ -12,6 +12,7 @@ class Appointment {
   bool isCancelled;
   int? rating;
   String? comment;
+  bool wasAttended;
 
   Appointment(this.businessName, this.serviceDescription, this.servicePrice,
       this.userFullName, this.serviceDay, this.serviceTime,
@@ -19,7 +20,8 @@ class Appointment {
       this.uid = '',
       this.userUid = '',
       this.rating,
-      this.comment});
+      this.comment,
+      this.wasAttended = false});
 
   String getServiceDay() {
     return "${serviceDay.day}/${serviceDay.month}/${serviceDay.year}";
@@ -43,6 +45,7 @@ class Appointment {
 
   factory Appointment.fromMap(appointmentMap) {
     return Appointment(
+        wasAttended: appointmentMap['wasAttended'],
         userUid: appointmentMap['userUid'],
         uid: appointmentMap['uid'],
         isCancelled: appointmentMap['isCancelled'],
@@ -66,10 +69,10 @@ class Appointment {
   Map<String, dynamic> toMap() {
     return {
       'userUid': userUid,
+      'userFullName': userFullName,
       'businessName': businessName,
       'serviceDescription': serviceDescription,
       'servicePrice': servicePrice,
-      'userFullName': userFullName,
       'serviceDay': serviceDay.toString(),
       'serviceTime.\$1.hour': serviceTime.$1.hour,
       'serviceTime.\$1.minute': serviceTime.$1.minute,
@@ -77,7 +80,8 @@ class Appointment {
       'serviceTime.\$2.minute': serviceTime.$2.minute,
       'isCancelled': isCancelled,
       'rating': rating,
-      'comment': comment
+      'comment': comment,
+      'wasAttended': wasAttended
     };
   }
 
