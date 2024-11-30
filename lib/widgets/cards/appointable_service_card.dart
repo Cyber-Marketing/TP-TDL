@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:web_app/custom_page_route.dart';
+import 'package:web_app/routing/custom_page_route.dart';
 import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/colored_tag.dart';
 import 'package:web_app/widgets/pages/appointments/make_appointment_page.dart';

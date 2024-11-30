@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:web_app/custom_page_route.dart';
+import 'package:web_app/routing/custom_page_route.dart';
 import 'package:web_app/widgets/pages/auth/login_screen.dart';
 import 'package:web_app/widgets/pages/auth/registration_screen.dart';
 
