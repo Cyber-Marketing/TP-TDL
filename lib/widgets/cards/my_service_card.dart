@@ -5,8 +5,8 @@ import 'package:web_app/domain/service.dart';
 import 'package:web_app/widgets/colored_tag.dart';
 import 'package:web_app/widgets/pages/services/check_service_feedback_page.dart';
 
-class ServiceCard extends StatelessWidget {
-  ServiceCard({required this.service});
+class MyServiceCard extends StatelessWidget {
+  MyServiceCard({required this.service});
 
   final Service service;
 

@@ -5,16 +5,14 @@ import 'package:web_app/domain/appointment.dart';
 import 'package:web_app/widgets/pages/appointments/give_appointment_feedback_page.dart';
 import 'package:web_app/widgets/rating_stars.dart';
 
-class AppointmentCard extends StatelessWidget {
-  const AppointmentCard(
+class MyAppointmentCard extends StatelessWidget {
+  const MyAppointmentCard(
       {super.key,
       required this.appointment,
-      required this.userUid,
       this.isCancellable = true,
       this.isRateable = false});
 
   final Appointment appointment;
-  final String userUid;
   final bool isCancellable;
   final bool isRateable;
 

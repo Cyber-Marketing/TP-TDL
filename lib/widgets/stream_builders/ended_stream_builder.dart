@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/domain/appointment.dart';
-import 'package:web_app/widgets/cards/appointment_card.dart';
+import 'package:web_app/widgets/cards/my_appointment_card.dart';
 import 'package:web_app/widgets/section_title.dart';
 
 class EndedStreamBuilder extends StatelessWidget {
@@ -57,9 +57,8 @@ class EndedStreamBuilder extends StatelessWidget {
             children: [
               SectionTitle(text: sectionTitle),
               for (var appointment in appointments)
-                AppointmentCard(
+                MyAppointmentCard(
                   appointment: appointment,
-                  userUid: userUid,
                   isCancellable: false,
                   isRateable: true,
                 )

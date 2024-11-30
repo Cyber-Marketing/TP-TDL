@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:web_app/data/service_repository.dart';
 import 'package:web_app/domain/service.dart';
-import 'package:web_app/widgets/cards/service_card.dart';
+import 'package:web_app/widgets/cards/my_service_card.dart';
 import 'package:web_app/widgets/section_title.dart';
 
 class MyServicesStreamBuilder extends StatelessWidget {
@@ -53,7 +53,7 @@ class MyServicesStreamBuilder extends StatelessWidget {
             children: [
               SectionTitle(text: sectionTitle),
               for (var service in services)
-                ServiceCard(
+                MyServiceCard(
                   service: service,
                 )
             ],

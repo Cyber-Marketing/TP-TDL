@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:web_app/data/appointment_database.dart';
 import 'package:web_app/data/service_repository.dart';
 import 'package:web_app/domain/appointment.dart';
-import 'package:web_app/widgets/cards/service_appointment_card.dart';
+import 'package:web_app/widgets/cards/appointed_service_card.dart';
 import 'package:web_app/widgets/section_title.dart';
 
 class ServiceCancelledStreamBuilder extends StatelessWidget {
@@ -68,7 +68,7 @@ class ServiceCancelledStreamBuilder extends StatelessWidget {
                 children: [
                   SectionTitle(text: sectionTitle),
                   for (var appointment in appointments)
-                    ServiceAppointmentCard(
+                    AppointedServiceCard(
                         appointment: appointment, isCancellable: false),
                 ],
               );

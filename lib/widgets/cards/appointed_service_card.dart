@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:web_app/domain/appointment.dart';
 
-class ServiceAppointmentCard extends StatelessWidget {
-  const ServiceAppointmentCard(
+class AppointedServiceCard extends StatelessWidget {
+  const AppointedServiceCard(
       {super.key,
       required this.appointment,
       this.isCancellable = true,
