@@ -21,27 +21,20 @@ class MyServicesStreamBuilder extends StatelessWidget {
             );
           }
 
-          var services = name != null
-              ? snapshot.data!.docs
-                  .map((docSnapshot) {
-                    var serviceMap = docSnapshot.data() as Map;
-                    serviceMap['uid'] = docSnapshot.id;
-                    return Service.fromMap(serviceMap);
-                  })
-                  .where((serv) =>
-                      serv.ownerUid == userUid &&
-                      serv.businessName
-                          .toLowerCase()
-                          .contains(name!.toLowerCase()))
-                  .toList()
-              : snapshot.data!.docs
-                  .map((docSnapshot) {
-                    var serviceMap = docSnapshot.data() as Map;
-                    serviceMap['uid'] = docSnapshot.id;
-                    return Service.fromMap(serviceMap);
-                  })
-                  .where((serv) => serv.ownerUid == userUid)
-                  .toList();
+          bool Function(Service serv) filteringCondition = name == null
+              ? (Service serv) => serv.ownerUid == userUid
+              : (Service serv) =>
+                  serv.ownerUid == userUid &&
+                  serv.businessName.toLowerCase().contains(name!.toLowerCase());
+
+          var servicesIterable = snapshot.data!.docs.map((docSnapshot) {
+            var serviceMap = docSnapshot.data();
+            serviceMap['uid'] = docSnapshot.id;
+            return Service.fromMap(serviceMap);
+          });
+
+          List<Service> services =
+              servicesIterable.where(filteringCondition).toList();
 
           String pluralSuffix = services.length > 1 ? 's' : '';
           String sectionTitle = services.isEmpty
