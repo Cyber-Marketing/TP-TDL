@@ -23,7 +23,7 @@ class WelcomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('App Turnos',
+                  Text('ServiciosYa',
                       style: TextStyle(
                           fontSize: 50,
                           color: Theme.of(context).colorScheme.primary)),
